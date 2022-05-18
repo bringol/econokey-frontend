@@ -1,16 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import { Container, Box, Typography, Link } from '@mui/material';
-import ProTip from './Components/ProTip.js';
-import Album from './Components/Album';
+import Passphrase from "./componentes/Passphrase"
+import Dropdown from './componentes/Dropdown';
+import Contador from './componentes/Contador';
 
 function App() {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Album/>
-      </Box>
-    </Container>
+    <>
+      <Passphrase/>
+    </>
   );
 }
 
