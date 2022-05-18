@@ -50,7 +50,7 @@ export default function Album() {
           {/* End hero unit */}
           <Stack spacing={2}>
           {cards.map((card) => (
-            <Card item key={card}
+            <Card key={card}
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
             >
                 <CardContent sx={{ flexGrow: 1 }}>
