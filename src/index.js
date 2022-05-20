@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -14,8 +15,15 @@ const root = createRoot(rootElement);
 root.render(
   <ThemeProvider theme={theme}>
     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-    <CssBaseline e/>
-    <App />
+    <CssBaseline />
+    <Box sx={{
+      height: '100vh',
+      bgcolor: '#FBFDF7',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <App />
+    </Box>
   </ThemeProvider>,
 );
 
