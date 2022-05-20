@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function Contador() {
-  const [num, setNum] = useState(0);
+  const [num, setNum] = useState(6);
 
   function sumar(){
       setNum(num+1)

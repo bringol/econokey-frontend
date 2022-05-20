@@ -3,6 +3,7 @@ import { Container } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MainScreen from './Components/MainScreen';
 import MainScreenNav from './Components/MainScreenNav';
+import Passphrase from "./Components/Passphrase"
 
 function App() {
 
@@ -40,7 +41,10 @@ function App() {
             <Route path="/" element={<MainScreen accounts={accounts} />} />
           </Routes>
         </BrowserRouter>
+        <Passphrase/>
       </Container>
+      
+
     </>
   );
 }
