@@ -6,6 +6,7 @@ import CasinoIcon from '@mui/icons-material/Casino';
 import Dropdown from './Dropdown';
 import Contador from './Contador';
 import Indicador from "./PasswordStrMeter"
+//import Dado from "../assets/d20.jpg"
 
 
 
@@ -62,6 +63,7 @@ const Passphrase = () => {
             <CasinoIcon />
           </Avatar>
           <h2>Generar Passphrase </h2>
+          
 
           <Contador/>{/*Si lo meto dentro del form no guarda porque hace refresh desp de cada button press*/}
 
@@ -106,6 +108,7 @@ const Passphrase = () => {
                     <Indicador password={password} />
 
                 </Box>
+                <CasinoIcon />
             </Grid>
             <Grid item xs={6}>
                  <Box  mt={3} sx={{width: 150}}>
