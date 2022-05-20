@@ -35,7 +35,7 @@ const MainScreenCard = ({ account, index }) => {
     return (
         <Card sx={{
             maxWidth: 345,
-            margin: '5px',
+            margin: '7px',
             background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)), #FBFDF7',
             boxShadow: '0px 0.5px 1px rgba(0, 0, 0, 0.19)',
             borderRadius: '12px'
