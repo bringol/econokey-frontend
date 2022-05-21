@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainScreen from './Components/MainScreen';
+import Login from './Components/Login';
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<MainScreen accounts={accounts} />} />
+            <Route path="/" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </Container>
