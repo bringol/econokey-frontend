@@ -14,6 +14,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -266,15 +267,18 @@ function restar() {
                   // sx={{width: 100}}
                   onClick={handleOnClick}
                   >
-                     <Button
-                     type="submit"
-                     halfwidth
-                     variant="contained"
-                     sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:5}}
+                    <NavLink to="/" style={{ textDecoration: 'none'}}>
+                      <Button
+                        type="submit"
+                        halfwidth
+                        variant="contained"
+                        sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:5}}
+                        
+                        >
+                        Cancelar <BsTrash/>
+                      </Button>
+                    </NavLink>
                      
-                     >
-                     Cancelar <BsTrash/>
-                     </Button>
                 </Box>
             </Grid>
             
@@ -284,6 +288,7 @@ function restar() {
                 // sx={{width: 100}}
                 onClick={handleOnClick}
                 >
+                  <NavLink to="/" style={{ textDecoration: 'none'}}>
                     <Button
                             type="submit"
                             halfwidth
@@ -293,6 +298,7 @@ function restar() {
                         >
                     Utilizar <ImFloppyDisk />
                     </Button>
+                  </NavLink>
                 </Box>
                 </Grid>
                 </Grid>
