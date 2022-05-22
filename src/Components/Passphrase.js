@@ -76,29 +76,55 @@ const Passphrase = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(delim,cap,num);
+    //console.log(delim,cap,num);
+    //console.log(JSON.stringify(num))
+    //console.log(values)
+    console.log(JSON.stringify(values))
+
   }
 
-  const [ delim, setDelim ] = useState(' ');
+  // const getNum2 = event => {
 
-  const [ cap, setCap ] = useState('minúscula');
+  //   console.log(JSON.stringify(num))
+  // }
+    
+
+  // const [ delim, setDelim ] = useState(' ');
+
+  // const [ cap, setCap ] = useState('minúscula');
 
   const [num, setNum] = useState(6);
 
+
   const [ password, setPassword ] = useState('');
+
+  
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const [values, setValues]=React.useState({
+    delimitador:" ",
+    capitalizacion:"minúscula",
+    palabras: 0,
+    contraseña:"",
+    entropia:0,
+
+  })
 
   /*En otro sprint debería encontrar la forma de pasar los datos al componente contador en lugar de hacerlo aca directamente*/
   function sumar(){
     setNum(num+1)
+    //setValues((values.palabras)+1)
+    //setValues((values.palabras)=setNum(num+1))
   }
 
 function restar() {
-      if(num > 0)
+      if( num > 0)
       setNum(oldCount => oldCount - 1)
+      //setValues((values.palabras)=setNum(oldCount => oldCount - 1))
+      //setValues(values.palabras => values.palabras - 1 )
     }
- 
-
-  // console.log(state)
 
   
     return (
@@ -110,11 +136,6 @@ function restar() {
           <form  autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Grid item xs={12} >
                 <Box 
-                // m={11}                
-                //width= "140"
-                // display="flex"
-                // flexDirection="row-reverse"
-                // alignItems= 'center'
                 //style={{borderStyle:"solid"}}
                 
                 sx={{
@@ -131,7 +152,9 @@ function restar() {
                       color="secondary"
                       size="large"
                       //autoWidth                 
-                      onChange={e => setDelim(e.target.value)}
+                      //onChange={e => setDelim(e.target.value)}
+                      onChange={handleChange("delimitador")}
+
                       />
                 </Box>     
             </Grid>            
@@ -143,11 +166,12 @@ function restar() {
                         <InputLabel id="dropdown">Capitalización</InputLabel>
                         <Select
                           labelId="dropdown"
-                          id="dropdown-autowidth"
-                          value={cap}
-                          //onChange={handleChange}
-                          onChange={e => setCap(e.target.value)}
-                          //autoWidth
+                          id="dropdown-autowidth"                          
+                          //onChange={handleChange} no usar
+                          //value={cap}
+                          //onChange={e => setCap(e.target.value)}
+                          onChange={handleChange("capitalizacion")}
+                          value={values.capitalizacion}
                           label="Capitalización"
                         >
                           <MenuItem value="minúscula">
@@ -171,17 +195,14 @@ function restar() {
                   <Typography sx={{ fontSize: 60 }}>
                     {num}
                   </Typography>
-                    
-                    
+                     {/*Botón de restar palabra*/}              
                     <Button
                      onClick={restar}
-                     sx={{ fontSize: 30,color:"#0F1833" }}
-                     
+                     sx={{ fontSize: 30,color:"#0F1833" }}                     
                      >
-                       <FaMinusCircle/>
-                     
-                     
+                       <FaMinusCircle/>                    
                      </Button>
+                    {/*Botón de sumar palabra*/}  
                     <Button
                      onClick={sumar}
                      sx={{ fontSize: 30,color:"#0F1833" }}
@@ -193,13 +214,17 @@ function restar() {
                 </Box>
               </Grid>
 
-
+                {/* DAAAADDOOOO */}
               <Grid item xs={12} >              
                   <Typography sx={{ fontSize: 25,mt:8}}>
                     Generar
                   </Typography>
                   <Button 
                   type="submit"
+                  //onSubmit={handleChange("palabras".getNum)}
+                  //onSubmit={setValues({ ...values, palabras: palabras.getNum})}
+                  //onSubmit={setPalabra}
+                  onSubmit={handleChange(values.palabras=num)}//Cuando suceda el submit, guarda el valor de num (cant de palabras) en el Palabras del form
                   sx={{ fontSize: 100,color:"#0F1833"}}
                   >
                      <FaDiceD20 />
@@ -215,9 +240,10 @@ function restar() {
                     label="Contraseña"
                     variant="standard"
                     //type="password"
+                    //ver metodos mostrar y esconder contraseña
                     color="secondary"
                     size="big"
-                    maxRows={12}
+                    maxRows={12}//por alguna razón no muestra el salto de línea
                     onChange={e => setPassword(e.target.value)}
                     fullWidth                          
                     />
@@ -225,7 +251,7 @@ function restar() {
 
                 </Box>
             </Grid>
-            
+
             <Grid item xs={12} >
                 <Box mt={3} m={3}>
             
@@ -233,7 +259,6 @@ function restar() {
                     id="entropía"
                     label="Entropía"
                     variant="standard"
-                    //type="password"
                     color="secondary"
                     size="big"
                     maxRows={12}
@@ -252,7 +277,7 @@ function restar() {
                   >
                      <Button
                      type="submit"
-                     halfWidth
+                     halfwidth
                      variant="contained"
                      sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:5}}
                      
@@ -270,10 +295,8 @@ function restar() {
                 >
                     <Button
                             type="submit"
-                            halfWidth
+                            halfwidth
                             variant="contained"
-                            //color="secondary"
-                            //className={classes.botón}
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:5}}
                             
                         >
