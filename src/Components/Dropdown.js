@@ -6,10 +6,10 @@ import Select from '@mui/material/Select';
 
 
 export default function Dropdown() {
-  const [valor, setValor] = React.useState('minúscula');
+  const [cap, setCap] = React.useState('minúscula');
 
   const handleChange = (event) => {
-    setValor(event.target.value);
+    setCap(event.target.value);
   };
 
   return (
@@ -19,8 +19,9 @@ export default function Dropdown() {
         <Select
           labelId="dropdown"
           id="dropdown-autowidth"
-          value={valor}
+          value={cap}
           onChange={handleChange}
+          //onChange={e => setCap(e.target.value)}
           autoWidth
           label="Capitalización"
         >
