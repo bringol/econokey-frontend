@@ -37,7 +37,7 @@ const MainScreen = ({ accounts, navigate }) => {
                 {(accounts !== undefined) && (accounts.length > 0) ? (
                     accounts.map((account, index) => {
                         return (
-                            <MainScreenCard account={account} index={index} />
+                            <MainScreenCard key={index} account={account} index={index} />
                         )
                     })
                 ) : (

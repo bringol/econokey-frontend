@@ -86,10 +86,6 @@ const Passphrase = (navigate) => {
 
 
   const [ password, setPassword ] = useState('');
-
-  const handleOnClick = () => {
-    navigate("../")
-  };
   
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -265,7 +261,6 @@ function restar() {
                  <Box
                   mt={3}
                   // sx={{width: 100}}
-                  onClick={handleOnClick}
                   >
                     <NavLink to="/" style={{ textDecoration: 'none'}}>
                       <Button
@@ -286,7 +281,6 @@ function restar() {
                 <Box  
                 mt={3}
                 // sx={{width: 100}}
-                onClick={handleOnClick}
                 >
                   <NavLink to="/" style={{ textDecoration: 'none'}}>
                     <Button

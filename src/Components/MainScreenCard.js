@@ -107,7 +107,7 @@ const MainScreenCard = ({ account, index }) => {
                         label="Usuario"
                         fullWidth
                         value={account.usuario}
-                        disbled
+                        disabled
                         sx={{
                             background: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
@@ -121,7 +121,7 @@ const MainScreenCard = ({ account, index }) => {
                         fullWidth
                         type={values.showPassword ? 'text' : 'password'}
                         value={account.password}
-                        disbled
+                        disabled
                         sx={{
                             background: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
@@ -146,7 +146,7 @@ const MainScreenCard = ({ account, index }) => {
                         label="Comentarios"
                         fullWidth
                         value={account.comentario}
-                        disbled
+                        disabled
                         multiline
                         maxRows={4}
                         sx={{
@@ -161,7 +161,7 @@ const MainScreenCard = ({ account, index }) => {
                         label="URL"
                         fullWidth
                         value={account.url}
-                        disbled
+                        disabled
                         sx={{
                             background: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
