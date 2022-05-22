@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import { BrowserRouter, Router, Route, Routes, useNavigate } from 'react-router-dom';
 import MainScreen from './Components/MainScreen';
 import MainScreenNav from './Components/MainScreenNav';
-import Passphrase from './componentes/Passphrase';
+import Passphrase from './Components/Passphrase';
 function App() {
 
   const accountList = [
