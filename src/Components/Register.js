@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import '../css/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class Login extends Component {
+class Register extends Component {
     state={
         form:{
             username:'',
-            password:''
+            password:'',
+            repeatedPassword:'',
+            fingerprint:''
         }  
     }
 
@@ -43,7 +45,24 @@ class Login extends Component {
                             onChange={this.handleChange}
                             />
                         <br/>
-                        <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Entrar</button>
+                        <label>Repita la Contrasenia: </label>
+                        <br/>
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="repeatedPassword"
+                            onChange={this.handleChange}
+                            />
+                        <br/>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="fingerprint"/>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Utilizar huella dactilar</label>
+                        </div>
+                        <br/>
+                        <br/>
+                        <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Crear</button>
+                        <br/>
+                        <button class="btn btn-secondary d-grid gap-2 col-6 mx-auto" >Volver</button>
                     </div>   
                 </div>   
             </div>
@@ -51,4 +70,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default Register;
