@@ -7,8 +7,6 @@ import Dropdown from './Dropdown';
 import Contador from './Contador';
 import Indicador from "./PasswordStrMeter"
 
-
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: "8px",
@@ -49,8 +47,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Passphrase = () => {
+const Passphrase = (navigate) => {
   const classes = useStyles();
+
+  const handleOnClick = () => {
+    navigate("../", { replace: true })
+  };
+
 
   const [ password, setPassword ] = useState('');
   
@@ -115,6 +118,7 @@ const Passphrase = () => {
                      variant="contained"
                      color="secondary"
                      className={classes.botón}
+                     onClick={handleOnClick}
                      >
                      Cancelar 
                      </Button>
@@ -129,7 +133,7 @@ const Passphrase = () => {
                             variant="contained"
                             color="secondary"
                             className={classes.botón}
-                            
+                            onClick={handleOnClick}
                         >
                     Usar 
                     </Button>

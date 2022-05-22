@@ -12,13 +12,18 @@ const actions = [
     { icon: <ArticleIcon />, name: 'Nota' },
     { icon: <AccountBalanceWalletIcon />, name: 'Wallet' },
     { icon: <LanguageIcon />, name: 'Contraseña' },
+    { icon: <LanguageIcon />, name: 'Passphrase' }
 ];
 
-const MainScreen = ({ accounts }) => {
+const MainScreen = ({ accounts, navigate }) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleOnClick = () => {
+        navigate("../new-passphrase")
+    };
 
     return (
         <>
@@ -66,7 +71,7 @@ const MainScreen = ({ accounts }) => {
                             icon={action.icon}
                             tooltipTitle={action.name}
                             tooltipOpen
-                            onClick={handleClose}
+                            onClick={handleOnClick}
                         />
                     ))}
                 </SpeedDial>
