@@ -38,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
     //justifyContent: 'center',
     borderRadius: '16px', borderColor: 'black',display: 'flex', justifyContent: 'center'
   },
-  submit: {
-    margin: "8px",
-  },
   botón: {
     // marginTop: "8px",
     // display: 'flex',
@@ -62,15 +59,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Passphrase = (navigate) => {
+  
   const classes = useStyles();
+  
   const handleSubmit = event => {
     event.preventDefault();
-    //console.log(delim,cap,num);
+    console.log(num);
     //console.log(JSON.stringify(num))
     //console.log(values)
     console.log(JSON.stringify(values))
+    //console.log(values.delimitador)
+
 
   }
+  
 
   // const getNum2 = event => {
 
@@ -82,7 +84,7 @@ const Passphrase = (navigate) => {
 
   // const [ cap, setCap ] = useState('minúscula');
 
-  const [num, setNum] = useState(6);
+  const [num, setNum] = useState(0);
 
 
   const [ password, setPassword ] = useState('');
@@ -91,12 +93,15 @@ const Passphrase = (navigate) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const [disable, setDisable] = React.useState(true);
+
   const [values, setValues]=React.useState({
-    delimitador:" ",
+    delimitador:"%",
     capitalizacion:"minúscula",
-    palabras: 0,
+    palabras: num,
     contraseña:"",
-    entropia:0,
+    entropia:"0 Bits de Entropía",
+    //mockup:false,
 
   })
 
@@ -142,6 +147,7 @@ function restar() {
                       //autoWidth                 
                       //onChange={e => setDelim(e.target.value)}
                       onChange={handleChange("delimitador")}
+                      
 
                       />
                 </Box>     
@@ -212,49 +218,72 @@ function restar() {
                   //onSubmit={handleChange("palabras".getNum)}
                   //onSubmit={setValues({ ...values, palabras: palabras.getNum})}
                   //onSubmit={setPalabra}
-                  onSubmit={handleChange(values.palabras=num)}//Cuando suceda el submit, guarda el valor de num (cant de palabras) en el Palabras del form
+
+                  //Cuando suceda el submit, guarda el valor de num (cant de palabras) en el Palabras del form
+                  //EDIT: Link donde explica el problema de usar onClick={} en lugar de onClick={() =>  https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in
+                  //onSubmit={(handleChange(values.palabras=num)  && handleChange(values.contraseña="carpeta%sombra%hito%tropical%trece%caballo") && handleChange(values.entropia=77.5)) }
+                  onSubmit={ (handleChange(values.palabras=num) ) }
+                  onClick={() =>setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
                   sx={{ fontSize: 100,color:"#0F1833"}}
                   >
                      <FaDiceD20 />
                   </Button>
-                
+                  <Box mt={5}></Box>
                 </Grid>
-
+            {!disable && (
                 <Grid item xs={12} >
-                <Box mt={3} m={3}>            
-                    <TextField 
-                    id="contraseña"
-                    label="Contraseña"
-                    variant="standard"
-                    //type="password"
-                    //ver metodos mostrar y esconder contraseña
-                    color="secondary"
-                    size="big"
-                    maxRows={12}//por alguna razón no muestra el salto de línea
-                    onChange={e => setPassword(e.target.value)}
-                    fullWidth
-                    />
-                    <Indicador password={password} />
+                  <Box mt={3} m={3}>            
+                      <TextField  
+                      id="contraseña"
+                      label="Contraseña"
+                      variant="standard"
+                      disabled
+                      //type="password"
+                      //ver metodos mostrar y esconder contraseña
+                      color="secondary"
+                      size="big"
+                      minRows={12}//por alguna razón no muestra el salto de línea
+                      onChange={e => setPassword(e.target.value)}
+                      fullWidth
+                      //testing
+                      //defaultValue={values.contraseña}
+                      defaultValue="Carpeta%Sombra%Hito%Tropical%Trece%Himno"
+                      />
+                      {/* <Indicador password={password} /> */}
+                      <Indicador password="Carpeta%Sombra%Hito%Tropical%Trece%Himno" />
 
-                </Box>
-            </Grid>
-
+                  </Box>
+                </Grid>
+            )}
+            {!disable && (
             <Grid item xs={12} >
                 <Box mt={3} m={3}>
             
-                    <TextField 
+                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 35.0}}}
                     id="entropía"
                     label="Entropía"
                     variant="standard"
                     color="secondary"
                     size="big"
-                    maxRows={12}
+                    disabled //solo lectura
+                    //onSubmit={handleChange()} 
+
+                    defaultValue="77.5 Bits de Entropía"
+                    //defaultValue={values.mockup == true ? 2:0}               
                     //onChange={e => setPassword(e.target.value)}
                     fullWidth                          
-                    />                   
-
+                    />
                 </Box>
+                {/* <div>
+
+                  {values.mockup === true ? <h1>test</h1> : null}
+                  <button onClick={()=>handleChange(values.mockup=true) && handleChange(values.entropia=10) }>verdadero</button>
+                  <button onClick={()=>handleChange(values.mockup=false)}>falso</button>
+
+                </div> */}
             </Grid>
+            )}
+          
             <Grid container>
 
             <Grid item xs={6}>
@@ -287,13 +316,15 @@ function restar() {
                             type="submit"
                             halfwidth
                             variant="contained"
-                            sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:5}}
+                            sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:7}}
+                            disabled={disable}
                             
                         >
-                    Utilizar <ImFloppyDisk />
+                    Copiar <ImFloppyDisk />
                     </Button>
                   </NavLink>
                 </Box>
+                <Box mt={3}></Box>
                 </Grid>
                 </Grid>
                 </form>
