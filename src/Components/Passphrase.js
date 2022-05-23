@@ -243,7 +243,7 @@ function restar() {
                       color="secondary"
                       size="big"
                       multiline
-                      maxRows={8}//por alguna razón no muestra el salto de línea
+                      maxRows={8}
                       onChange={e => setPassword(e.target.value)}
                       fullWidth
                       //testing
