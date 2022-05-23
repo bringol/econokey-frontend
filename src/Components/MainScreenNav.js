@@ -47,7 +47,7 @@ export default function MainScreenNav(props) {
     setAnchorEl(null);
   };
 
-  return (
+  return props.topbar && (
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>

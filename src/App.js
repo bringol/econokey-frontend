@@ -15,6 +15,7 @@ function App() {
   ];
 
   const [accounts, setAccounts] = React.useState(accountList);
+  const [topbar, setTopbar] = React.useState(false);
 
   function Root() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ function App() {
         p: 1
       }}>
           <Routes>
-            <Route path="/" element={<MainScreen accounts={accounts} navigate={navigate} />} />
+            <Route path="/" element={<MainScreen accounts={accounts} navigate={navigate} setTopbar={setTopbar}/>} />
             <Route path="/new-passphrase" element={<Passphrase navigate={navigate}/>} />
             <Route path="/login" element={<Login navigate={navigate}/>} />
             <Route path="/register" element={<Register navigate={navigate}/>} />
@@ -38,7 +39,7 @@ function App() {
 
   return (
     <>
-      <MainScreenNav/>
+      <MainScreenNav topbar = {topbar}/>
       <BrowserRouter>
         <Root/>
       </BrowserRouter>

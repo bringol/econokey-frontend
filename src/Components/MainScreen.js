@@ -15,14 +15,18 @@ const actions = [
     { icon: <LanguageIcon />, name: 'Passphrase' }
 ];
 
-const MainScreen = ({ accounts, navigate }) => {
+const MainScreen = ({ accounts, navigate, setTopbar }) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    setTopbar(true);
+
     const handleOnClick = () => {
+        setTopbar(false);
         navigate("../new-passphrase")
+
     };
 
     return (
