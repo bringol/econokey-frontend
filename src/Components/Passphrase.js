@@ -242,7 +242,8 @@ function restar() {
                       //ver metodos mostrar y esconder contraseña
                       color="secondary"
                       size="big"
-                      minRows={12}//por alguna razón no muestra el salto de línea
+                      multiline
+                      maxRows={8}//por alguna razón no muestra el salto de línea
                       onChange={e => setPassword(e.target.value)}
                       fullWidth
                       //testing
