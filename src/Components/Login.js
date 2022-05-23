@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../css/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink } from 'react-router-dom';
 
 class Login extends Component {
     state={
@@ -17,7 +18,7 @@ class Login extends Component {
                 [e.target.name]: e.target.value
             }
         });
-        console.log(this.state.form);
+        //console.log(this.state.form);
     }
 
     render(){
@@ -43,9 +44,9 @@ class Login extends Component {
                             onChange={this.handleChange}
                             />
                         <br/>
-                        <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Entrar</button>
+                        <NavLink to="/" style={{ textDecoration: 'none'}}><button className="btn btn-success d-grid gap-2 col-6 mx-auto" >Entrar</button></NavLink>
                         <br/>
-                        <button class="btn btn-success d-grid gap-2 mx-auto" >Crear nueva boveda</button>
+                        <NavLink to="/register" style={{ textDecoration: 'none'}}><button className="btn btn-success d-grid gap-2 mx-auto" >Crear nueva boveda</button></NavLink>
                     </div>   
                 </div>   
             </div>

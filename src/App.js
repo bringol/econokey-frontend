@@ -4,10 +4,12 @@ import { BrowserRouter, Router, Route, Routes, useNavigate } from 'react-router-
 import MainScreen from './Components/MainScreen';
 import MainScreenNav from './Components/MainScreenNav';
 import Passphrase from './Components/Passphrase';
+import Login from './Components/Login';
+import Register from './Components/Register';
 function App() {
 
   const accountList = [
-    {id: 1, titulo: 'Gmail', descripcion: 'Gmail.com', type: 'pass', usuario: 'email@gmail.com', password: 'tesst123', comentario: 'gmail principal', url: 'http://link'},
+    {id: 1, titulo: 'Gmail', descripcion: 'Gmail.com', type: 'pass', usuario: 'email@gmail.com', password: 'Carpeta%Sombra%Hito%Tropical%Trece%Himno', comentario: 'gmail principal', url: 'http://link'},
     {id: 2, titulo: 'Binance', descripcion: 'Virtual Wallet', type: 'wallet', usuario: 'email@gmail.com', password: 'strongpass2', comentario: 'gmail principal', url: 'http://link'},
     {id: 3, titulo: 'Notas', descripcion: 'No te olvides de tomar agua', type: 'note', comentario: 'gmail principal'}
   ];
@@ -26,6 +28,8 @@ function App() {
           <Routes>
             <Route path="/" element={<MainScreen accounts={accounts} navigate={navigate} />} />
             <Route path="/new-passphrase" element={<Passphrase navigate={navigate}/>} />
+            <Route path="/login" element={<Login navigate={navigate}/>} />
+            <Route path="/register" element={<Register navigate={navigate}/>} />
           </Routes>
       </Container>
     );

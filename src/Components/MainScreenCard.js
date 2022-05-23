@@ -103,16 +103,20 @@ const MainScreenCard = ({ account, index }) => {
                 <CardContent>
                     <TextField
                         required
+                        
                         id="outlined-required"
                         label="Usuario"
                         fullWidth
                         value={account.usuario}
-                        disabled
+                        disabled 
                         sx={{
-                            background: 'rgba(6, 109, 55, 0.05)',
+                            backgroundColor: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
                             m: 1
+                            
                         }}
+                        
+                        
                     />
                     <TextField
                         required
@@ -126,7 +130,9 @@ const MainScreenCard = ({ account, index }) => {
                             background: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
                             m: 1
+
                         }}
+                        
                         InputProps={{
                             endAdornment: <InputAdornment position="end">
                                 <IconButton

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../css/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink } from 'react-router-dom';
 
 class Register extends Component {
     state={
@@ -60,9 +61,9 @@ class Register extends Component {
                         </div> 
                         <br/>*/}
                         <br/>
-                        <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Crear</button>
+                        <NavLink to="/login" style={{ textDecoration: 'none'}}><button className="btn btn-success d-grid gap-2 col-6 mx-auto" >Crear</button></NavLink>
                         <br/>
-                        <button class="btn btn-secondary d-grid gap-2 col-6 mx-auto" >Volver</button>
+                        <NavLink to="/login" style={{ textDecoration: 'none'}}><button className="btn btn-secondary d-grid gap-2 col-6 mx-auto" >Volver</button></NavLink>
                     </div>   
                 </div>   
             </div>
