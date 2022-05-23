@@ -44,6 +44,8 @@ class Login extends Component {
                             />
                         <br/>
                         <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Entrar</button>
+                        <br/>
+                        <button class="btn btn-success d-grid gap-2 mx-auto" >Crear nueva boveda</button>
                     </div>   
                 </div>   
             </div>

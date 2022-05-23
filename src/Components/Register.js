@@ -53,12 +53,12 @@ class Register extends Component {
                             name="repeatedPassword"
                             onChange={this.handleChange}
                             />
-                        <br/>
-                        <div class="form-check form-switch">
+                        {/*<br/>
+                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="fingerprint"/>
                             <label class="form-check-label" for="flexSwitchCheckDefault">Utilizar huella dactilar</label>
-                        </div>
-                        <br/>
+                        </div> 
+                        <br/>*/}
                         <br/>
                         <button class="btn btn-success d-grid gap-2 col-6 mx-auto" >Crear</button>
                         <br/>

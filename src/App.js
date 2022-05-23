@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Container } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './Components/Login';
+import Register from './Components/Register';
+//Login
+//Register
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Login/>} />
+            <Route path="/" element={<Register/>} />
           </Routes>
         </BrowserRouter>
       </Container>
