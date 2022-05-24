@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import {Avatar,Button,CssBaseline,TextField,Input ,Typography, Container, Box,Grid} from '@mui/material';
 import { makeStyles } from '@mui/styles'; 
@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { NavLink } from 'react-router-dom';
+import AppContext from '../AppContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,6 +60,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Passphrase = (navigate) => {
+
+  const { setTopbar, setFilterButton } = React.useContext(AppContext);
+  
+
+  useEffect(() => {
+    setTopbar(true);
+    setFilterButton(false);
+  }, []);
+
   
   const classes = useStyles();
   
