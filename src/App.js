@@ -7,7 +7,9 @@ import Passphrase from './Components/Passphrase';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import {AppContextProvider} from './AppContext';
+
 function App() {
+  
   function Root() {
     const navigate = useNavigate();
     return (
