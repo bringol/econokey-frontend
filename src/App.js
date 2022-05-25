@@ -4,6 +4,8 @@ import { BrowserRouter, Router, Route, Routes, useNavigate } from 'react-router-
 import MainScreen from './Components/MainScreen';
 import MainScreenNav from './Components/MainScreenNav';
 import Passphrase from './Components/Passphrase';
+import Login from './Components/Login';
+import Register from './Components/Register';
 function App() {
 
   const accountList = [
@@ -26,6 +28,8 @@ function App() {
           <Routes>
             <Route path="/" element={<MainScreen accounts={accounts} navigate={navigate} />} />
             <Route path="/new-passphrase" element={<Passphrase navigate={navigate}/>} />
+            <Route path="/login" element={<Login navigate={navigate}/>} />
+            <Route path="/register" element={<Register navigate={navigate}/>} />
           </Routes>
       </Container>
     );
