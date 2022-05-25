@@ -110,7 +110,7 @@ const Login = () => {
                         <Grid item xs sx={{ pr:1}}>
                         <Link
                                 type="#"
-                                fullWidth
+                                fullwidth="true"
                                 variant="contained"
                                 size='small'
                                 color='secondary'
@@ -122,7 +122,7 @@ const Login = () => {
                         <Grid item sx={{ pl:1}}>
                             <Link
                                 type="#"
-                                fullWidth
+                                fullwidth="true"
                                 variant="contained"
                                 size='small'
                                 color='secondary'
