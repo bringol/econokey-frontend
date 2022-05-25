@@ -9,6 +9,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import AppContext from '../AppContext';
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -37,6 +38,8 @@ ElevationScroll.propTypes = {
 
 export default function MainScreenNav(props) {
 
+  const {topbar, filterButton} = React.useContext(AppContext)
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -47,7 +50,7 @@ export default function MainScreenNav(props) {
     setAnchorEl(null);
   };
 
-  return (
+  return topbar && (
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
@@ -68,36 +71,42 @@ export default function MainScreenNav(props) {
               Bóveda - BoyerNicolas
 
             </Typography>
-            <IconButton sx={{ 
-              color: '#1A1C19'
-              }} 
-              size="large" 
-              aria-label="search"
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleMenu}
-               >
-              <FilterListIcon />
-            </IconButton>
-            <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Notas</MenuItem>
-                <MenuItem onClick={handleClose}>Wallets</MenuItem>
-                <MenuItem onClick={handleClose}>Contraseñas</MenuItem>
-              </Menu>
+            {
+              filterButton && (
+                <>
+                  <IconButton sx={{ 
+                    color: '#1A1C19'
+                    }} 
+                    size="large" 
+                    aria-label="search"
+                    aria-controls='menu-appbar'
+                    aria-haspopup='true'
+                    onClick={handleMenu}
+                    >
+                    <FilterListIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    >
+                    <MenuItem onClick={handleClose}>Notas</MenuItem>
+                    <MenuItem onClick={handleClose}>Wallets</MenuItem>
+                    <MenuItem onClick={handleClose}>Contraseñas</MenuItem>
+                  </Menu>
+                </>
+              )
+            }
           </Toolbar>
         </AppBar>
       </ElevationScroll>

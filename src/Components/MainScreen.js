@@ -7,6 +7,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LanguageIcon from '@mui/icons-material/Language';
 import Backdrop from '@mui/material/Backdrop';
+import AppContext from '../AppContext'
 
 const actions = [
     { icon: <ArticleIcon />, name: 'Nota' },
@@ -15,14 +16,21 @@ const actions = [
     { icon: <LanguageIcon />, name: 'Passphrase' }
 ];
 
-const MainScreen = ({ accounts, navigate }) => {
+const MainScreen = ({ navigate }) => {
+
+    const { accounts, setTopbar, setFilterButton } = React.useContext(AppContext)
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    React.useEffect(() => {
+        setTopbar(true);
+        setFilterButton(true);
+    }, []);
+
     const handleOnClick = () => {
-        navigate("../new-passphrase")
+        navigate("../new-passphrase");
     };
 
     return (
