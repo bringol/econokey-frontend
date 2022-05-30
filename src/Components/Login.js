@@ -141,11 +141,11 @@ export default function SignIn({navigate}) {
               Ingresar
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2" color='secondary' underline="none">
                   Recuperar Contraseña
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
                 <Link href="#" variant="body2" color='secondary' underline="none" onClick={redirectRegister}>
                   {"Crear nueva boveda"}

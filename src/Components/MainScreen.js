@@ -10,10 +10,10 @@ import Backdrop from '@mui/material/Backdrop';
 import AppContext from '../AppContext'
 
 const actions = [
-    { icon: <ArticleIcon />, name: 'Nota' },
-    { icon: <AccountBalanceWalletIcon />, name: 'Wallet' },
-    { icon: <LanguageIcon />, name: 'Contraseña' },
-    { icon: <LanguageIcon />, name: 'Passphrase' }
+    { icon: <ArticleIcon />, name: 'Nota', target:"../" },
+    { icon: <AccountBalanceWalletIcon />, name: 'Wallet' , target:"../"},
+    { icon: <LanguageIcon />, name: 'Contraseña', target:"../"},
+    { icon: <LanguageIcon />, name: 'Passphrase', target: "../new-passphrase"}
 ];
 
 const MainScreen = ({ navigate }) => {
@@ -29,8 +29,8 @@ const MainScreen = ({ navigate }) => {
         setFilterButton(true);
     }, []);
 
-    const handleOnClick = () => {
-        navigate("../new-passphrase");
+    const handleOnClick = (target) => {
+        navigate(target);
     };
 
     return (
@@ -79,7 +79,7 @@ const MainScreen = ({ navigate }) => {
                             icon={action.icon}
                             tooltipTitle={action.name}
                             tooltipOpen
-                            onClick={handleOnClick}
+                            onClick={()=>handleOnClick(action.target)}
                         />
                     ))}
                 </SpeedDial>
