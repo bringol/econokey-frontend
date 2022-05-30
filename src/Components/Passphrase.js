@@ -55,21 +55,23 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'justify',
     color: 'red'
   },
-  
 
 }));
 
 const Passphrase = (navigate) => {
 
   const { setTopbar, setFilterButton } = React.useContext(AppContext);
-  
+  const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
 
   useEffect(() => {
     setTopbar(true);
     setFilterButton(false);
   }, []);
 
-  
+  //Carpeta%Sombra%Hito%Tropical%Trece%Himno
+  const handlePasswordToCopy = (event) => {
+    setPasswordToCopy(event.target.value);
+}
   const classes = useStyles();
   
   const handleSubmit = event => {
@@ -82,6 +84,15 @@ const Passphrase = (navigate) => {
 
 
   }
+
+  const copyToClipboard = (e) => {
+    this.textArea.select();
+    document.execCommand('copy');
+    // This is just personal preference.
+    // I prefer to not show the whole text area selected.
+    e.target.focus();
+    this.setState({ copySuccess: 'Copied!' });
+  };
   
 
   // const getNum2 = event => {
@@ -135,38 +146,41 @@ function restar() {
         // sx={{ borderRadius: '16px', borderColor: 'black',display: 'flex', justifyContent: 'center' }}
          >
            
-           <h2>Generar Passphrase</h2>
+          
           <form  autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Grid item xs={12} >
                 <Box 
                 //style={{borderStyle:"solid"}}
                 
                 sx={{
-                  mt: 3,
-                  paddingRight:15,   
-                  paddingLeft:15,                 
+                  mt: 2,
+                  alignItems: 'flex-start',
+                  paddingRight:5,   
+                  paddingLeft:5,                 
                   marginBottom: "50px",               
                 }}
                 >
-                    <TextField  inputProps={{maxLength: 1,  style: {textAlign: 'center',fontSize: 40.0, height: 15.0}}}
-                      
-                      name="delimitador"
-                      label="Delimitador"                    
-                      color="secondary"
-                      size="large"
-                      //autoWidth                 
-                      //onChange={e => setDelim(e.target.value)}
-                      onChange={handleChange("delimitador")}
-                      
-
-                      />
-                </Box>     
-            </Grid>            
-
-            <Grid item xs={12}>                      
-                <Box mt={3}>
                     
-                      <FormControl sx={{ m: 1, minWidth: 130 }}>
+                    <Typography variant="h5" gutterBottom component="div">
+                    Generar Passphrase
+                    </Typography>
+                    
+                        <TextField  inputProps={{maxLength: 1,  style: {textAlign: 'center',fontSize: 20.0, height: 5.0}}}
+                          
+                          name="delimitador"
+                          label="Delimitador"                    
+                          color="secondary"
+                          size="normal"
+                          style = {{justifyContent:'center',width: '40%'}} 
+                          //autoWidth                 
+                          //onChange={e => setDelim(e.target.value)}
+                          onChange={handleChange("delimitador")}
+                          
+
+                          />
+                    
+                      <br/>
+                      <FormControl sx={{mt:2,mb:0, minWidth: 130 }}>
                         <InputLabel id="dropdown">Capitalización</InputLabel>
                         <Select
                           labelId="dropdown"
@@ -190,12 +204,23 @@ function restar() {
                 </Box>
             </Grid>            
 
-                {/* <Contador/> */}
+            
 
-            <Grid item xs={12}>                      
-                <Box mt={3}>
-                <div>
-                  <h2>Palabras</h2>
+            <Grid item xs={12} >                      
+                <Box 
+                sx={{
+                  mt: 0,
+                  paddingRight:5,   
+                  paddingLeft:5,
+                                  
+                                 
+                }}
+                >
+                
+                <Typography variant="h6" gutterBottom component="div">
+                    Cantidad de palabras
+                </Typography>
+                  
                   <Typography sx={{ fontSize: 60 }}>
                     {num}
                   </Typography>
@@ -214,13 +239,13 @@ function restar() {
                        <FaPlusCircle/>
                     </Button>
                 
-                </div>
+                
                 </Box>
               </Grid>
 
                 {/* DAAAADDOOOO */}
               <Grid item xs={12} >              
-                  <Typography sx={{ fontSize: 25,mt:8}}>
+                  <Typography sx={{ fontSize: 25,mt:4}}>
                     Generar
                   </Typography>
                   <Button 
@@ -329,7 +354,6 @@ function restar() {
                             variant="contained"
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:7}}
                             disabled={disable}
-                            
                         >
                     Copiar <ImFloppyDisk />
                     </Button>
