@@ -25,8 +25,9 @@ function App() {
           <Routes>
             <Route path="/" element={<MainScreen navigate={navigate}/>} />
             <Route path="/new-passphrase" element={<Passphrase navigate={navigate}/>} />
+            <Route path="/new-password" element={<ContraseñaCombinada navigate={navigate}/>} />
             <Route path="/login" element={<Login navigate={navigate}/>} />
-            <Route path="/register" element={<Register navigate={navigate}/>} />
+            <Route path="/register" element={<Register navigate={navigate}/>} />            
           </Routes>
           
           

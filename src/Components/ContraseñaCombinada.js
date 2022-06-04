@@ -185,8 +185,8 @@ function restar() {
                     
                     <FormGroup
                         sx={{
-                        mt: 2,              
-                        marginBottom: "50px",                  
+                        mt: -5,              
+                        marginBottom: "10px",                  
                         paddingX:75,                                    
                         }}>
                         <FormControlLabel sx={{paddingY:1}}
@@ -291,12 +291,13 @@ function restar() {
                   <Box mt={5}></Box>
                 </Grid>
             {!disable && (
+               <Grid container spacing={1} justify="center">
                 <Grid item xs={12} >
-                  <Box mt={1} m={1}>            
-                      <TextField  inputProps={{style: {textAlign: 'center',fontSize: 17.0}}} 
+                <Box mt={1} mx={26}>      
+                      <TextField  inputProps={{style: {textAlign: 'center',fontSize: 20.0}}} 
                       id="contraseña"
                       label="Contraseña"
-                      //variant="standard"
+                      variant="standard"
                       disabled                      
                       color="secondary"
                       size="normal"
@@ -307,42 +308,46 @@ function restar() {
                       style = {{justifyContent:'center',width: '35%'}} 
                       defaultValue=".52<>]1I:LO`QnOd;5" //Longitud 18
                       />
+                      </Box>
                       {/* <Indicador password={password} /> */}
+                      <Box mt={1} ml={63}  mr={63}>  
                       <Indicador password=".52<>]1I:LO`QnOd;5" />
 
                   </Box>
                 </Grid>
+              </Grid>
             )}
             {!disable && (
-            <Grid item xs={12} >
-                <Box mt={3} m={3}>
             
-                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 35.0}}}
+                <Box m={1} >
+            
+                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 25.0}}}
                     id="entropía"
-                    label="Entropía"
+                    //label="Entropía"
                     variant="standard"
                     color="secondary"
-                    size="big"
                     disabled //solo lectura
                     defaultValue="100 Bits de Entropía"
-                    halfWidth                          
+                                           
                     />
                 </Box>
                 
-            </Grid>
+            
             )}
           
-            <Grid container>
+            <Grid container spacing={1} justify="center">
 
               <Grid item xs={6}>
                   <Box
-                    mt={3}                  
+                    mt={3}
+                    ml={60}
+                    //sx={{width: 50}}                  
                     >
                       <NavLink to="/" style={{ textDecoration: 'none'}}>
                         <Button
                           type="submit"
                           variant="contained"
-                          sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:5}}                          
+                          sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:2.5}}                          
                           >
                           Cancelar <BsTrash/>
                         </Button>
@@ -353,14 +358,15 @@ function restar() {
                 <Grid item xs={6}>
                   <Box  
                   mt={3}
-                  // sx={{width: 100}}
+                  mr={60}
+                  //sx={{width: 50}}
                   >
                     <NavLink to="/" style={{ textDecoration: 'none'}}>
                       <Button
                               type="submit"
                               //halfwidth
                               variant="contained"
-                              sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:7}}
+                              sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                               disabled={disable}
                           >
                       Copiar <ImFloppyDisk />

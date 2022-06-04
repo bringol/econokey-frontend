@@ -12,7 +12,7 @@ import AppContext from '../AppContext'
 const actions = [
     { icon: <ArticleIcon />, name: 'Nota', target:"../" },
     { icon: <AccountBalanceWalletIcon />, name: 'Wallet' , target:"../"},
-    { icon: <LanguageIcon />, name: 'Contraseña', target:"../"},
+    { icon: <LanguageIcon />, name: 'Contraseña', target:"../new-password"},
     { icon: <LanguageIcon />, name: 'Passphrase', target: "../new-passphrase"}
 ];
 

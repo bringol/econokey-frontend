@@ -295,9 +295,9 @@ function restar() {
             <Grid item xs={12} >
                 <Box mt={3} m={3}>
             
-                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 35.0}}}
+                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 25.0}}}
                     id="entropía"
-                    label="Entropía"
+                    //label="Entropía"
                     variant="standard"
                     color="secondary"
                     size="big"
@@ -322,48 +322,48 @@ function restar() {
           
             <Grid container>
 
-            <Grid item xs={6}>
-                 <Box
-                  mt={3}
-                  // sx={{width: 100}}
-                  >
-                    <NavLink to="/" style={{ textDecoration: 'none'}}>
-                      <Button
-                        type="submit"
-                        halfwidth
-                        variant="contained"
-                        sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:5}}
-                        
-                        >
-                        Cancelar <BsTrash/>
-                      </Button>
-                    </NavLink>
-                     
-                </Box>
-            </Grid>
-            
-                <Grid item xs={6}>
-                <Box  
-                mt={3}
-                // sx={{width: 100}}
-                >
-                  <NavLink to="/" style={{ textDecoration: 'none'}}>
-                    <Button
-                            type="submit"
-                            halfwidth
-                            variant="contained"
-                            sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:7}}
-                            disabled={disable}
-                        >
-                    Copiar <ImFloppyDisk />
-                    </Button>
-                  </NavLink>
-                </Box>
-                <Box mt={3}></Box>
-                </Grid>
-                </Grid>
-                </form>
-            </Grid>
+              <Grid item xs={6}>
+                  <Box
+                    mt={3}
+                    // sx={{width: 100}}
+                    >
+                      <NavLink to="/" style={{ textDecoration: 'none'}}>
+                        <Button
+                          type="submit"
+                          //halfwidth
+                          variant="contained"
+                          sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:2.5}}
+                          
+                          >
+                          Cancelar <BsTrash/>
+                        </Button>
+                      </NavLink>
+                      
+                  </Box>
+              </Grid>
+              
+                  <Grid item xs={6}>
+                    <Box  
+                    mt={3}
+                    // sx={{width: 100}}
+                    >
+                      <NavLink to="/" style={{ textDecoration: 'none'}}>
+                        <Button
+                                type="submit"
+                                //halfwidth
+                                variant="contained"
+                                sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
+                                disabled={disable}
+                            >
+                        Copiar <ImFloppyDisk />
+                        </Button>
+                      </NavLink>
+                    </Box>
+                    <Box mt={3}></Box>
+                  </Grid>
+              </Grid>
+          </form>
+        </Grid>
     )  
 }
 

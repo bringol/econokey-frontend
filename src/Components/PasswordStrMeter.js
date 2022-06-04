@@ -45,12 +45,12 @@ const PasswordStrMeter = ({ password }) => {
   const changePasswordColor = () => ({
     width: `${num}%`,
     background: funcProgressColor(),
-    height: '7px'
+    height: '11px'
   })
 
   return (
     <>
-      <div className="progress" style={{ height: '7px' }}>
+      <div className="progress" style={{ height: '8px' }}>
         <div className="progress-bar" style={changePasswordColor()}></div>
       </div>
       <p style={{ color: funcProgressColor() }}>{createPassLabel()}</p>
