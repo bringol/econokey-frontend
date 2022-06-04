@@ -8,6 +8,9 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import {AppContextProvider} from './AppContext';
 
+import ContraseñaCombinada from './Components/ContraseñaCombinada';
+
+
 function App() {
   
   function Root() {
@@ -25,6 +28,9 @@ function App() {
             <Route path="/login" element={<Login navigate={navigate}/>} />
             <Route path="/register" element={<Register navigate={navigate}/>} />
           </Routes>
+          
+          
+
       </Container>
     );
   }
