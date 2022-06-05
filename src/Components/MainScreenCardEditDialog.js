@@ -4,8 +4,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { IconButton, InputAdornment, TextField, Grid,Box } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+//
+import {FaDiceD20} from 'react-icons/fa'
+import { NavLink } from 'react-router-dom';
 
 function MainScreenCardEditDialog(props) {
     const {index, onClose, value: valueProp, open, ...other } = props;
@@ -16,6 +19,7 @@ function MainScreenCardEditDialog(props) {
     const [comentarios, setComentarios] = useState(value.comentario);
     const [url, setUrl] = useState(value.url);
     const [values, setValues] = useState({ showPassword: false, });
+    const [disable, setDisable] = React.useState(true);//para ocultar y mostrar los distintos passgen
 
     useEffect(() => {
         if (!open) {
@@ -102,6 +106,10 @@ function MainScreenCardEditDialog(props) {
                     }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
+                            {/* dado que muestra los generadores cuando recibe el click */}
+                            <IconButton onClick={() =>setDisable(!disable)}>  
+                                <FaDiceD20/>
+                            </IconButton>                           
                             <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
@@ -113,6 +121,46 @@ function MainScreenCardEditDialog(props) {
                         </InputAdornment>,
                     }}
                 />
+                {/* si disable cambia de estado muestra los generadores */}
+                {!disable && (
+                <Grid container>
+
+              <Grid item xs={6}>
+                  <Box
+                    mt={1}                    
+                    >
+                     <NavLink to="/new-passphrase" style={{ textDecoration: 'none'}}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          sx={{color:"#EB5757", backgroundColor: "#D3E8D3" ,borderRadius: '16px', paddingX:1}}
+                          >
+                          Passphrase
+                        </Button>
+                    </NavLink>
+                      
+                  </Box>
+              </Grid>
+              
+                  <Grid item xs={6}>
+                    <Box  
+                    mt={1}                   
+                    >
+                     <NavLink to="/new-password" style={{ textDecoration: 'none'}}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:2}}                                
+                        >
+                        Password 
+                        </Button>
+                    </NavLink>
+                    </Box>
+                    <Box mt={1}></Box>
+                  </Grid>
+              </Grid>
+                )}
+
                 <TextField
                     required
                     id={"comentarios"+index}

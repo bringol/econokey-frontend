@@ -281,7 +281,8 @@ function restar() {
                     handleChange(values.minusculas=flagMinuscula) &&
                     handleChange(values.numeros=flagNumero) &&
                     handleChange(values.simbolos=flagSimbolo) &&
-                    handleChange(values.asciiExtendido=flagASCII)                  
+                    handleChange(values.asciiExtendido=flagASCII) &&
+                    handleChange(values.contraseña=".52<>]1I:LO`QnOd;5")               
                   }
                   onClick={() =>setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
                   sx={{ fontSize: 80,color:"#0F1833"}}
@@ -361,10 +362,13 @@ function restar() {
                   mr={60}
                   //sx={{width: 50}}
                   >
-                    <NavLink to="/" style={{ textDecoration: 'none'}}>
+                    <NavLink
+                     to="/"
+                     state={values.contraseña}
+                     style={{ textDecoration: 'none'}}
+                     >
                       <Button
                               type="submit"
-                              //halfwidth
                               variant="contained"
                               sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                               disabled={disable}

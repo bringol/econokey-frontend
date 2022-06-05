@@ -243,7 +243,7 @@ function restar() {
                 </Box>
               </Grid>
 
-                {/* DAAAADDOOOO */}
+                {/* DADO */}
               <Grid item xs={12} >              
                   <Typography sx={{ fontSize: 25,mt:4}}>
                     Generar

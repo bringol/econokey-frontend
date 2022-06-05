@@ -15,6 +15,10 @@ import { Box, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import MainScreenCardEditDialog from './MainScreenCardEditDialog';
 
+//añadido para la parte generar contraseña
+import {FaDiceD20} from 'react-icons/fa'
+import { NavLink } from 'react-router-dom';
+
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -150,7 +154,8 @@ const MainScreenCard = ({ account, index }) => {
                                 m: 1
                             }}
                             InputProps={{
-                                endAdornment: <InputAdornment position="end">
+                                endAdornment: <InputAdornment position="end">                                    
+                                    {/* mostrar/ocultar contraseña */}
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
@@ -159,6 +164,9 @@ const MainScreenCard = ({ account, index }) => {
                                     >
                                         {values.showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
+                                    
+                                    
+                                    
                                 </InputAdornment>,
                             }}
                         />

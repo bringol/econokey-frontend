@@ -8,12 +8,15 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LanguageIcon from '@mui/icons-material/Language';
 import Backdrop from '@mui/material/Backdrop';
 import AppContext from '../AppContext'
+import { FaBtc,FaDiceD20 } from "react-icons/fa";
+import { MdSwitchAccount } from "react-icons/md";
 
 const actions = [
     { icon: <ArticleIcon />, name: 'Nota', target:"../" },
-    { icon: <AccountBalanceWalletIcon />, name: 'Wallet' , target:"../"},
-    { icon: <LanguageIcon />, name: 'Contraseña', target:"../new-password"},
-    { icon: <LanguageIcon />, name: 'Passphrase', target: "../new-passphrase"}
+    { icon: <MdSwitchAccount />, name: 'Cuenta', target:"../"},
+    { icon: <FaBtc />, name: 'Crypto Wallet' , target:"../"},
+    { icon: <FaDiceD20 />, name: 'Password', target:"../new-password"},
+    { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase"}
 ];
 
 const MainScreen = ({ navigate }) => {
