@@ -15,12 +15,12 @@ const actions = [
     { icon: <ArticleIcon />, name: 'Nota', target:"../" },
     { icon: <MdSwitchAccount />, name: 'Cuenta', target:"../"},
     { icon: <FaBtc />, name: 'Crypto Wallet' , target:"../"},
-    { icon: <FaDiceD20 />, name: 'Password', target:"../new-password"},
+    { icon: <FaDiceD20 />, name: 'Contraseña', target:"../new-password"},
     { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase"}
 ];
 
 const MainScreen = ({ navigate }) => {
-
+    
     const { accounts, setTopbar, setFilterButton } = React.useContext(AppContext)
 
     const [open, setOpen] = React.useState(false);

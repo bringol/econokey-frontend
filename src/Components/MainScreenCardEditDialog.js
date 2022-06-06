@@ -163,7 +163,7 @@ function MainScreenCardEditDialog(props) {
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:2}}                                
                             onClick={() => setDisablePassphrase(true) & setDisablePassword(false)}
                         >
-                        Password 
+                        Clásica
                         </Button>
                     </Box>
                     <Box mt={1}></Box>

@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AppContext from '../AppContext';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpDialog from './HelpDialog';
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -41,6 +43,16 @@ export default function MainScreenNav(props) {
   const {topbar, filterButton} = React.useContext(AppContext)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickHelpItem = () => {
+    setOpen(true);
+};
+
+const handleHelpClose = (newValue) => {
+    setOpen(false);
+};
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -107,6 +119,20 @@ export default function MainScreenNav(props) {
                 </>
               )
             }
+            <IconButton
+                      aria-label="Help"
+                      aria-haspopup="true"
+                      aria-controls="help-menu"
+                      onClick={() => setOpen(true)}
+                  >
+              <HelpOutlineIcon />
+            </IconButton>
+            <HelpDialog
+                id={"help-menu"}
+                keepMounted
+                open={open}
+                onClose={() => setOpen(false)}
+            />
           </Toolbar>
         </AppBar>
       </ElevationScroll>
