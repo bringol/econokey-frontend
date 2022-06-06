@@ -1,5 +1,6 @@
 import React from 'react';
 import zxcvbn from 'zxcvbn';
+import {Avatar,Button,CssBaseline,TextField,Input ,Typography, Container, Box,Grid} from '@mui/material';
 
 //fuente https://www.youtube.com/watch?v=tIInwIlf13A
 
@@ -49,12 +50,14 @@ const PasswordStrMeter = ({ password }) => {
   })
 
   return (
-    <>
-      <div className="progress" style={{ height: '8px' }}>
+    
+    <Grid xs={12}>
+      <div className="progress" style={{ height: '8px', width:"100%", paddingLeft: 60 ,paddingRight: 60}}>
         <div className="progress-bar" style={changePasswordColor()}></div>
       </div>
       <p style={{ color: funcProgressColor() }}>{createPassLabel()}</p>
-    </>
+    
+    </Grid> 
   )
 }
 

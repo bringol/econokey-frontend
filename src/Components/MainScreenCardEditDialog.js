@@ -9,10 +9,11 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 //
 import {FaDiceD20} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
+import PassphraseModal from "../Components/PassphraseModal"
+import PasswordModal from "../Components/ContraseñaCombinadaModal"
 
 function MainScreenCardEditDialog(props) {
-    const {index, onClose, value: valueProp, open, ...other } = props;
-     
+    const {index, onClose, value: valueProp, open, ...other } = props;     
     const [value, setValue] = useState(valueProp);
     const [userName, setUserName] = useState(value.usuario);
     const [password, setPassword] = useState(value.password);
@@ -20,6 +21,13 @@ function MainScreenCardEditDialog(props) {
     const [url, setUrl] = useState(value.url);
     const [values, setValues] = useState({ showPassword: false, });
     const [disable, setDisable] = React.useState(true);//para ocultar y mostrar los distintos passgen
+    const [DisablePassphrase, setDisablePassphrase] = React.useState(true);
+    const [DisablePassword, setDisablePassword] = React.useState(true);
+
+    const[testPass, setTestPass]=useState("vacio")
+    
+
+
 
     useEffect(() => {
         if (!open) {
@@ -65,6 +73,7 @@ function MainScreenCardEditDialog(props) {
     const handleUrl = (event) => {
         setUrl(event.target.value);
     }
+
 
     return (
         <Dialog
@@ -123,43 +132,63 @@ function MainScreenCardEditDialog(props) {
                 />
                 {/* si disable cambia de estado muestra los generadores */}
                 {!disable && (
+
+                    // <PassphraseModal/>
                 <Grid container>
 
               <Grid item xs={6}>
                   <Box
                     mt={1}                    
-                    >
-                     <NavLink to="/new-passphrase" style={{ textDecoration: 'none'}}>
+                    >                    
                         <Button
                           type="submit"
                           variant="contained"
                           sx={{color:"#EB5757", backgroundColor: "#D3E8D3" ,borderRadius: '16px', paddingX:1}}
+                          onClick={() =>setDisablePassphrase(!DisablePassphrase)}
                           >
                           Passphrase
                         </Button>
-                    </NavLink>
                       
                   </Box>
               </Grid>
               
                   <Grid item xs={6}>
                     <Box  
-                    mt={1}                   
+                    mt={1}
+                    mx={2}                    
                     >
-                     <NavLink to="/new-password" style={{ textDecoration: 'none'}}>
                         <Button
                             type="submit"
                             variant="contained"
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:2}}                                
+                            onClick={() =>setDisablePassword(!DisablePassword) || (console.log("NuevaPass:",testPass))}
                         >
                         Password 
                         </Button>
-                    </NavLink>
                     </Box>
                     <Box mt={1}></Box>
                   </Grid>
               </Grid>
                 )}
+
+            {!DisablePassphrase &&  (
+                
+                <PassphraseModal/>
+                
+
+            )}
+
+            {!DisablePassword && (
+                
+                <PasswordModal
+                NuevaPass={testPass => setTestPass(testPass) }              
+                />
+                //logro hacer que el hijo le pase la nueva contraseña al padre
+                //(se puede ver volviendo mirando el log desp de apretar otra vez el boton password )
+                //pero no se como cargarlo en el campo contraseña
+                
+
+            )}
 
                 <TextField
                     required
