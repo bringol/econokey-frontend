@@ -161,7 +161,10 @@ function MainScreenCardEditDialog(props) {
                             type="submit"
                             variant="contained"
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:2}}                                
-                            onClick={() =>setDisablePassword(!DisablePassword) || (console.log("NuevaPass:",testPass))}
+                            onClick={() =>
+                                setDisablePassword(!DisablePassword)
+                                // || (console.log("NuevaPass:",testPass))
+                            }
                         >
                         Password 
                         </Button>
@@ -173,7 +176,10 @@ function MainScreenCardEditDialog(props) {
 
             {!DisablePassphrase &&  (
                 
-                <PassphraseModal/>
+                <PassphraseModal
+                flagPassphrase={DisablePassphrase =>setDisablePassphrase(DisablePassphrase)}   
+                NuevaPass={testPass => setTestPass(testPass) || setPassword(value.password=testPass) }                        
+                />
                 
 
             )}
@@ -181,11 +187,13 @@ function MainScreenCardEditDialog(props) {
             {!DisablePassword && (
                 
                 <PasswordModal
-                NuevaPass={testPass => setTestPass(testPass) }              
+                flagPassword={DisablePassword =>setDisablePassword(DisablePassword)}   
+                NuevaPass={testPass => setTestPass(testPass) || setPassword(value.password=testPass) }                        
                 />
                 //logro hacer que el hijo le pase la nueva contraseña al padre
                 //(se puede ver volviendo mirando el log desp de apretar otra vez el boton password )
-                //pero no se como cargarlo en el campo contraseña
+                //pero no se cómo cargarlo en el campo contraseña
+                //EDIT: lo conseguí con el "|| setPassword(value.password=testPass)"
                 
 
             )}

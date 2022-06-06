@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Passphrase = () => {
+const PassphraseModal = (props) => {
 
   const { setTopbar, setFilterButton } = React.useContext(AppContext);
   const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
@@ -128,14 +128,15 @@ function restar() {
                     Generar Passphrase
                     </Typography>
                     
-                        <TextField  inputProps={{maxLength: 1,  style: {textAlign: 'center',fontSize: 5.0, height: 5.0}}}
+                        <TextField  inputProps={ { maxLength: 1,  style: {textAlign: 'center',fontSize: 25.0, height: 15.0}}}
                           
                           name="delimitador"
                           label="Delimitador"                    
                           color="secondary"
                           size="normal"
-                          style = {{justifyContent:'center',width: '40%'}}
+                          style = {{justifyContent:'center',width: '60%'}}
                           onChange={handleChange("delimitador")}
+                          value={values.delimitador}
                           
 
                           />
@@ -208,8 +209,13 @@ function restar() {
                   </Typography>
                   <Button 
                   type="submit"
-                  onSubmit={ (handleChange(values.palabras=num) ) }
-                  onClick={() =>setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
+                  onSubmit={
+                     handleChange(values.palabras=num)
+                     &&
+                     handleChange(values.contraseña="Carpeta%Sombra%Hito%Tropical%Trece%Himno")                    
+                    }
+                  onClick={() =>
+                    setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
                   sx={{ fontSize: 100,color:"#0F1833"}}
                   >
                      <FaDiceD20 />
@@ -284,8 +290,9 @@ function restar() {
                               variant="contained"
                               sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                               disabled={disable}
+                              onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassphrase(!disable))}
                           >
-                      Copiar <ImFloppyDisk />
+                      Aplicar <ImFloppyDisk />
                       </Button>
                     </Box>
                     <Box mt={3}></Box>
@@ -296,4 +303,4 @@ function restar() {
     )  
 }
 
-export default Passphrase
+export default PassphraseModal

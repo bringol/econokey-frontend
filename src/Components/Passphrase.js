@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const Passphrase = (navigate) => {
+const Passphrase = (props) => {
 
   const { setTopbar, setFilterButton } = React.useContext(AppContext);
   const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
@@ -354,6 +354,7 @@ function restar() {
                                 variant="contained"
                                 sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                                 disabled={disable}
+                                onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassword(!disable))}
                             >
                         Copiar <ImFloppyDisk />
                         </Button>

@@ -108,22 +108,22 @@ const ContraseñaCombinadaModal = (props) => {
 
 //No me cabe duda que debe haber una manera mas elegante
 
-  const [flagMayuscula, setflagMayuscula] = React.useState(false);
+  const [flagMayuscula, setflagMayuscula] = React.useState(true);
   const handleMayuscula = (event) => {
     setflagMayuscula(event.target.checked);
   };
 
-  const [flagMinuscula, setflagMinuscula] = React.useState(false);
+  const [flagMinuscula, setflagMinuscula] = React.useState(true);
   const handleMinuscula = (event) => {
     setflagMinuscula(event.target.checked);
   };
 
-  const [flagNumero, setflagNumero] = React.useState(false);
+  const [flagNumero, setflagNumero] = React.useState(true);
   const handleNumero = (event) => {
     setflagNumero(event.target.checked);
   };
 
-  const [flagSimbolo, setflagSimbolo] = React.useState(false);
+  const [flagSimbolo, setflagSimbolo] = React.useState(true);
   const handleSimbolo = (event) => {
     setflagSimbolo(event.target.checked);
   };
@@ -384,9 +384,11 @@ function restar() {
                               variant="contained"
                               sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                               disabled={disable}
-                              onClick={()=>props.NuevaPass(values.contraseña)}
+                              //cierra el modal cambiando el booleano y tamb guarda la contraseña en NuevaPass
+                              //para pasarselo al padre
+                              onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassword(!disable))}                
                           >
-                      Copiar <ImFloppyDisk />
+                      Aplicar <ImFloppyDisk />
                       </Button>
                     {/* </NavLink> */}
                   </Box>

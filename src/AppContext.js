@@ -4,7 +4,7 @@ const AppContext = React.createContext()
 
 export const AppContextProvider = (props) => {
   const accountList = [
-    {id: 1, titulo: 'Gmail', descripcion: 'Gmail.com', type: 'pass', usuario: 'email@gmail.com', password: 'Carpeta%Sombra%Hito%Tropical%Trece%Himno', comentario: 'gmail principal', url: 'http://link'},
+    {id: 1, titulo: 'Gmail', descripcion: 'Gmail.com', type: 'pass', usuario: 'email@gmail.com', password: 'contraseña123', comentario: 'gmail principal', url: 'http://link'},
     {id: 2, titulo: 'Binance', descripcion: 'Virtual Wallet', type: 'wallet', usuario: 'email@gmail.com', password: 'strongpass2', comentario: 'gmail principal', url: 'http://link'},
     {id: 3, titulo: 'Nota', descripcion: '', type: 'note', comentario: 'gmail principal'}
   ];
