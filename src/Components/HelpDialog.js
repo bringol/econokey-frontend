@@ -51,6 +51,10 @@ function HelpDialog(props) {
             <DialogContent dividers>
             <List>
                 <ListItem>
+                    <ListItemText primary="Bóveda" secondary="Lugar seguro donde se pueden almacenar contraseñas, wallets y notas." />
+                </ListItem>
+                <Divider />
+                <ListItem>
                     <ListItemText primary="Passphrase" secondary="Método de creación de contraseñas que consiste en generar palabras separadas por un carácter en particular lo que permite que sea segura desde el punto de vista técnico y fácil de recordar." />
                 </ListItem>
                 <Divider />
