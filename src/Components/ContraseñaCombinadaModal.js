@@ -386,7 +386,7 @@ function restar() {
                               disabled={disable}
                               //cierra el modal cambiando el booleano y tamb guarda la contraseña en NuevaPass
                               //para pasarselo al padre
-                              onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassword(!disable))}                
+                              onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassword(true))}                
                           >
                       Aplicar <ImFloppyDisk />
                       </Button>

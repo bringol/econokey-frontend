@@ -116,7 +116,7 @@ function MainScreenCardEditDialog(props) {
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
                             {/* dado que muestra los generadores cuando recibe el click */}
-                            <IconButton onClick={() =>setDisable(!disable)}>  
+                            <IconButton onClick={() =>setDisable(!disable) & setDisablePassphrase(true) & setDisablePassword(true)}>  
                                 <FaDiceD20/>
                             </IconButton>                           
                             <IconButton
@@ -144,7 +144,7 @@ function MainScreenCardEditDialog(props) {
                           type="submit"
                           variant="contained"
                           sx={{color:"#EB5757", backgroundColor: "#D3E8D3" ,borderRadius: '16px', paddingX:1}}
-                          onClick={() =>setDisablePassphrase(!DisablePassphrase)}
+                          onClick={() => setDisablePassphrase(false) & setDisablePassword(true)}
                           >
                           Passphrase
                         </Button>
@@ -161,10 +161,7 @@ function MainScreenCardEditDialog(props) {
                             type="submit"
                             variant="contained"
                             sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:2}}                                
-                            onClick={() =>
-                                setDisablePassword(!DisablePassword)
-                                // || (console.log("NuevaPass:",testPass))
-                            }
+                            onClick={() => setDisablePassphrase(true) & setDisablePassword(false)}
                         >
                         Password 
                         </Button>
