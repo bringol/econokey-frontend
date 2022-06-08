@@ -67,7 +67,7 @@ function HelpDialog(props) {
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <ListItemText primary="Entropía de una contraseña" secondary="Medida que representa el nivel de aleatoriedad de una contraseña, cuanto mayor es la entropía la misma es mas segura." />
+                    <ListItemText primary="Entropía de una contraseña" secondary="Medida que representa el nivel de complejidad de una contraseña, cuanto mayor es la entropía la misma es mas segura." />
                 </ListItem>
                 <Divider />
                 <ListItem>
