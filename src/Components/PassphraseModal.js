@@ -45,12 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
 const PassphraseModal = (props) => {
 
-  const { setTopbar, setFilterButton } = React.useContext(AppContext);
+  const { setTopbar } = React.useContext(AppContext);
   const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
 
   useEffect(() => {
     setTopbar(true);
-    setFilterButton(false);
   }, []);
 
   //Carpeta%Sombra%Hito%Tropical%Trece%Himno

@@ -354,7 +354,7 @@ function restar() {
                                 variant="contained"
                                 sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                                 disabled={disable}
-                                onClick={()=>(props.NuevaPass(values.contraseña) || props.flagPassword(!disable))}
+                                onClick={()=>(props.flagPassword(!disable))}
                             >
                         Copiar <ImFloppyDisk />
                         </Button>

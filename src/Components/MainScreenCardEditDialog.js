@@ -175,7 +175,7 @@ function MainScreenCardEditDialog(props) {
                 
                 <PassphraseModal
                 flagPassphrase={DisablePassphrase =>setDisablePassphrase(DisablePassphrase)}   
-                NuevaPass={testPass => setTestPass(testPass) || setPassword(value.password=testPass) }                        
+                NuevaPass={(testPass) => { setTestPass(testPass) || setPassword(value.password=testPass) }}
                 />
                 
 
@@ -185,7 +185,7 @@ function MainScreenCardEditDialog(props) {
                 
                 <PasswordModal
                 flagPassword={DisablePassword =>setDisablePassword(DisablePassword)}   
-                NuevaPass={testPass => setTestPass(testPass) || setPassword(value.password=testPass) }                        
+                NuevaPass={(testPass) => { setTestPass(testPass) || setPassword(value.password=testPass) }}
                 />
                 //logro hacer que el hijo le pase la nueva contraseña al padre
                 //(se puede ver volviendo mirando el log desp de apretar otra vez el boton password )

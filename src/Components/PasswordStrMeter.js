@@ -51,7 +51,7 @@ const PasswordStrMeter = ({ password }) => {
 
   return (
     
-    <Grid xs={12}>
+    <Grid item xs={12}>
       <div className="progress" style={{ height: '8px', width:"100%", paddingLeft: 60 ,paddingRight: 60}}>
         <div className="progress-bar" style={changePasswordColor()}></div>
       </div>
