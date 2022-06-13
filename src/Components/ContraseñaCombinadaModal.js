@@ -59,14 +59,13 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const ContraseñaCombinadaModal = (props) => {
+const PasswordModal = (props) => {
 
-  const { setTopbar, setFilterButton } = React.useContext(AppContext);
+  const { setTopbar } = React.useContext(AppContext);
   const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
 
   useEffect(() => {
     setTopbar(true);
-    setFilterButton(false);
   }, []);
 
   //Carpeta%Sombra%Hito%Tropical%Trece%Himno
@@ -400,4 +399,4 @@ function restar() {
     )  
 }
 
-export default ContraseñaCombinadaModal
+export default PasswordModal

@@ -13,6 +13,18 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
+const glosario = [
+    {titulo: 'Bóveda', descripcion: 'Lugar seguro donde se pueden almacenar contraseñas, wallets y notas.'},
+    {titulo: 'Passphrase', descripcion: 'Método de creación de contraseñas seguras y fáciles de recordar que consisten de una secuencia de palabras.'},
+    {titulo: 'Crypto wallet', descripcion: 'Billetera virtual única generada mediante un algoritmo lógico, la cual sirve para almacenar distintos tipos de cripto-monedas. No se debe confundir con una cuenta bancaria.'},
+    {titulo: 'Notas', descripcion: 'Se utiliza para almacenar información segura sin un formato especifico.'},
+    {titulo: 'Entropía de una contraseña', descripcion: 'Medida que representa el nivel de complejidad de una contraseña, cuanto mayor es la entropía la misma es más segura.'},
+    {titulo: 'Tipos de carácteres', descripcion: 'Pueden ser Alfa-numéricos (Ej. Abc123), Símbolos especiales (Ej. :[‘(&),) y ASCII extendido (Incluye caracteres y simbolos que no se encuentran comunmente en un teclado).'},
+    {titulo: 'Delimitadores', descripcion: 'Es el carácter utilizado como separador entre palabras.'},
+    {titulo: 'Capitalización', descripcion: 'Utilización de mayúsculas dentro de cada palabra, puede ser solo minúsculas (Ej. auto), solo mayúsculas (Ej. AUTO) y título (Ej. Auto).'},
+    {titulo: 'Longitud de una contraseña', descripcion: 'Largo de una contraseña medido en cantidad de caracteres.'}
+  ];
+
 
 function HelpDialog(props) {
     const {onClose, value: valueProp, open, ...other } = props;     
@@ -50,42 +62,14 @@ function HelpDialog(props) {
         </AppBar>
             <DialogContent dividers>
             <List>
-                <ListItem>
-                    <ListItemText primary="Bóveda" secondary="Lugar seguro donde se pueden almacenar contraseñas, wallets y notas." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Passphrase" secondary="Método de creación de contraseñas que consiste en generar palabras separadas por un carácter en particular lo que permite que sea segura desde el punto de vista técnico y fácil de recordar." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Crypto wallet" secondary="Billetera virtual utilizada principalmente para el uso de cripto-monedas (monedas virtuales basadas en tecnología block-chain). No se debe confundir con una cuenta bancaria." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Notas" secondary="Se utiliza para almacenar información segura sin un formato especifico." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Entropia" secondary="Método de medición para saber si una contraseña es difícil de descifrar, cuanto mayor es la entropía (con un limite de 100) mayor es la cantidad de tiempo y esfuerzo que se debe tener para descifrarla." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Tipos de caracteres" secondary="Los caracteres se separa en grupos, están los alfa-numéricos (Ej. Abc123), los especiales o símbolos (Ej. :[‘(&), y los especiales extendidos que son símbolos invisibles que representan espacios o saltos de línea." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Delimitadores" secondary="Son los símbolos o caracteres que se encuentran entre palabras para reemplazar un espacio." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Capitalización" secondary="Es la forma de escribir las letras de una palabra, existe 3 tipos, solo minúsculas (Ej. auto), solo mayúsculas (Ej. AUTO) y la primera letra en mayúscula y el resto en minúscula (Ej. Auto)." />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Longitud" secondary="Largo de la contraseña medida en cantidad de palabras a utilizar." />
-                </ListItem>
-                <Divider />
+                {glosario.map((item,index) =>
+                    <React.Fragment key={index}>
+                        <ListItem>
+                            <ListItemText primary={item.titulo} secondary={item.descripcion} />
+                        </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                )}
             </List>
             </DialogContent>
         </Dialog>
