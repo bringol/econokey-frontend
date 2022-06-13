@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import Visibility from '@mui/icons-material/Visibility';
@@ -25,11 +25,14 @@ const MainScreenCardWallet = ({ account, index }) => {
         <>
             <TextField
                 required
-                label="Usuario"
+                label="Direccion"
                 id={"username" + index}
                 fullWidth
                 value={account.userName}
                 disabled
+                multiline
+                minRows={2}
+                maxRows={2}
                 sx={{
                     backgroundColor: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
@@ -39,7 +42,7 @@ const MainScreenCardWallet = ({ account, index }) => {
             <TextField
                 required
                 id={"password" + index}
-                label="Constraseña"
+                label="Llave privada"
                 fullWidth
                 type={values.showPassword ? 'text' : 'password'}
                 value={account.password}
@@ -71,19 +74,6 @@ const MainScreenCardWallet = ({ account, index }) => {
                 disabled
                 multiline
                 maxRows={4}
-                sx={{
-                    background: 'rgba(6, 109, 55, 0.05)',
-                    borderRadius: '6px',
-                    m: 1
-                }}
-            />
-            <TextField
-                required
-                id={"url" + index}
-                label="URL"
-                fullWidth
-                value={account.url}
-                disabled
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',

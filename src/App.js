@@ -11,6 +11,8 @@ import NewAccount from './Components/NewAccount';
 import { AppContextProvider } from './AppContext';
 import NewNote from './Components/NewNote';
 import NewCryptoWallet from './Components/NewCryptoWallet';
+import NewCryptoWalletSelect from './Components/NewCryptoWalletSelect';
+import NewCryptoWalletGenerador from './Components/NewCryptoWalletGenerador';
 
 function App() {
 
@@ -27,7 +29,9 @@ function App() {
           <Route path="/" element={<MainScreen navigate={navigate} />} />
           <Route path="/new-account" element={<NewAccount navigate={navigate} />} />
           <Route path="/new-note" element={<NewNote navigate={navigate} />} />
-          <Route path="/new-wallet" element={<NewCryptoWallet navigate={navigate} />} />
+          <Route path="/new-wallet" element={<NewCryptoWalletSelect navigate={navigate} />} />
+          <Route path="/wallet" element={<NewCryptoWallet navigate={navigate} />} />
+          <Route path="/wallet-gen" element={<NewCryptoWalletGenerador navigate={navigate} />} />
           <Route path="/new-passphrase" element={<Passphrase navigate={navigate} />} />
           <Route path="/new-password" element={<ContraseñaCombinada navigate={navigate} />} />
           <Route path="/login" element={<Login navigate={navigate} />} />

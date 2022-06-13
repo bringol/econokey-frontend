@@ -8,6 +8,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 import MainScreenCardNote from './MainScreenCardNote';
 import MainScreenCardAccount from './MainScreenCardAccount';
+import MainScreenCardWallet from './MainScreenCardWallet';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -38,7 +39,7 @@ const MainScreenCard = ({ account, index, navigate }) => {
         } else if (account.type === 'pass') {
             navigate('../new-account', { state: account });
         } else {
-            
+            navigate('../wallet', { state: account });
         }
     };
 
@@ -108,6 +109,10 @@ const MainScreenCard = ({ account, index, navigate }) => {
                         ) : (account.type === 'pass') ? (
                             <>
                                 <MainScreenCardAccount account={account} index={index} />
+                            </>
+                        ) : (account.type === 'wallet') ? (
+                            <>
+                                <MainScreenCardWallet account={account} index={index} />
                             </>
                         ) : null}
                     </CardContent>

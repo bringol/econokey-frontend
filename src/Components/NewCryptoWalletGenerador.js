@@ -4,17 +4,15 @@ import NewAccountPasswordDialog from './NewAccountPasswordDialog';
 import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
 
-import { IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ShareIcon from '@mui/icons-material/Share';
 
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
-import Share from '@mui/icons-material/Share';
 
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
@@ -65,7 +63,7 @@ function ConfirmationDialogRaw(props) {
     );
 }
 
-const NewCryptoWallet = ({ navigate }) => {
+const NewCryptoWalletGenerador = ({ navigate }) => {
     const { state } = useLocation();
 
     let account = state ? state : '';
@@ -77,12 +75,15 @@ const NewCryptoWallet = ({ navigate }) => {
         userName: account.userName ? account.userName : '',
         password: account.password ? account.password : '',
         comentarios: account.comentarios ? account.comentarios : '',
+        moneda: account.moneda ? account.moneda : '',
         showPassword: false,
         tituloError: false,
         descripcionError: false,
         usuarioError: false,
         passwordError: false,
         comentariosError: false,
+        monedaError: false,
+        monedaHelper: '',
         openPassphrase: false,
         openPassword: false,
         disable: true,
@@ -162,6 +163,16 @@ const NewCryptoWallet = ({ navigate }) => {
         });
     }
 
+    const handleMoneda = (event) => {
+        setValues({
+            ...values,
+            moneda: event.target.value,
+            monedaError: event.target.value === '',
+            monedaHelper: event.target.value === '' ? 'Debe seleccionar una moneda' : '',
+            
+        });
+    }
+
     const handleCancelar = () => {
         navigate("../")
     }
@@ -205,6 +216,8 @@ const NewCryptoWallet = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         }
 
+        console.log(values.moneda)
+
         setValues({
             ...values,
             tituloError: values.titulo === '',
@@ -212,9 +225,11 @@ const NewCryptoWallet = ({ navigate }) => {
             usuarioError: values.userName === '',
             passwordError: values.password === '',
             comentariosError: values.comentarios === '',
+            monedaError: values.moneda === '',
+            monedaHelper: values.moneda === '' ? 'Debe seleccionar una moneda' : '',
         });
 
-        if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios)
+        if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios && values.moneda)
             if (!values.isEditing)
                 crearCuenta();
             else
@@ -264,45 +279,23 @@ const NewCryptoWallet = ({ navigate }) => {
                     display: 'block',
                     p: 1,
                 }}>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    borderRadius: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignContent: 'center',
+                <Typography variant="h1" component="div" noWrap sx={{
+                    fontSize: 25,
+                    fontWeight: '500',
+                    fontStyle: 'normal',
+                    flexGrow: 1,
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                    backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                    borderRadius: '6px',
+                    mb: 1,
+                    mt: 1,
+                    p: 1,
                 }}>
-                    <Typography variant="h1" component="div" noWrap sx={{
-                        fontSize: 18,
-                        fontWeight: '500',
-                        fontStyle: 'normal',
-                        flexGrow: 1,
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                        p: 1,
-                    }}>
-
-                        {(values.isEditing) ? (
-                            'EDITAR CryptoWallet'
-                        ) : 'AGREGAR CryptoWallet'}
-                    </Typography>
                     {(values.isEditing) ? (
-                    <Button sx={{
-                        m: 1,
-                    }}
-                        variant='outlined'
-                        color="secondary"
-                        size="small"
-                        endIcon={<Share fontSize='small' />}
-                        onClick={handleGuardar}
-                    >
-                        Compartir
-                    </Button>) : null}
-                </Box>
+                        'EDITAR CryptoWallet'
+                    ) : 'GENERAR CryptoWallet'}
+                </Typography>
                 <TextField
                     error={values.tituloError}
                     required
@@ -336,6 +329,21 @@ const NewCryptoWallet = ({ navigate }) => {
                         mt: 1,
                     }}
                 />
+                <FormControl component="fieldset" error={values.monedaError}>
+                    <FormLabel id="moneda">Moneda</FormLabel>
+                    <RadioGroup
+                        row
+                        aria-labelledby="moneda"
+                        name="moneda-group"
+                        onChange={handleMoneda}
+                        value={values.moneda}
+                    >
+                        <FormControlLabel value="bitcoin" control={<Radio />} label="Bitcoin" />
+                        <FormControlLabel value="ethereum" control={<Radio />} label="Ethereum" />
+                        <FormControlLabel value="cardamo" disabled control={<Radio />} label="Cardamo" />
+                    </RadioGroup>
+                    <FormHelperText>{values.monedaHelper}</FormHelperText>
+                </FormControl>
                 <TextField
                     error={values.usuarioError}
                     required
@@ -431,7 +439,7 @@ const NewCryptoWallet = ({ navigate }) => {
                     error={values.comentariosError}
                     required
                     id={'4'}
-                    label="Comentarios"
+                    label="Notas"
                     fullWidth
                     onChange={(event) => handleComentarios(event)}
                     value={values.comentarios}
@@ -508,4 +516,4 @@ const NewCryptoWallet = ({ navigate }) => {
     );
 }
 
-export default NewCryptoWallet;
+export default NewCryptoWalletGenerador;
