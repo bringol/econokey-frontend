@@ -1,23 +1,13 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from 'react';
+import { styled, Box, Card, CardHeader, CardContent, Collapse, Avatar, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArticleIcon from '@mui/icons-material/Article';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LanguageIcon from '@mui/icons-material/Language';
-import { Box, InputAdornment, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import MainScreenCardEditDialog from './MainScreenCardEditDialog';
 
-//añadido para la parte generar contraseña
-import {FaDiceD20} from 'react-icons/fa'
-import { NavLink } from 'react-router-dom';
+import MainScreenCardNote from './MainScreenCardNote';
+import MainScreenCardAccount from './MainScreenCardAccount';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -30,40 +20,25 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const MainScreenCard = ({ account, index }) => {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-    const [values, setValues] = React.useState({
-        showPassword: false,
+const MainScreenCard = ({ account, index, navigate }) => {
+    const [values, setValues] = useState({
+        expanded: false,
     });
 
-    const handleClickShowPassword = () => {
+    const handleExpandClick = () => {
         setValues({
             ...values,
-            showPassword: !values.showPassword,
-        });
+            expanded: !values.expanded,
+        })
     };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState(account);
 
     const handleClickEditItem = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (newValue) => {
-        setOpen(false);
-
-        if (newValue) {
-            setValue(newValue);
+        if (account.type === 'note') {
+            navigate('../new-note', { state: account });
+        } else if (account.type === 'pass') {
+            navigate('../new-account', { state: account });
+        } else {
+            
         }
     };
 
@@ -83,9 +58,9 @@ const MainScreenCard = ({ account, index }) => {
                             display: 'flex'
                         }}>
                             <ExpandMore
-                                expand={expanded}
+                                expand={values.expanded}
                                 onClick={handleExpandClick}
-                                aria-expanded={expanded}
+                                aria-expanded={values.expanded}
                                 aria-label="show more"
                             >
                                 <ExpandMoreIcon />
@@ -97,17 +72,16 @@ const MainScreenCard = ({ account, index }) => {
                                     <ArticleIcon sx={{
                                         color: 'black'
                                     }} />
+                                ) : (account.type === 'wallet') ? (
+                                    <AccountBalanceWalletIcon sx={{
+                                        color: 'black'
+                                    }} />
                                 ) : (
-                                    (account.type === 'wallet') ? (
-                                        <AccountBalanceWalletIcon sx={{
-                                            color: 'black'
-                                        }} />
-                                    ) : (
-                                        <LanguageIcon sx={{
-                                            color: 'black'
-                                        }} />
-                                    )
-                                )}
+                                    <LanguageIcon sx={{
+                                        color: 'black'
+                                    }} />
+                                )
+                                }
                             </Avatar>
                         </Box>
                     }
@@ -125,90 +99,20 @@ const MainScreenCard = ({ account, index }) => {
                     title={account.titulo}
                     subheader={account.descripcion}
                 />
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Collapse in={values.expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <TextField
-                            required
-                            label="Usuario"
-                            id={"username"+index}
-                            fullWidth
-                            value={account.usuario}
-                            disabled
-                            sx={{
-                                backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                                borderRadius: '6px',
-                                m: 1
-                            }}
-                        />
-                        <TextField
-                            required
-                            id={"password"+index}
-                            label="Constraseña"
-                            fullWidth
-                            type={values.showPassword ? 'text' : 'password'}
-                            value={account.password}
-                            disabled
-                            sx={{
-                                background: 'rgba(6, 109, 55, 0.05)',
-                                borderRadius: '6px',
-                                m: 1
-                            }}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">                                    
-                                    {/* mostrar/ocultar contraseña */}
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                    
-                                    
-                                    
-                                </InputAdornment>,
-                            }}
-                        />
-                        <TextField
-                            required
-                            id={"comentarios"+index}
-                            label="Comentarios"
-                            fullWidth
-                            value={account.comentario}
-                            disabled
-                            multiline
-                            maxRows={4}
-                            sx={{
-                                background: 'rgba(6, 109, 55, 0.05)',
-                                borderRadius: '6px',
-                                m: 1
-                            }}
-                        />
-                        <TextField
-                            required
-                            id={"url"+index}
-                            label="URL"
-                            fullWidth
-                            value={account.url}
-                            disabled
-                            sx={{
-                                background: 'rgba(6, 109, 55, 0.05)',
-                                borderRadius: '6px',
-                                m: 1
-                            }}
-                        />
+                        {(account.type === 'note') ? (
+                            <>
+                                <MainScreenCardNote account={account} index={index} />
+                            </>
+                        ) : (account.type === 'pass') ? (
+                            <>
+                                <MainScreenCardAccount account={account} index={index} />
+                            </>
+                        ) : null}
                     </CardContent>
                 </Collapse>
             </Card>
-            <MainScreenCardEditDialog
-                index={index}
-                id={"edit-menu"+index}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                value={account}
-            />
         </>
     );
 }

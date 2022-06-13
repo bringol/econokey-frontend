@@ -1,35 +1,43 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+
+import AppContext from '../AppContext';
 import MainScreenCard from './MainScreenCard';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { getAllElementosBoveda } from '../Controllers/WebService.controller';
+
+import { SpeedDial, SpeedDialAction, SpeedDialIcon, Backdrop, Typography, Box } from '@mui/material';
 import ArticleIcon from '@mui/icons-material/Article';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import LanguageIcon from '@mui/icons-material/Language';
-import Backdrop from '@mui/material/Backdrop';
-import AppContext from '../AppContext'
-import { FaBtc,FaDiceD20 } from "react-icons/fa";
-import { MdSwitchAccount } from "react-icons/md";
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { FaDiceD20 } from "react-icons/fa";
 
 const actions = [
-    { icon: <ArticleIcon />, name: 'Nota', target:"../" },
-    { icon: <MdSwitchAccount />, name: 'Cuenta', target:"../"},
-    { icon: <FaBtc />, name: 'Crypto Wallet' , target:"../"},
-    { icon: <FaDiceD20 />, name: 'Contraseña', target:"../new-password"},
-    { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase"}
+    { icon: <ArticleIcon />, name: 'Nota', target: "../new-note" },
+    { icon: <AccountBoxIcon />, name: 'Cuenta', target: "../new-account" },
+    { icon: <CurrencyBitcoinIcon />, name: 'CryptoWallet', target: "../new-wallet" },
+    { icon: <FaDiceD20 />, name: 'Contraseña', target: "../new-password" },
+    { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase" }
 ];
 
 const MainScreen = ({ navigate }) => {
-    
-    const { accounts, setTopbar, setFilterButton } = React.useContext(AppContext)
 
+    const { setTopbar, setFilterButton } = React.useContext(AppContext)
+    const [accounts, setAccountsList] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    
     React.useEffect(() => {
         setTopbar(true);
         setFilterButton(true);
+        async function componentDidMount() {
+            let response = await getAllElementosBoveda();
+
+            if(response.code === 200)
+                setAccountsList(response.data);
+            else
+                console.log(response.mensajeDetalle);
+        }
+        componentDidMount();
     }, []);
 
     const handleOnClick = (target) => {
@@ -48,7 +56,7 @@ const MainScreen = ({ navigate }) => {
                 {(accounts !== undefined) && (accounts.length > 0) ? (
                     accounts.map((account, index) => {
                         return (
-                            <MainScreenCard key={index} account={account} index={index} />
+                            <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
                         )
                     })
                 ) : (
@@ -58,34 +66,34 @@ const MainScreen = ({ navigate }) => {
                 )}
             </Box>
 
-                <Backdrop open={open} />
-                <SpeedDial
-                    ariaLabel="Add Account"
-                    sx={{ position: 'absolute', bottom: 16, right: 16 }}
-                    icon={<SpeedDialIcon />}
-                    onClose={handleClose}
-                    onOpen={handleOpen}
-                    open={open}
-                    FabProps={{
-                        sx: {
-                          bgcolor: '#9CF6B1',
-                          '&:hover': { bgcolor: '#9CF6B1',},
-                          color: 'black',
-                          borderRadius: 4,
-                          boxShadow: '0px 0.25px 3px rgba(0, 0, 0, 0.039), 0px 2.75px 9px rgba(0, 0, 0, 0.19)'
-                        }
-                      }}
-                >
-                    {actions.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            tooltipOpen
-                            onClick={()=>handleOnClick(action.target)}
-                        />
-                    ))}
-                </SpeedDial>
+            <Backdrop open={open} />
+            <SpeedDial
+                ariaLabel="Add Account"
+                sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                icon={<SpeedDialIcon />}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                open={open}
+                FabProps={{
+                    sx: {
+                        bgcolor: '#9CF6B1',
+                        '&:hover': { bgcolor: '#9CF6B1', },
+                        color: 'black',
+                        borderRadius: 4,
+                        boxShadow: '0px 0.25px 3px rgba(0, 0, 0, 0.039), 0px 2.75px 9px rgba(0, 0, 0, 0.19)'
+                    }
+                }}
+            >
+                {actions.map((action) => (
+                    <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                        tooltipOpen
+                        onClick={() => handleOnClick(action.target)}
+                    />
+                ))}
+            </SpeedDial>
         </>
     );
 }

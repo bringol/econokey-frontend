@@ -4,15 +4,16 @@ import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import MainScreen from './Components/MainScreen';
 import MainScreenNav from './Components/MainScreenNav';
 import Passphrase from './Components/Passphrase';
+import ContraseñaCombinada from './Components/ContraseñaCombinada';
 import Login from './Components/Login';
 import Register from './Components/Register';
-import {AppContextProvider} from './AppContext';
-
-import ContraseñaCombinada from './Components/ContraseñaCombinada';
-
+import NewAccount from './Components/NewAccount';
+import { AppContextProvider } from './AppContext';
+import NewNote from './Components/NewNote';
+import NewCryptoWallet from './Components/NewCryptoWallet';
 
 function App() {
-  
+
   function Root() {
     const navigate = useNavigate();
     return (
@@ -22,27 +23,26 @@ function App() {
         height: '100%',
         p: 1
       }}>
-          <Routes>
-            <Route path="/" element={<MainScreen navigate={navigate}/>} />
-            <Route path="/new-passphrase" element={<Passphrase navigate={navigate}/>} />
-            <Route path="/new-password" element={<ContraseñaCombinada navigate={navigate}/>} />
-            <Route path="/login" element={<Login navigate={navigate}/>} />
-            <Route path="/register" element={<Register navigate={navigate}/>} />            
-          </Routes>
-          
-          
-
+        <Routes>
+          <Route path="/" element={<MainScreen navigate={navigate} />} />
+          <Route path="/new-account" element={<NewAccount navigate={navigate} />} />
+          <Route path="/new-note" element={<NewNote navigate={navigate} />} />
+          <Route path="/new-wallet" element={<NewCryptoWallet navigate={navigate} />} />
+          <Route path="/new-passphrase" element={<Passphrase navigate={navigate} />} />
+          <Route path="/new-password" element={<ContraseñaCombinada navigate={navigate} />} />
+          <Route path="/login" element={<Login navigate={navigate} />} />
+          <Route path="/register" element={<Register navigate={navigate} />} />
+        </Routes>
       </Container>
     );
   }
   
-
   return (
     <>
       <AppContextProvider>
-        <MainScreenNav/>
+        <MainScreenNav />
         <BrowserRouter>
-          <Root/>
+          <Root />
         </BrowserRouter>
       </AppContextProvider>
     </>
