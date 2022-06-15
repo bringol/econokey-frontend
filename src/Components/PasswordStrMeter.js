@@ -1,63 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import zxcvbn from 'zxcvbn';
-import {Avatar,Button,CssBaseline,TextField,Input ,Typography, Container, Box,Grid} from '@mui/material';
-
-//fuente https://www.youtube.com/watch?v=tIInwIlf13A
+import { LinearProgress, Typography } from '@mui/material';
 
 
 const PasswordStrMeter = ({ password }) => {
   const testResult = zxcvbn(password);
-  const num = testResult.score * 100/4;
+  const [color, setColor] = useState('');
+  const [label, setLabel] = useState('');
+  const [num, setNum] = useState(0);
 
-  const createPassLabel = () => {
-    switch(testResult.score) {
+  React.useEffect(() => {
+
+    setNum(testResult.score * 100 / 4)
+
+    switch (testResult.score) {
       case 0:
-        return 'Muy Débil';
+        setColor("130,130,130")
+        setLabel("Muy Débil")
+        return
       case 1:
-        return 'Débil';
+        setColor("234,17,17")
+        setLabel("Débil")
+        return
       case 2:
-        return 'Decente';
+        setColor("255,173,0")
+        setLabel("Decente")
+        return
       case 3:
-        return 'Moderado';
+        setColor("155,193,88")
+        setLabel("Moderado")
+        return
       case 4:
-        return 'Excelente';
+        setColor("0,181,0")
+        setLabel("Excelente")
+        return
       default:
-        return '';
+        setColor("0,0,0")
+        setLabel('')
+        return
     }
-  }
-
-  const funcProgressColor = () => {
-    switch(testResult.score) {
-      case 0:
-        return '#828282';
-      case 1:
-        return '#EA1111';
-      case 2:
-        return '#FFAD00';
-      case 3:
-        return '#9bc158';
-      case 4:
-        return '#00b500';
-      default:
-        return 'none';
-    }
-  }
-
-  const changePasswordColor = () => ({
-    width: `${num}%`,
-    background: funcProgressColor(),
-    height: '11px'
-  })
+  }, [testResult.score]);
 
   return (
-    
-    <Grid item xs={12}>
-      <div className="progress" style={{ height: '8px', width:"100%", paddingLeft: 60 ,paddingRight: 60}}>
-        <div className="progress-bar" style={changePasswordColor()}></div>
-      </div>
-      <p style={{ color: funcProgressColor() }}>{createPassLabel()}</p>
-    
-    </Grid> 
+    <>
+      <LinearProgress variant="determinate" value={num} sx={{
+        backgroundColor: `rgb(${color},0.4)`,
+        "& .MuiLinearProgress-bar": {
+          backgroundColor: `rgb(${color})`
+        }
+      }} />
+      <Typography variant="body2" sx={{
+        color: `rgb(${color})`
+      }}>
+        {label}
+      </Typography>
+    </>
   )
 }
 

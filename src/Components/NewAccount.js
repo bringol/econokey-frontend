@@ -88,7 +88,7 @@ const NewAccount = ({ navigate }) => {
         disable: true,
         isEditing: state ? true : false,
         openConfirmation: false,
-    });    
+    });
 
     const handleClose = (newValue) => {
         setValues({
@@ -121,6 +121,22 @@ const NewAccount = ({ navigate }) => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    const handleClickClasica = (event) => {
+        event.preventDefault();
+        setValues({ 
+            ...values, 
+            openPassword: true 
+        })
+    }
+
+    const handleClickPassphrase = (event) => {
+        event.preventDefault();
+        setValues({ 
+            ...values, 
+            openPassphrase: true 
+        })
+    }
 
     const handleUserName = (event) => {
         setValues({
@@ -386,7 +402,7 @@ const NewAccount = ({ navigate }) => {
                         }}
                     >
                         <Button
-                            type="submit"
+                            type="button"
                             variant="contained"
                             sx={{
                                 color: "#EB5757",
@@ -394,12 +410,12 @@ const NewAccount = ({ navigate }) => {
                                 borderRadius: '16px',
                                 m: 1
                             }}
-                            onClick={() => setValues({ ...values, openPassphrase: true })}
+                            onClick={handleClickPassphrase}
                         >
                             Passphrase
                         </Button>
                         <Button
-                            type="submit"
+                            type="button"
                             variant="contained"
                             sx={{
                                 color: "#EB5757",
@@ -407,7 +423,7 @@ const NewAccount = ({ navigate }) => {
                                 borderRadius: '16px',
                                 m: 1
                             }}
-                            onClick={() => setValues({ ...values, openPassword: true })}
+                            onClick={handleClickClasica}
                         >
                             Clasica
                         </Button>
