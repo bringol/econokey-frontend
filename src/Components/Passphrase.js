@@ -9,7 +9,7 @@ import Indicador from "./PasswordStrMeter"
 import {FaDiceD20,FaPlusCircle,FaMinusCircle} from 'react-icons/fa'
 import {BsTrash} from "react-icons/bs"
 import {ImFloppyDisk} from "react-icons/im"
-//sacados del componente Dropdown, en el futuro encontrar manera de paramentrizar
+//sacados del componente Dropdown
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -95,16 +95,6 @@ const Passphrase = (props) => {
   };
   
 
-  // const getNum2 = event => {
-
-  //   console.log(JSON.stringify(num))
-  // }
-    
-
-  // const [ delim, setDelim ] = useState(' ');
-
-  // const [ cap, setCap ] = useState('minúscula');
-
   const [num, setNum] = useState(0);
 
 
@@ -121,23 +111,26 @@ const Passphrase = (props) => {
     capitalizacion:"minúscula",
     palabras: num,
     contraseña:"",
-    entropia:"0 Bits de Entropía",
+    //entropia:"0 Bits de Entropía",
     //mockup:false,
 
   })
 
-  /*En otro sprint debería encontrar la forma de pasar los datos al componente contador en lugar de hacerlo aca directamente*/
+  function entrop(longitud)
+{
+	return(longitud*12.925)
+}
+
+  
   function sumar(){
     setNum(num+1)
-    //setValues((values.palabras)+1)
-    //setValues((values.palabras)=setNum(num+1))
+    
   }
 
 function restar() {
       if( num > 0)
       setNum(oldCount => oldCount - 1)
-      //setValues((values.palabras)=setNum(oldCount => oldCount - 1))
-      //setValues(values.palabras => values.palabras - 1 )
+      
     }
 
   
@@ -302,21 +295,15 @@ function restar() {
                     color="secondary"
                     size="big"
                     disabled //solo lectura
-                    //onSubmit={handleChange()} 
+                    //onSubmit={handleChange()}
 
-                    defaultValue="77.5 Bits de Entropía"
+                    defaultValue={`${entrop(num).toFixed(2)} bits de Entropia`}
                     //defaultValue={values.mockup == true ? 2:0}               
                     //onChange={e => setPassword(e.target.value)}
                     fullWidth                          
                     />
                 </Box>
-                {/* <div>
-
-                  {values.mockup === true ? <h1>test</h1> : null}
-                  <button onClick={()=>handleChange(values.mockup=true) && handleChange(values.entropia=10) }>verdadero</button>
-                  <button onClick={()=>handleChange(values.mockup=false)}>falso</button>
-
-                </div> */}
+                
             </Grid>
             )}
           
@@ -330,7 +317,6 @@ function restar() {
                       <NavLink to="/" style={{ textDecoration: 'none'}}>
                         <Button
                           type="submit"
-                          //halfwidth
                           variant="contained"
                           sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:2.5}}
                           
@@ -349,8 +335,7 @@ function restar() {
                     >
                       <NavLink to="/" style={{ textDecoration: 'none'}}>
                         <Button
-                                type="submit"
-                                //halfwidth
+                                type="submit"                                
                                 variant="contained"
                                 sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
                                 disabled={disable}

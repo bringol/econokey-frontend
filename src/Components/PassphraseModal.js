@@ -90,11 +90,15 @@ const PassphraseModal = (props) => {
     capitalizacion:"minúscula",
     palabras: num,
     contraseña:"",
-    entropia:"0 Bits de Entropía",
+    //entropia:"0 Bits de Entropía",
     
 
   })
 
+  function entrop(longitud)
+  {
+    return(longitud*12.925)
+  }
 
   function sumar(){
     setNum(num+1)
@@ -253,7 +257,7 @@ function restar() {
                     color="secondary"
                     size="big"
                     disabled //solo lectura
-                    defaultValue="77.5 Bits de Entropía"                 
+                    defaultValue={`${entrop(num).toFixed(2)} bits de Entropia`}
                     fullWidth                          
                     />
                 </Box>                
