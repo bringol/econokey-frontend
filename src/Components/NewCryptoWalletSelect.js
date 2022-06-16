@@ -12,7 +12,7 @@ import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import logoBtcWallet from '../img/btcwallet.jpg';
-
+//pantalla generar o agregar
 const NewCryptoWalletSelect = ({ navigate }) => {
 
     const [values, setValues] = useState({

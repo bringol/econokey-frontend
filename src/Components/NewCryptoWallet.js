@@ -16,6 +16,8 @@ import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 import Share from '@mui/icons-material/Share';
 
+//Componente Agregar Cryptowallet
+
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
 

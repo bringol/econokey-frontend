@@ -14,6 +14,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 
+
+//genera cryptowallet
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
 

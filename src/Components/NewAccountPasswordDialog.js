@@ -18,9 +18,9 @@ function NewAccountPasswordDialog(props) {
     const [values, setValues] = useState({
         password: '',
         entropia: '',
-        num: 0,
-        flagMayuscula: false,
-        flagMinuscula: false,
+        num: 15,
+        flagMayuscula: true,
+        flagMinuscula: true,
         flagNumero: false,
         flagSimbolo: false,
         flagASCII: false,
@@ -161,22 +161,45 @@ function NewAccountPasswordDialog(props) {
             });
             return
         }
+        var ps=0,min=26,may=26,num=10,sim=25
+        if (values.flagMinuscula)            
+            ps+=min
+          if (values.flagMayuscula) 
+            ps+=may
+             if (values.flagSimbolo )
+                ps+=sim
+             if (values.flagNumero)           
+                    ps+=num
+        
+                
+        //console.log("total combinaciones",ps)
 
         let password = ''
         for (let i = 0; i < values.num; i++) {
             let choice = random(0, 3)
             if (values.flagMinuscula && choice === 0) {
                 password += randomLower()
+               // ps=ps+26
             } else if (values.flagMayuscula && choice === 1) {
                 password += randomUpper()
+               // ps=ps+26
             } else if (values.flagSimbolo && choice === 2) {
                 password += randomSymbol()
+               // ps=ps+25
             } else if (values.flagNumero && choice === 3) {
                 password += random(0, 9)
+               // ps=ps+10
             } else {
                 i--
+               // ps=ps
             }
         }
+        
+        function entrop(longitud, sumatoriaSimbolos)
+        {           
+            return(Math.log2(Math.pow(sumatoriaSimbolos,longitud)))
+        }
+        //console.log(entrop(values.num,ps))
 
         setValues({
             ...values,
@@ -187,7 +210,7 @@ function NewAccountPasswordDialog(props) {
             setValues({
                 ...values,
                 password: password,
-                entropia: '100 bits de Entropia',
+                entropia: `${entrop(values.num,ps).toFixed(2)} bits de Entropia`,
                 showPassword: true,
                 rolling: false,
                 disableAplicar: false,
@@ -279,13 +302,13 @@ function NewAccountPasswordDialog(props) {
                         checked={values.flagSimbolo}
                         onChange={handleSimbolo}
                     />
-                    <FormControlLabel sx={{ paddingY: 0 }}
+                    {/* <FormControlLabel sx={{ paddingY: 0 }}
                         disabled
                         control={<Switch />}
                         label="ASCII Extendido"
                         checked={values.flagASCII}
                         onChange={handleASCII}
-                    />
+                    /> */}
                 </FormGroup>
                 <Box sx={{
                     display: 'flex',
