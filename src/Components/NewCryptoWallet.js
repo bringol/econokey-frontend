@@ -342,9 +342,9 @@ const NewCryptoWallet = ({ navigate }) => {
                     error={values.usuarioError}
                     required
                     id={'2'}
-                    label="Direccion"
+                    label="Llave Pública"
                     multiline
-                    minRows={2}
+                    minRows={1}
                     maxRows={2}
                     fullWidth
                     onChange={(event) => handleUserName(event)}
@@ -360,7 +360,7 @@ const NewCryptoWallet = ({ navigate }) => {
                     error={values.passwordError}
                     required
                     id={'3'}
-                    label="Llave privada"
+                    label="Llave Privada"
                     fullWidth
                     type={values.showPassword ? 'text' : 'password'}
                     onChange={(event) => handlePassword(event)}
@@ -373,13 +373,13 @@ const NewCryptoWallet = ({ navigate }) => {
                     }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
-                            <IconButton
+                            {/* <IconButton
                                 aria-label="toggle dice visibility"
                                 onClick={handleClickDice}
                                 onMouseDown={handleMouseDownDice}
                             >
                                 <FaDiceD20 />
-                            </IconButton>
+                            </IconButton> */}
                             <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
