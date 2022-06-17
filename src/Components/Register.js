@@ -1,4 +1,4 @@
-import React, { Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import logoMain from '../img/logoMain.png';
 import { NavLink, Navigate } from 'react-router-dom';
+import { RestaurantMenu } from '@mui/icons-material';
 
 function Copyright(props) {
   return (
@@ -29,7 +30,8 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme({palette: {
+const theme = createTheme({
+  palette: {
     primary: {
       main: '#456cd6',
     },
@@ -46,129 +48,133 @@ const theme = createTheme({palette: {
   },
 });
 
-export default function SignUp({navigate}) {
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const [repeatedPassword, setRepeatedPassword] = useState('');
-    const [usuarioValido, setUsuarioValido] = useState(false);
+export default function SignUp({ navigate }) {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatedPassword, setRepeatedPassword] = useState('');
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [usuarioValido, setUsuarioValido] = useState(false);
 
-    const handleUserName = (event) => {
-        setUserName(event.target.value);
-    }
+  const handleUserName = (event) => {
+    setUserName(event.target.value);
+  }
 
-    const handlePassword = (event) => {
-        setPassword(event.target.value);
-    }
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  }
 
-    const handleRepeatedPassword = (event) => {
-        setRepeatedPassword(event.target.value);
-    }
+  const handleRepeatedPassword = (event) => {
+    setRepeatedPassword(event.target.value);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-        userName: data.get('userName'),
-      password: data.get('password'),
-      repeatedPassword: data.get('repeatedPassword'),
-    });
+    
+    if(password != repeatedPassword)
+    {
+      setErrorPassword(true);
+      return;
+    }
+
     setUsuarioValido(true);
   };
 
   const redirectLogin = () => {
     navigate("../login")
-    }
+  }
 
   const redirect = () => {
     if (usuarioValido) {
-        /*localStorage.setItem("loggedin", true);
-        setLogged(true);
-        if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
-            localStorage.setItem("isAdmin", true);
-        }*/
-        return <Navigate to='/login' />
+      /*localStorage.setItem("loggedin", true);
+      setLogged(true);
+      if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
+          localStorage.setItem("isAdmin", true);
+      }*/
+      return <Navigate to='/login' />
     }
-}
+  }
 
   return (
-      <>
-    {redirect()}
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, width: 200, height: 200}} src={logoMain} alt='logoMain' />
+    <>
+      {redirect()}
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, width: 200, height: 200 }} src={logoMain} alt='logoMain' />
 
-          <Typography component="h1" variant="h5">
-            Registrar Boveda
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="userName"
-                  label="Nombre de Boveda"
-                  name="userName"
-                  autoComplete="userName"
-                  onChange={(event) => handleUserName(event)}
-                />
+            <Typography component="h1" variant="h5">
+              Registrar Boveda
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="userName"
+                    label="Nombre de Boveda"
+                    name="userName"
+                    autoComplete="userName"
+                    onChange={(event) => handleUserName(event)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    error={errorPassword}
+                    name="password"
+                    label="Contraseña"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    onChange={(event) => handlePassword(event)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    error={errorPassword}
+                    name="repeatedPassword"
+                    label="Repetir Contraseña"
+                    type="password"
+                    id="repeatedPassword"
+                    autoComplete="new-repeated-password"
+                    onChange={(event) => handleRepeatedPassword(event)}
+
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Contraseña"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={(event) => handlePassword(event)}
-                />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                color="mainButton"
+              >
+                Crear
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="#" variant="body2" color='secondary' onClick={redirectLogin}>
+                    Ya tenes una boveda? Ingresa.
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="repeatedPassword"
-                  label="Repetir Contraseña"
-                  type="password"
-                  id="repeatedPassword"
-                  autoComplete="new-repeated-password"
-                  onChange={(event) => handleRepeatedPassword(event)}
-                  
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              color="mainButton"
-            >
-              Crear
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2" color='secondary' onClick={redirectLogin}>
-                  Ya tenes una boveda? Ingresa.
-                </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider>
     </>
   );
 }

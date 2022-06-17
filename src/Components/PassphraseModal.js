@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import { NavLink } from 'react-router-dom';
 import AppContext from '../AppContext';
 import { InputBase } from '@mui/material';
+import { generator } from '../Controllers/WebService.controller';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,6 +61,10 @@ const PassphraseModal = (props) => {
   
   const handleSubmit = event => {
     event.preventDefault();
+    
+    console.log("generando", generator())
+    generator();
+
     console.log(num);
     console.log(JSON.stringify(values))
   }
@@ -80,7 +85,9 @@ const PassphraseModal = (props) => {
   const [ password, setPassword ] = useState('');
   
   const handleChange = (...prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+   
+    
+    //setValues({ ...values, [prop]: event.target.value });
   };
 
   const [disable, setDisable] = React.useState(true);
@@ -213,9 +220,9 @@ function restar() {
                   <Button 
                   type="submit"
                   onSubmit={
-                     handleChange(values.palabras=num)
-                     &&
-                     handleChange(values.contraseña="Carpeta%Sombra%Hito%Tropical%Trece%Himno")                    
+                     handleChange(/*values.palabras=num*/)
+                     /*&&
+                     handleChange(values.contraseña="Carpeta%Sombra%Hito%Tropical%Trece%Himno")     */               
                     }
                   onClick={() =>
                     setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
