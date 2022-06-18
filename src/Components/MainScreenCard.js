@@ -6,6 +6,8 @@ import ArticleIcon from '@mui/icons-material/Article';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LanguageIcon from '@mui/icons-material/Language';
 
+import logoMain from '../img/logoMain.png';
+
 import MainScreenCardNote from './MainScreenCardNote';
 import MainScreenCardAccount from './MainScreenCardAccount';
 import MainScreenCardWallet from './MainScreenCardWallet';
@@ -38,8 +40,10 @@ const MainScreenCard = ({ account, index, navigate }) => {
             navigate('../new-note', { state: account });
         } else if (account.type === 'pass') {
             navigate('../new-account', { state: account });
-        } else {
+        } else if (account.type === 'wallet'){
             navigate('../wallet', { state: account });
+        } else if (account.type === 'wallet-gen'){
+            navigate('../wallet-gen', { state: account });
         }
     };
 
@@ -77,11 +81,13 @@ const MainScreenCard = ({ account, index, navigate }) => {
                                     <AccountBalanceWalletIcon sx={{
                                         color: 'black'
                                     }} />
-                                ) : (
+                                ) : (account.type === 'pass') ? (
                                     <LanguageIcon sx={{
                                         color: 'black'
                                     }} />
-                                )
+                                ) : (account.type === 'wallet-gen') ? (
+                                    <Avatar sx={{ m: 1, width: 50, height: 50}} src={logoMain} alt='logoMain' />
+                                ) : null
                                 }
                             </Avatar>
                         </Box>
@@ -111,6 +117,10 @@ const MainScreenCard = ({ account, index, navigate }) => {
                                 <MainScreenCardAccount account={account} index={index} />
                             </>
                         ) : (account.type === 'wallet') ? (
+                            <>
+                                <MainScreenCardWallet account={account} index={index} />
+                            </>
+                        ) : (account.type === 'wallet-gen') ? (
                             <>
                                 <MainScreenCardWallet account={account} index={index} />
                             </>

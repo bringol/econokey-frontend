@@ -74,9 +74,28 @@ export const createVault = async function (vault) {
     };
 }
 
-export const generator = async function () {
+export const generator = async function (delimitador, longitud, capitalizacion) {
 
-    console.log("generando passphrase")
+    let capitalize;
+    switch (capitalizacion) {
+        case "Título":
+            capitalize = "Capitalize";
+            break;
+        case "MAYÚSCULA":
+            capitalize = "UPPERCASE";
+            break;
+        case "minúscula":
+            capitalize = "lowercase";
+        default:
+            break;
+    }
+
+    let delimiter;
+    if (delimitador !== '')
+        delimiter = delimitador
+    else
+        delimiter = "random"
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + token);
@@ -84,24 +103,74 @@ export const generator = async function () {
     var raw = JSON.stringify({
         "generator_type": "passphrase",
         "parameters": {
-            "capitalization_type": "Capitalize",
-            "delimiter": "random",
-            "word_count": 10
+            "capitalization_type": capitalize,
+            "delimiter": delimiter,
+            "word_count": longitud
         }
     });
 
     var requestOptions = {
-        method: 'POST',     
+        method: 'POST',
+        mode: 'cors',
         headers: myHeaders,
         body: raw,
     };
 
-    await fetch(urlGenerator, requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+    let response = await fetch(urlGenerator, requestOptions);
+
+    let code = response.status;
+    let data = await response.json();
+    switch (code) {
+        case 200:
+            {
+                /*localStorage.setItem("x", data.loginUser.token);
+                let user = data.loginUser.user;
+                localStorage.setItem("nombre", user.name);
+                localStorage.setItem("email", user.email);*/
+
+                return ({ code: code, mensaje: "OK", data: data });
+            }
+        default:
+            return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+
+    }
 }
 
+export const generateCryptoWallet = async function () {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var raw = JSON.stringify({
+        "generator_type": "wallet_btc"
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        mode: 'cors',
+        headers: myHeaders,
+        body: raw,
+    };
+
+    let response = await fetch(urlGenerator, requestOptions);
+
+    let code = response.status;
+    let data = await response.text();
+    switch (code) {
+        case 200:
+            {
+                /*localStorage.setItem("x", data.loginUser.token);
+                let user = data.loginUser.user;
+                localStorage.setItem("nombre", user.name);
+                localStorage.setItem("email", user.email);*/
+
+                return ({ code: code, mensaje: "OK", data: data });
+            }
+        default:
+            return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+
+    }
+}
 
 ///METODO PARA OBTENER TODOS LOS ELEMENTOS DE LA BOVEDA
 export const getAllElementosBoveda = async function () {
