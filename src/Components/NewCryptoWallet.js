@@ -10,7 +10,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ShareIcon from '@mui/icons-material/Share';
 
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
@@ -168,6 +167,10 @@ const NewCryptoWallet = ({ navigate }) => {
         navigate("../")
     }
 
+    const handleCompartir = () => {
+        
+    }
+
     const handleGuardar = () => {
         async function crearCuenta() {
             const cuentaNueva = {
@@ -301,7 +304,7 @@ const NewCryptoWallet = ({ navigate }) => {
                         color="secondary"
                         size="small"
                         endIcon={<Share fontSize='small' />}
-                        onClick={handleGuardar}
+                        onClick={handleCompartir}
                     >
                         Compartir
                     </Button>) : null}

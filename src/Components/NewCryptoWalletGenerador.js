@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import NewAccountPasswordDialog from './NewAccountPasswordDialog';
 import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
-import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
-
+import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda, generateCryptoWallet } from '../Controllers/WebService.controller';
+import Share from '@mui/icons-material/Share';
 import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -14,9 +14,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 
-
-//genera cryptowallet
-function ConfirmationDialogRaw(props) {
+function ConfirmationDialogDelete(props) {
     const { onClose, open, ...other } = props;
 
     const handleCancel = () => {
@@ -65,6 +63,55 @@ function ConfirmationDialogRaw(props) {
     );
 }
 
+function ConfirmationDialogCancelar(props) {
+    const { onClose, open, ...other } = props;
+
+    const handleCancel = () => {
+        onClose(false);
+    };
+
+    const handleOk = () => {
+        onClose(true);
+    };
+
+    return (
+        <Dialog
+            sx={{ '& .MuiDialog-paper': { width: '90%', maxHeight: 435 } }}
+            maxWidth="xs"
+            open={open}
+            {...other}
+        >
+            <DialogTitle textAlign={'center'}>Confirmacion de cancelacion</DialogTitle>
+            <DialogContent dividers>
+                ¿Esta seguro que desea cancelar la generacion de su Crypto-Wallet? Todo su progreso se perderá.
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='outlined'
+                    size="small"
+                    endIcon={<CancelIcon fontSize='small' />}
+                    onClick={handleCancel}
+                >
+                    VOLVER
+                </Button>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='outlined'
+                    color="error"
+                    size="small"
+                    startIcon={<DeleteIcon fontSize='small' />}
+                    onClick={handleOk}
+                >
+                    CANCELAR
+                </Button>
+            </DialogActions>
+        </Dialog >
+    );
+}
+
 const NewCryptoWalletGenerador = ({ navigate }) => {
     const { state } = useLocation();
 
@@ -74,78 +121,38 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
         id: account.id ? account.id : '',
         titulo: account.titulo ? account.titulo : '',
         descripcion: account.descripcion ? account.descripcion : '',
-        userName: account.userName ? account.userName : '',
-        password: account.password ? account.password : '',
-        comentarios: account.comentarios ? account.comentarios : '',
         moneda: account.moneda ? account.moneda : '',
-        showPassword: false,
+        notas: account.notas ? account.notas : '',
+        direccion: account.direccion ? account.direccion : '',
+        llavePrivada: account.llavePrivada ? account.llavePrivada : '',
+        showLlavePrivada: false,
         tituloError: false,
         descripcionError: false,
-        usuarioError: false,
-        passwordError: false,
-        comentariosError: false,
         monedaError: false,
         monedaHelper: '',
-        openPassphrase: false,
-        openPassword: false,
-        disable: true,
+        notasError: false,
+        showCrptoWallet: false,
         isEditing: state ? true : false,
-        openConfirmation: false,
+        openDeleteConfirmation: false,
+        openCancelConfirmation: false,
     });
 
-    const handleClose = (newValue) => {
+    const handleClickShowLlavePrivada = () => {
         setValues({
             ...values,
-            openPassphrase: false,
-            openPassword: false,
-            disable: true,
-            password: newValue ? newValue : values.password
+            showLlavePrivada: !values.showLlavePrivada,
         });
     };
 
-    const handleClickDice = () => {
-        setValues({
-            ...values,
-            disable: !values.disable,
-        });
-    };
-
-    const handleMouseDownDice = (event) => {
+    const handleMouseDownLlavePrivada = (event) => {
         event.preventDefault();
     };
 
-    const handleClickShowPassword = () => {
+    const handleNotas = (event) => {
         setValues({
             ...values,
-            showPassword: !values.showPassword,
-        });
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const handleUserName = (event) => {
-        setValues({
-            ...values,
-            userName: event.target.value,
-            usuarioError: event.target.value === '',
-        });
-    }
-
-    const handlePassword = (event) => {
-        setValues({
-            ...values,
-            password: event.target.value,
-            passwordError: event.target.value === '',
-        });
-    }
-
-    const handleComentarios = (event) => {
-        setValues({
-            ...values,
-            comentarios: event.target.value,
-            comentariosError: event.target.value === '',
+            notas: event.target.value,
+            notasError: event.target.value === '',
         });
     }
 
@@ -171,24 +178,67 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             moneda: event.target.value,
             monedaError: event.target.value === '',
             monedaHelper: event.target.value === '' ? 'Debe seleccionar una moneda' : '',
-            
+
         });
     }
 
-    const handleCancelar = () => {
-        navigate("../")
+    const handleCompartir = () => {
+
     }
 
-    const handleGuardar = () => {
+    const handleClickGenerar = () => {
+        async function generarCryptoWallet() {
+            setValues({
+                ...values,
+                rolling: true,
+            });
+
+            let response = await generateCryptoWallet();
+
+            if (response.code === 200) {
+                setTimeout(() => {
+                    setValues({
+                        ...values,
+                        direccion: response.data,
+                        llavePrivada: response.data,
+                        showCrptoWallet: true,
+                        rolling: false,
+                        disableGuardar: false,
+                        tituloError: values.titulo === '',
+                        descripcionError: values.descripcion === '',
+                        monedaError: values.moneda === '',
+                        monedaHelper: values.moneda === '' ? 'Debe seleccionar una moneda' : '',
+                    });
+                }, 1000)
+            }
+            else {
+                console.log(response.mensajeDetalle);
+            }
+        }
+
+        setValues({
+            ...values,
+            tituloError: values.titulo === '',
+            descripcionError: values.descripcion === '',
+            monedaError: values.moneda === '',
+            monedaHelper: values.moneda === '' ? 'Debe seleccionar una moneda' : '',
+        });
+
+        if (values.moneda)
+            generarCryptoWallet();
+    };
+
+    const handleClickGuardar = () => {
         async function crearCuenta() {
             const cuentaNueva = {
                 id: uuidv4(),
                 titulo: values.titulo,
                 descripcion: values.descripcion,
-                type: 'wallet',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
+                type: 'wallet-gen',
+                direccion: values.direccion,
+                llavePrivada: values.llavePrivada,
+                moneda: values.moneda,
+                notas: values.notas,
             }
 
             let response = await addElementoBoveda(cuentaNueva);
@@ -204,10 +254,11 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 id: values.id,
                 titulo: values.titulo,
                 descripcion: values.descripcion,
-                type: 'wallet',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
+                type: 'wallet-gen',
+                direccion: values.direccion,
+                llavePrivada: values.llavePrivada,
+                moneda: values.moneda,
+                notas: values.notas,
             }
 
             let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
@@ -218,40 +269,52 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         }
 
-        console.log(values.moneda)
-
         setValues({
             ...values,
             tituloError: values.titulo === '',
             descripcionError: values.descripcion === '',
-            usuarioError: values.userName === '',
-            passwordError: values.password === '',
-            comentariosError: values.comentarios === '',
             monedaError: values.moneda === '',
             monedaHelper: values.moneda === '' ? 'Debe seleccionar una moneda' : '',
         });
 
-        if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios && values.moneda)
+        if (values.titulo && values.descripcion && values.moneda && values.direccion && values.llavePrivada)
             if (!values.isEditing)
                 crearCuenta();
             else
                 editarCuenta();
     }
 
-    const Borrar = () => {
-        async function borrarCuenta(id) {
-
-            let response = await deleteElementoBoveda(id);
-
-            if (response.code === 200)
-                navigate("../")
-            else
-                console.log(response.mensajeDetalle);
-        }
-        borrarCuenta(values.id)
+    const handleCloseCancelConfirmation = (confirmDialog) => {
+        if (confirmDialog)
+            navigate('../');
+        else
+            setValues({
+                ...values,
+                openCancelConfirmation: false,
+            });
     }
 
-    const handleCloseConfirmation = (confirmDialog) => {
+    const handleClickCancelar = () => {
+        setValues({
+            ...values,
+            openCancelConfirmation: true,
+        });
+    }
+
+    const handleCloseDeleteConfirmation = (confirmDialog) => {
+        const Borrar = () => {
+            async function borrarCuenta(id) {
+
+                let response = await deleteElementoBoveda(id);
+
+                if (response.code === 200)
+                    navigate("../")
+                else
+                    console.log(response.mensajeDetalle);
+            }
+            borrarCuenta(values.id)
+        }
+
         if (confirmDialog)
             Borrar();
         else
@@ -264,7 +327,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
     const handleClickDelete = () => {
         setValues({
             ...values,
-            openConfirmation: true,
+            openDeleteConfirmation: true,
         });
     }
 
@@ -281,23 +344,45 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                     display: 'block',
                     p: 1,
                 }}>
-                <Typography variant="h1" component="div" noWrap sx={{
-                    fontSize: 25,
-                    fontWeight: '500',
-                    fontStyle: 'normal',
-                    flexGrow: 1,
-                    alignSelf: 'center',
-                    textAlign: 'center',
-                    backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                    borderRadius: '6px',
-                    mb: 1,
-                    mt: 1,
-                    p: 1,
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
                 }}>
+                    <Typography variant="h1" component="div" noWrap sx={{
+                        fontSize: 18,
+                        fontWeight: '500',
+                        fontStyle: 'normal',
+                        flexGrow: 1,
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        mb: 1,
+                        mt: 1,
+                        p: 1,
+                    }}>
+
+                        {(values.isEditing) ? (
+                            'EDITAR CryptoWallet'
+                        ) : 'AGREGAR CryptoWallet'}
+                    </Typography>
                     {(values.isEditing) ? (
-                        'EDITAR CryptoWallet'
-                    ) : 'GENERAR CryptoWallet'}
-                </Typography>
+                    <Button sx={{
+                        m: 1,
+                    }}
+                        variant='outlined'
+                        color="secondary"
+                        size="small"
+                        endIcon={<Share fontSize='small' />}
+                        onClick={handleCompartir}
+                    >
+                        Compartir
+                    </Button>) : null}
+                </Box>
                 <TextField
                     error={values.tituloError}
                     required
@@ -321,11 +406,25 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                     fullWidth
                     onChange={(event) => handleDescripcion(event)}
                     multiline
-                    minRows={2}
                     maxRows={2}
                     value={values.descripcion}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        mb: 1,
+                        mt: 1,
+                    }}
+                />
+                <TextField
+                    id={'4'}
+                    label="Notas"
+                    fullWidth
+                    onChange={(event) => handleNotas(event)}
+                    value={values.notas}
+                    multiline
+                    maxRows={4}
+                    sx={{
+                        background: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
                         mb: 1,
                         mt: 1,
@@ -340,121 +439,79 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                         onChange={handleMoneda}
                         value={values.moneda}
                     >
-                        <FormControlLabel value="bitcoin" control={<Radio />} label="Bitcoin" />
-                        <FormControlLabel value="ethereum" control={<Radio />} label="Ethereum" />
+                        <FormControlLabel value="bitcoin" disabled={values.isEditing} control={<Radio />} label="Bitcoin" />
+                        <FormControlLabel value="ethereum" disabled={values.isEditing} control={<Radio />} label="Ethereum" />
                         <FormControlLabel value="cardamo" disabled control={<Radio />} label="Cardamo" />
                     </RadioGroup>
                     <FormHelperText>{values.monedaHelper}</FormHelperText>
                 </FormControl>
-                <TextField
-                    error={values.usuarioError}
-                    required
-                    id={'2'}
-                    label="Direccion"
-                    multiline
-                    minRows={2}
-                    maxRows={2}
-                    fullWidth
-                    onChange={(event) => handleUserName(event)}
-                    value={values.userName}
-                    sx={{
-                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                />
-                <TextField
-                    error={values.passwordError}
-                    required
-                    id={'3'}
-                    label="Llave privada"
-                    fullWidth
-                    type={values.showPassword ? 'text' : 'password'}
-                    onChange={(event) => handlePassword(event)}
-                    value={values.password}
-                    sx={{
-                        background: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle dice visibility"
-                                onClick={handleClickDice}
-                                onMouseDown={handleMouseDownDice}
-                            >
-                                <FaDiceD20 />
-                            </IconButton>
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>,
-                    }}
-                />
-                {!values.disable ?
-                    <Box
-                        sx={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            overflow: 'auto',
-                            display: 'block',
-                            textAlign: 'center',
-                        }}
+                {!values.isEditing ? (<Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    m: 1
+                }}>
+                    <Typography variant="h5" gutterBottom component="div">
+                        Generar
+                    </Typography>
+                    <Button
+                        onClick={handleClickGenerar}
+                        sx={{ fontSize: 90, color: "#0F1833" }}
                     >
-                        <Button
-                            type="submit"
-                            variant="contained"
+                        <FaDiceD20 className={`${values.rolling && 'Die-shaking'}`} />
+                    </Button>
+                </Box>) : null}
+                {values.showCrptoWallet || values.isEditing ? (
+                    <>
+                        <TextField
+                            id={'2'}
+                            label="Direccion"
+                            multiline
+                            minRows={2}
+                            maxRows={2}
+                            fullWidth
+                            disabled
+                            value={values.direccion}
                             sx={{
-                                color: "#EB5757",
-                                backgroundColor: "#D3E8D3",
-                                borderRadius: '16px',
-                                m: 1
+                                backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                mb: 1,
+                                mt: 1,
                             }}
-                            onClick={() => setValues({ ...values, openPassphrase: true })}
-                        >
-                            Passphrase
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
+                        />
+                        <TextField
+                            id={'3'}
+                            label="Llave privada"
+                            fullWidth
+                            disabled
+                            type={values.showLlavePrivada ? 'text' : 'password'}
+                            value={values.llavePrivada}
                             sx={{
-                                color: "#EB5757",
-                                backgroundColor: "#D3E8D3",
-                                borderRadius: '16px',
-                                m: 1
+                                background: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                mb: 1,
+                                mt: 1,
                             }}
-                            onClick={() => setValues({ ...values, openPassword: true })}
-                        >
-                            Clasica
-                        </Button>
-                    </Box>
-                    : ''}
-                <TextField
-                    error={values.comentariosError}
-                    required
-                    id={'4'}
-                    label="Notas"
-                    fullWidth
-                    onChange={(event) => handleComentarios(event)}
-                    value={values.comentarios}
-                    multiline
-                    minRows={2}
-                    maxRows={4}
-                    sx={{
-                        background: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                />
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowLlavePrivada}
+                                        onMouseDown={handleMouseDownLlavePrivada}
+                                        edge="end"
+                                    >
+                                        {values.showLlavePrivada ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>,
+                            }}
+                        />
+                    </>)
+                    : null}
+
+
                 <Box
                     sx={{
                         textAlign: 'center',
@@ -466,7 +523,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                         variant='outlined'
                         size="small"
                         endIcon={<CancelIcon fontSize='small' />}
-                        onClick={handleCancelar}
+                        onClick={handleClickCancelar}
                     >
                         CANCELAR
                     </Button>
@@ -477,7 +534,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                         color="success"
                         size="small"
                         endIcon={<SendIcon fontSize='small' />}
-                        onClick={handleGuardar}
+                        onClick={handleClickGuardar}
                     >
                         GUARDAR
                     </Button>
@@ -498,21 +555,17 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                     ) : null}
                 </Box>
             </Box >
-            <NewAccountPasswordDialog
-                keepMounted
-                open={values.openPassword}
-                onClose={handleClose}
-            />
-            <NewAccountPassphraseDialog
-                keepMounted
-                open={values.openPassphrase}
-                onClose={handleClose}
-            />
-            <ConfirmationDialogRaw
+            <ConfirmationDialogDelete
                 id="confirmDialog"
                 keepMounted
-                open={values.openConfirmation}
-                onClose={handleCloseConfirmation}
+                open={values.openDeleteConfirmation}
+                onClose={handleCloseDeleteConfirmation}
+            />
+            <ConfirmationDialogCancelar
+                id="confirmCancelDialog"
+                keepMounted
+                open={values.openCancelConfirmation}
+                onClose={handleCloseCancelConfirmation}
             />
         </>
     );

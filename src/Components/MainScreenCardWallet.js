@@ -28,7 +28,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 label="Direccion"
                 id={"username" + index}
                 fullWidth
-                value={account.userName}
+                value={account.direccion}
                 disabled
                 multiline
                 minRows={2}
@@ -45,7 +45,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 label="Llave privada"
                 fullWidth
                 type={values.showPassword ? 'text' : 'password'}
-                value={account.password}
+                value={account.llavePrivada}
                 disabled
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
@@ -66,11 +66,10 @@ const MainScreenCardWallet = ({ account, index }) => {
                 }}
             />
             <TextField
-                required
                 id={"comentarios" + index}
                 label="Comentarios"
                 fullWidth
-                value={account.comentario}
+                value={account.notas}
                 disabled
                 multiline
                 maxRows={4}
