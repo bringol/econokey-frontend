@@ -395,7 +395,7 @@ const NewCryptoWallet = ({ navigate }) => {
                         </InputAdornment>,
                     }}
                 />
-                {!values.disable ?
+                {/* {!values.disable ?
                     <Box
                         sx={{
                             flex: 1,
@@ -432,7 +432,7 @@ const NewCryptoWallet = ({ navigate }) => {
                             Clasica
                         </Button>
                     </Box>
-                    : ''}
+                    : ''} */}
                 <TextField
                     error={values.comentariosError}
                     //required

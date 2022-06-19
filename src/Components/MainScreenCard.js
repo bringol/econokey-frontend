@@ -4,7 +4,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArticleIcon from '@mui/icons-material/Article';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import LanguageIcon from '@mui/icons-material/Language';
+//import LanguageIcon from '@mui/icons-material/Language';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import logoMain from '../img/logoMain.png';
 
@@ -82,7 +83,7 @@ const MainScreenCard = ({ account, index, navigate }) => {
                                         color: 'black'
                                     }} />
                                 ) : (account.type === 'pass') ? (
-                                    <LanguageIcon sx={{
+                                    <AccountBoxIcon sx={{
                                         color: 'black'
                                     }} />
                                 ) : (account.type === 'wallet-gen') ? (
