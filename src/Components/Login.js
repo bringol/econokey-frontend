@@ -1,5 +1,5 @@
-import React, { Component, useState} from 'react';
-//import  from 'react';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,20 +9,19 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logoMain from '../img/logoMain.png';
-import { NavLink, Navigate } from 'react-router-dom';
 import { red } from '@mui/material/colors';
+import { loginVault } from '../Controllers/WebService.controller';
 
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="#">
         Econokey
       </Link>{' '}
       {new Date().getFullYear()}
@@ -31,7 +30,8 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme({palette: {
+const theme = createTheme({
+  palette: {
     primary: {
       main: '#456cd6',
     },
@@ -48,114 +48,138 @@ const theme = createTheme({palette: {
   },
 });
 
-export default function SignIn({navigate}) {
+export default function Login({ navigate }) {
+  const { state } = useLocation();
+  const [vaultName, setVaultName] = useState('');
+  const [vaultKey, setVaultKey] = useState('');
+  const [errorVaultKey, setErrorVaultKey] = useState(false);
+  const [errorVaultName, setErrorVaultName] = useState(false);
+  const [vaultValido, setVaultValido] = useState(state);
 
-  const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const [usuarioValido, setUsuarioValido] = useState(false);
+  const handleVaultName = (event) => {
+    setVaultName(event.target.value);
+    setErrorVaultName(event.target.value === '')
+  }
 
-    const handleUserName = (event) => {
-        setUserName(event.target.value);
+  const handleVaultKey = (event) => {
+    setVaultKey(event.target.value);
+    setErrorVaultKey(event.target.value === '')
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!vaultKey && !vaultName) {
+      setErrorVaultKey(true);
+      setErrorVaultName(true);
+      return;
+    } else if (!vaultKey) {
+      setErrorVaultKey(true);
+      return;
+    } else if (!vaultName) {
+      setErrorVaultName(true);
+      return;
     }
 
-    const handlePassword = (event) => {
-        setPassword(event.target.value);
+    async function iniciarVault(name, key) {
+      let vault = { name: name, key: key };
+      let response = await loginVault(vault);
+      if (response.code === 200) {
+        setVaultValido(true);
+        console.log(response.data)
+      }
+      else {
+        console.log(response.mensajeDetalle);
+      }
     }
+    iniciarVault(vaultName, vaultKey);
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            userName: data.get('userName'),
-            password: data.get('password'),
-        });
-        setUsuarioValido(true);
-    };
+  const redirectRegister = () => {
+    navigate("../register")
+  }
 
-    const redirectRegister = () => {
-        navigate("../register")
+
+  const redirect = () => {
+    if (vaultValido) {
+      /*localStorage.setItem("loggedin", true);
+      setLogged(true);
+      if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
+          localStorage.setItem("isAdmin", true);
+      }*/
+      navigate("../")
     }
-    
-
-    const redirect = () => {
-        if (usuarioValido) {
-            /*localStorage.setItem("loggedin", true);
-            setLogged(true);
-            if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
-                localStorage.setItem("isAdmin", true);
-            }*/
-            return <Navigate to='/' />
-        }
-    }
+  }
 
   return (
     <>
-    {redirect()}
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, width: 200, height: 200}} src={logoMain} alt='logoMain' />
-          
-          
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="userName"
-              label="Nombre de Boveda"
-              name="userName"
-              autoComplete="userName"
-              onChange={(event) => handleUserName(event)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Contraseña"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(event) => handlePassword(event)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Recordar nombre"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              color="mainButton"
-            >
-              Ingresar
-            </Button>
-            <Grid container>
-              {/* <Grid item xs>
+      {redirect()}
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, width: 200, height: 200 }} src={logoMain} alt='logoMain' />
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                required
+                fullWidth
+                error={errorVaultName}
+                id="vaultName"
+                label="Nombre de Boveda"
+                name="vaultName"
+                autoComplete="vaultName"
+                onChange={(event) => handleVaultName(event)}
+                sx={{
+                  mb: 1,
+                }}
+              />
+              <TextField
+                required
+                fullWidth
+                error={errorVaultKey}
+                name="vaultKey"
+                label="Contraseña"
+                type="password"
+                id="vaultKey"
+                autoComplete="vaultKey"
+                onChange={(event) => handleVaultKey(event)}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Recordar nombre"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                color="mainButton"
+              >
+                Ingresar
+              </Button>
+              <Grid container>
+                {/* <Grid item xs>
                 <Link href="#" variant="body2" color='secondary' underline="none">
                   Recuperar Contraseña
                 </Link>
               </Grid> */}
-              <Grid item>
-                <Link href="#" variant="body2" color='secondary' underline="none" onClick={redirectRegister}>
-                  {"Crear nueva boveda"}
-                </Link>
+                <Grid item>
+                  <Link href="#" variant="body2" color='secondary' underline="none" onClick={redirectRegister}>
+                    {"Crear nueva boveda"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
-    </> );
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
+      </ThemeProvider>
+    </>);
 }

@@ -7,13 +7,11 @@ let accounts = [
 
 const urlBaseWebServices = 'http://localhost:5000';
 const urlCreateVault = urlBaseWebServices + '/vault';
+const urlLoginVault = urlBaseWebServices + '/login';
 const urlGenerator = urlBaseWebServices + '/generate';
 const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1NTQ3Njg5MywianRpIjoiYjc2MTA5NWQtZmJkNi00ZmE3LTgzN2UtZmY3ZWZjYzEwYTQ5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjU1NDc2ODkzLCJleHAiOjE2NTU1NjMyOTN9.zgXYFzqQGSe1SVoICabrAdTPckk64MxLA7GML_JdRPc';
 
-//VAULT
 export const createVault = async function (vault) {
-    //return ({ code: 200, mensaje: "OK", mensajeDetalle: "", data });
-
     try {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -31,43 +29,48 @@ export const createVault = async function (vault) {
             redirect: 'follow'
         };
 
-        await fetch(urlCreateVault, requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-
-        /*let rdo = response.status;
+        let response = await fetch(urlCreateVault, requestOptions);
+        let code = response.status;
         let data = await response.json();
-        switch (rdo) {
-            case 201:
-                {
-                    localStorage.setItem("x", data.loginUser.token);
-                    let user = data.loginUser.user;
-                    localStorage.setItem("nombre", user.name);
-                    localStorage.setItem("email", user.email);
-
-                    return ({ rdo: 0, mensaje: "Ok" });//correcto
-                }
-            case 202:
-                {
-                    //error mail
-                    return ({ rdo: 1, mensaje: "El mail ingresado no existe en nuestra base." });
-                }
-            case 203:
-                {
-                    //error password
-                    return ({ rdo: 1, mensaje: "La contraseña no es correcta." });
-                }
-            case 400:
-                {
-                    return ({ rdo: 1, mensaje: data.message })
-                }
+        switch (code) {
+            case 200:
+                return ({ code: code, mensaje: "OK", data: data });
             default:
-                {
-                    //otro error
-                    return ({ rdo: 1, mensaje: "Ha ocurrido un error" });
-                }
-        }*/
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
+    }
+    catch (error) {
+        console.log("error", error);
+    };
+}
+
+export const loginVault = async function (vault) {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "vault_name": vault.name,
+            "vault_key": vault.key
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        let response = await fetch(urlLoginVault, requestOptions);
+        let code = response.status;
+        let data = await response.json();
+        switch (code) {
+            case 200:
+                return ({ code: code, mensaje: "OK", data: data });
+            default:
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
     }
     catch (error) {
         console.log("error", error);
@@ -86,6 +89,7 @@ export const generator = async function (delimitador, longitud, capitalizacion) 
             break;
         case "minúscula":
             capitalize = "lowercase";
+            break;
         default:
             break;
     }

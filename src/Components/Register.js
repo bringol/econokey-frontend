@@ -1,27 +1,25 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import logoMain from '../img/logoMain.png';
-import { NavLink, Navigate } from 'react-router-dom';
-import { RestaurantMenu } from '@mui/icons-material';
+import { createVault } from '../Controllers/WebService.controller';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="#">
         Econokey
       </Link>{' '}
       {new Date().getFullYear()}
@@ -48,35 +46,53 @@ const theme = createTheme({
   },
 });
 
-export default function SignUp({ navigate }) {
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatedPassword, setRepeatedPassword] = useState('');
-  const [errorPassword, setErrorPassword] = useState(false);
-  const [usuarioValido, setUsuarioValido] = useState(false);
+export default function Register({ navigate }) {
+  const [vaultName, setVaultName] = useState('');
+  const [vaultKey, setVaultKey] = useState('');
+  const [repeatedVaultKey, setRepeatedVaultKey] = useState('');
 
-  const handleUserName = (event) => {
-    setUserName(event.target.value);
+  const [errorVaultKey, setErrorVaultKey] = useState(false);
+  const [errorVaultName, setErrorVaultName] = useState(false);
+  const [vaultValido, setVaultValido] = useState(false);
+
+  const handleVaultName = (event) => {
+    setVaultName(event.target.value);
   }
 
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
+  const handleVaultKey = (event) => {
+    setVaultKey(event.target.value);
   }
 
-  const handleRepeatedPassword = (event) => {
-    setRepeatedPassword(event.target.value);
+  const handleRepeatedVaultKey = (event) => {
+    setRepeatedVaultKey(event.target.value);
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
-    if(password != repeatedPassword)
-    {
-      setErrorPassword(true);
+
+    if (vaultKey !== repeatedVaultKey && !vaultName) {
+      setErrorVaultKey(true);
+      setErrorVaultName(true);
+      return;
+    } else if (vaultKey !== repeatedVaultKey) {
+      setErrorVaultKey(true);
+      return;
+    } else if (!vaultName) {
+      setErrorVaultName(true);
       return;
     }
 
-    setUsuarioValido(true);
+    async function registerVault(name, key) {
+      let vault = { name: name, key: key };
+      let response = await createVault(vault);
+      if (response.code === 200) {
+        setVaultValido(true);
+      }
+      else {
+        console.log(response.mensajeDetalle);
+      }
+    }
+    registerVault(vaultName, vaultKey);
   };
 
   const redirectLogin = () => {
@@ -84,13 +100,13 @@ export default function SignUp({ navigate }) {
   }
 
   const redirect = () => {
-    if (usuarioValido) {
+    if (vaultValido) {
       /*localStorage.setItem("loggedin", true);
       setLogged(true);
       if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
           localStorage.setItem("isAdmin", true);
       }*/
-      return <Navigate to='/login' />
+      navigate("../login", { state: vaultValido })
     }
   }
 
@@ -113,44 +129,44 @@ export default function SignUp({ navigate }) {
             <Typography component="h1" variant="h5">
               Registrar Boveda
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    id="userName"
+                    error={errorVaultName}
+                    id="vaultName"
                     label="Nombre de Boveda"
-                    name="userName"
-                    autoComplete="userName"
-                    onChange={(event) => handleUserName(event)}
+                    name="vaultName"
+                    autoComplete="vaultName"
+                    onChange={(event) => handleVaultName(event)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    error={errorPassword}
-                    name="password"
+                    error={errorVaultKey}
+                    name="vaultKey"
                     label="Contraseña"
                     type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    onChange={(event) => handlePassword(event)}
+                    id="vaultKey"
+                    autoComplete="vaultKey"
+                    onChange={(event) => handleVaultKey(event)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    error={errorPassword}
-                    name="repeatedPassword"
+                    error={errorVaultKey}
+                    name="repeatedVaultKey"
                     label="Repetir Contraseña"
                     type="password"
-                    id="repeatedPassword"
-                    autoComplete="new-repeated-password"
-                    onChange={(event) => handleRepeatedPassword(event)}
-
+                    id="repeatedVaultKey"
+                    autoComplete="repeatedVaultKey"
+                    onChange={(event) => handleRepeatedVaultKey(event)}
                   />
                 </Grid>
               </Grid>
