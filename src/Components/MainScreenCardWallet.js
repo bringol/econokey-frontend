@@ -24,14 +24,14 @@ const MainScreenCardWallet = ({ account, index }) => {
     return (
         <>
             <TextField
-                required
-                label="Direccion"
+                //required
+                label="Llave Pública"
                 id={"username" + index}
                 fullWidth
-                value={account.direccion}
+                value={account.userName}
                 disabled
                 multiline
-                minRows={2}
+                minRows={1}
                 maxRows={2}
                 sx={{
                     backgroundColor: 'rgba(6, 109, 55, 0.05)',
@@ -39,13 +39,14 @@ const MainScreenCardWallet = ({ account, index }) => {
                     m: 1
                 }}
             />
+            
             <TextField
-                required
+                //required
                 id={"password" + index}
-                label="Llave privada"
+                label="Llave Privada"
                 fullWidth
                 type={values.showPassword ? 'text' : 'password'}
-                value={account.llavePrivada}
+                value={account.password}
                 disabled
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
@@ -69,7 +70,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 id={"comentarios" + index}
                 label="Comentarios"
                 fullWidth
-                value={account.notas}
+                value={account.comentarios}
                 disabled
                 multiline
                 maxRows={4}

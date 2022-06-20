@@ -219,7 +219,8 @@ const NewCryptoWallet = ({ navigate }) => {
             comentariosError: values.comentarios === '',
         });
 
-        if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios)
+        //if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios)
+        if (values.titulo && values.userName)
             if (!values.isEditing)
                 crearCuenta();
             else
@@ -312,7 +313,7 @@ const NewCryptoWallet = ({ navigate }) => {
                     error={values.tituloError}
                     required
                     id={'0'}
-                    label="Titulo"
+                    label="Título"
                     fullWidth
                     onChange={(event) => handleTitulo(event)}
                     value={values.titulo}
@@ -325,9 +326,9 @@ const NewCryptoWallet = ({ navigate }) => {
                 />
                 <TextField
                     error={values.descripcionError}
-                    required
+                    //required
                     id={'1'}
-                    label="Descripcion"
+                    label="Descripción"
                     fullWidth
                     onChange={(event) => handleDescripcion(event)}
                     multiline
@@ -345,9 +346,9 @@ const NewCryptoWallet = ({ navigate }) => {
                     error={values.usuarioError}
                     required
                     id={'2'}
-                    label="Direccion"
+                    label="Llave Pública"
                     multiline
-                    minRows={2}
+                    minRows={1}
                     maxRows={2}
                     fullWidth
                     onChange={(event) => handleUserName(event)}
@@ -361,9 +362,9 @@ const NewCryptoWallet = ({ navigate }) => {
                 />
                 <TextField
                     error={values.passwordError}
-                    required
+                    //required
                     id={'3'}
-                    label="Llave privada"
+                    label="Llave Privada"
                     fullWidth
                     type={values.showPassword ? 'text' : 'password'}
                     onChange={(event) => handlePassword(event)}
@@ -376,13 +377,13 @@ const NewCryptoWallet = ({ navigate }) => {
                     }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
-                            <IconButton
+                            {/* <IconButton
                                 aria-label="toggle dice visibility"
                                 onClick={handleClickDice}
                                 onMouseDown={handleMouseDownDice}
                             >
                                 <FaDiceD20 />
-                            </IconButton>
+                            </IconButton> */}
                             <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
@@ -394,7 +395,7 @@ const NewCryptoWallet = ({ navigate }) => {
                         </InputAdornment>,
                     }}
                 />
-                {!values.disable ?
+                {/* {!values.disable ?
                     <Box
                         sx={{
                             flex: 1,
@@ -431,10 +432,10 @@ const NewCryptoWallet = ({ navigate }) => {
                             Clasica
                         </Button>
                     </Box>
-                    : ''}
+                    : ''} */}
                 <TextField
                     error={values.comentariosError}
-                    required
+                    //required
                     id={'4'}
                     label="Comentarios"
                     fullWidth
