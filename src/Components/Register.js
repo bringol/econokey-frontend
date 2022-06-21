@@ -106,7 +106,7 @@ export default function Register({ navigate }) {
       if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
           localStorage.setItem("isAdmin", true);
       }*/
-      navigate("../login", { state: vaultValido })
+      navigate("../login")
     }
   }
 
@@ -125,7 +125,6 @@ export default function Register({ navigate }) {
             }}
           >
             <Avatar sx={{ m: 1, width: 200, height: 200 }} src={logoMain} alt='logoMain' />
-
             <Typography component="h1" variant="h5">
               Registrar Boveda
             </Typography>

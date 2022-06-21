@@ -11,7 +11,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 import Share from '@mui/icons-material/Share';
 
@@ -80,10 +79,7 @@ const NewCryptoWallet = ({ navigate }) => {
         comentarios: account.comentarios ? account.comentarios : '',
         showPassword: false,
         tituloError: false,
-        descripcionError: false,
         usuarioError: false,
-        passwordError: false,
-        comentariosError: false,
         openPassphrase: false,
         openPassword: false,
         disable: true,
@@ -99,17 +95,6 @@ const NewCryptoWallet = ({ navigate }) => {
             disable: true,
             password: newValue ? newValue : values.password
         });
-    };
-
-    const handleClickDice = () => {
-        setValues({
-            ...values,
-            disable: !values.disable,
-        });
-    };
-
-    const handleMouseDownDice = (event) => {
-        event.preventDefault();
     };
 
     const handleClickShowPassword = () => {
@@ -135,7 +120,6 @@ const NewCryptoWallet = ({ navigate }) => {
         setValues({
             ...values,
             password: event.target.value,
-            passwordError: event.target.value === '',
         });
     }
 
@@ -143,7 +127,6 @@ const NewCryptoWallet = ({ navigate }) => {
         setValues({
             ...values,
             comentarios: event.target.value,
-            comentariosError: event.target.value === '',
         });
     }
 
@@ -159,7 +142,6 @@ const NewCryptoWallet = ({ navigate }) => {
         setValues({
             ...values,
             descripcion: event.target.value,
-            descripcionError: event.target.value === '',
         });
     }
 
@@ -168,7 +150,7 @@ const NewCryptoWallet = ({ navigate }) => {
     }
 
     const handleCompartir = () => {
-        
+
     }
 
     const handleGuardar = () => {
@@ -213,13 +195,9 @@ const NewCryptoWallet = ({ navigate }) => {
         setValues({
             ...values,
             tituloError: values.titulo === '',
-            descripcionError: values.descripcion === '',
             usuarioError: values.userName === '',
-            passwordError: values.password === '',
-            comentariosError: values.comentarios === '',
         });
 
-        //if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios)
         if (values.titulo && values.userName)
             if (!values.isEditing)
                 crearCuenta();
@@ -297,17 +275,17 @@ const NewCryptoWallet = ({ navigate }) => {
                         ) : 'AGREGAR CryptoWallet'}
                     </Typography>
                     {(values.isEditing) ? (
-                    <Button sx={{
-                        m: 1,
-                    }}
-                        variant='outlined'
-                        color="secondary"
-                        size="small"
-                        endIcon={<Share fontSize='small' />}
-                        onClick={handleCompartir}
-                    >
-                        Compartir
-                    </Button>) : null}
+                        <Button sx={{
+                            m: 1,
+                        }}
+                            variant='outlined'
+                            color="secondary"
+                            size="small"
+                            endIcon={<Share fontSize='small' />}
+                            onClick={handleCompartir}
+                        >
+                            Compartir
+                        </Button>) : null}
                 </Box>
                 <TextField
                     error={values.tituloError}
@@ -325,8 +303,6 @@ const NewCryptoWallet = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.descripcionError}
-                    //required
                     id={'1'}
                     label="Descripción"
                     fullWidth
@@ -361,8 +337,6 @@ const NewCryptoWallet = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.passwordError}
-                    //required
                     id={'3'}
                     label="Llave Privada"
                     fullWidth
@@ -377,13 +351,6 @@ const NewCryptoWallet = ({ navigate }) => {
                     }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
-                            {/* <IconButton
-                                aria-label="toggle dice visibility"
-                                onClick={handleClickDice}
-                                onMouseDown={handleMouseDownDice}
-                            >
-                                <FaDiceD20 />
-                            </IconButton> */}
                             <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
@@ -394,48 +361,8 @@ const NewCryptoWallet = ({ navigate }) => {
                             </IconButton>
                         </InputAdornment>,
                     }}
-                />
-                {/* {!values.disable ?
-                    <Box
-                        sx={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            overflow: 'auto',
-                            display: 'block',
-                            textAlign: 'center',
-                        }}
-                    >
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{
-                                color: "#EB5757",
-                                backgroundColor: "#D3E8D3",
-                                borderRadius: '16px',
-                                m: 1
-                            }}
-                            onClick={() => setValues({ ...values, openPassphrase: true })}
-                        >
-                            Passphrase
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{
-                                color: "#EB5757",
-                                backgroundColor: "#D3E8D3",
-                                borderRadius: '16px',
-                                m: 1
-                            }}
-                            onClick={() => setValues({ ...values, openPassword: true })}
-                        >
-                            Clasica
-                        </Button>
-                    </Box>
-                    : ''} */}
+                />                
                 <TextField
-                    error={values.comentariosError}
-                    //required
                     id={'4'}
                     label="Comentarios"
                     fullWidth

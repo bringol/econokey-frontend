@@ -49,12 +49,11 @@ const theme = createTheme({
 });
 
 export default function Login({ navigate }) {
-  const { state } = useLocation();
   const [vaultName, setVaultName] = useState('');
   const [vaultKey, setVaultKey] = useState('');
   const [errorVaultKey, setErrorVaultKey] = useState(false);
   const [errorVaultName, setErrorVaultName] = useState(false);
-  const [vaultValido, setVaultValido] = useState(state);
+  const [vaultValido, setVaultValido] = useState(false);
 
   const handleVaultName = (event) => {
     setVaultName(event.target.value);
@@ -86,7 +85,7 @@ export default function Login({ navigate }) {
       let response = await loginVault(vault);
       if (response.code === 200) {
         setVaultValido(true);
-        console.log(response.data)
+        localStorage.setItem("token", response.data.access_token);
       }
       else {
         console.log(response.mensajeDetalle);
@@ -102,11 +101,6 @@ export default function Login({ navigate }) {
 
   const redirect = () => {
     if (vaultValido) {
-      /*localStorage.setItem("loggedin", true);
-      setLogged(true);
-      if (localStorage.getItem("email") === "nicolas.boyer@argontech.com.ar") {
-          localStorage.setItem("isAdmin", true);
-      }*/
       navigate("../")
     }
   }

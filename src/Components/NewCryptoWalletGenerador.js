@@ -10,9 +10,11 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 
 function ConfirmationDialogDelete(props) {
     const { onClose, open, ...other } = props;
@@ -34,7 +36,9 @@ function ConfirmationDialogDelete(props) {
         >
             <DialogTitle textAlign={'center'}>Confirmacion de eliminación</DialogTitle>
             <DialogContent dividers>
-                ¿Esta seguro que desea eliminar este elemento?
+                <Typography sx={{ textAlign: 'center' }}>
+                    ¿Esta seguro que desea eliminar este elemento? Esta accion no se puede deshacer y todo el contenido de su billetera se perdera.
+                </Typography>
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'center' }}>
                 <Button sx={{
@@ -45,12 +49,12 @@ function ConfirmationDialogDelete(props) {
                     endIcon={<CancelIcon fontSize='small' />}
                     onClick={handleCancel}
                 >
-                    CANCELAR
+                    ATRAS
                 </Button>
                 <Button sx={{
                     m: 1,
                 }}
-                    variant='outlined'
+                    variant='contained'
                     color="error"
                     size="small"
                     startIcon={<DeleteIcon fontSize='small' />}
@@ -83,7 +87,9 @@ function ConfirmationDialogCancelar(props) {
         >
             <DialogTitle textAlign={'center'}>Confirmacion de cancelacion</DialogTitle>
             <DialogContent dividers>
-                ¿Esta seguro que desea cancelar la generacion de su Crypto-Wallet? Todo su progreso se perderá.
+                <Typography sx={{ textAlign: 'center' }}>
+                    ¿Esta seguro que desea cancelar la operación? Todo su progreso se perderá.
+                </Typography>
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'center' }}>
                 <Button sx={{
@@ -94,18 +100,66 @@ function ConfirmationDialogCancelar(props) {
                     endIcon={<CancelIcon fontSize='small' />}
                     onClick={handleCancel}
                 >
-                    VOLVER
+                    ATRAS
                 </Button>
                 <Button sx={{
                     m: 1,
                 }}
-                    variant='outlined'
+                    variant='contained'
                     color="error"
                     size="small"
                     startIcon={<DeleteIcon fontSize='small' />}
                     onClick={handleOk}
                 >
-                    CANCELAR
+                    SI
+                </Button>
+            </DialogActions>
+        </Dialog >
+    );
+}
+
+function ShareDialog(props) {
+    const { direccion, onClose, open, ...other } = props;
+
+    const handleOk = () => {
+        onClose(true);
+    };
+
+    return (
+        <Dialog
+            sx={{ '& .MuiDialog-paper': { width: '90%', maxHeight: 435 } }}
+            maxWidth="xs"
+            open={open}
+            {...other}
+        >
+            <DialogTitle textAlign={'center'}>Compartir billetera</DialogTitle>
+            <DialogContent dividers>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                }}>
+                    <Box sx={{
+                        m: 1
+                    }}>
+                        <QRCodeSVG value={direccion} />
+                    </Box>
+                    <Typography>{direccion}</Typography>
+                </Box>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='outlined'
+                    size="small"
+                    startIcon={<CloseIcon fontSize='small' />}
+                    onClick={handleOk}
+                >
+                    CERRAR
                 </Button>
             </DialogActions>
         </Dialog >
@@ -135,6 +189,8 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
         isEditing: state ? true : false,
         openDeleteConfirmation: false,
         openCancelConfirmation: false,
+        openShareConfirmation: false,
+        cancelable: true,
     });
 
     const handleClickShowLlavePrivada = () => {
@@ -153,6 +209,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             ...values,
             notas: event.target.value,
             notasError: event.target.value === '',
+            cancelable: false,
         });
     }
 
@@ -161,6 +218,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             ...values,
             titulo: event.target.value,
             tituloError: event.target.value === '',
+            cancelable: false,
         });
     }
 
@@ -169,6 +227,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             ...values,
             descripcion: event.target.value,
             descripcionError: event.target.value === '',
+            cancelable: false,
         });
     }
 
@@ -178,12 +237,22 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             moneda: event.target.value,
             monedaError: event.target.value === '',
             monedaHelper: event.target.value === '' ? 'Debe seleccionar una moneda' : '',
-
+            cancelable: false,
         });
     }
 
-    const handleCompartir = () => {
+    const handleCloseSharedDialog = () => {
+        setValues({
+            ...values,
+            openShareConfirmation: false,
+        });
+    }
 
+    const handleClickCompartir = () => {
+        setValues({
+            ...values,
+            openShareConfirmation: true,
+        });
     }
 
     const handleClickGenerar = () => {
@@ -295,10 +364,13 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
     }
 
     const handleClickCancelar = () => {
-        setValues({
-            ...values,
-            openCancelConfirmation: true,
-        });
+        if (!values.cancelable)
+            setValues({
+                ...values,
+                openCancelConfirmation: true,
+            });
+        else
+            navigate('../');
     }
 
     const handleCloseDeleteConfirmation = (confirmDialog) => {
@@ -320,7 +392,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
         else
             setValues({
                 ...values,
-                openConfirmation: false,
+                openDeleteConfirmation: false,
             });
     }
 
@@ -371,17 +443,17 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                         ) : 'AGREGAR CryptoWallet'}
                     </Typography>
                     {(values.isEditing) ? (
-                    <Button sx={{
-                        m: 1,
-                    }}
-                        variant='outlined'
-                        color="secondary"
-                        size="small"
-                        endIcon={<Share fontSize='small' />}
-                        onClick={handleCompartir}
-                    >
-                        Compartir
-                    </Button>) : null}
+                        <Button sx={{
+                            m: 1,
+                        }}
+                            variant='outlined'
+                            color="secondary"
+                            size="small"
+                            endIcon={<Share fontSize='small' />}
+                            onClick={handleClickCompartir}
+                        >
+                            Compartir
+                        </Button>) : null}
                 </Box>
                 <TextField
                     error={values.tituloError}
@@ -566,6 +638,13 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 keepMounted
                 open={values.openCancelConfirmation}
                 onClose={handleCloseCancelConfirmation}
+            />
+            <ShareDialog
+                id="sharedDialog"
+                keepMounted
+                open={values.openShareConfirmation}
+                onClose={handleCloseSharedDialog}
+                direccion={values.direccion}
             />
         </>
     );

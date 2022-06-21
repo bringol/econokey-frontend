@@ -28,7 +28,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 label="Llave Pública"
                 id={"username" + index}
                 fullWidth
-                value={account.userName}
+                value={account.userName || account.direccion }
                 disabled
                 multiline
                 minRows={1}
@@ -46,7 +46,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 label="Llave Privada"
                 fullWidth
                 type={values.showPassword ? 'text' : 'password'}
-                value={account.password}
+                value={account.password || account.llavePrivada}
                 disabled
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
@@ -70,7 +70,7 @@ const MainScreenCardWallet = ({ account, index }) => {
                 id={"comentarios" + index}
                 label="Comentarios"
                 fullWidth
-                value={account.comentarios}
+                value={account.comentarios || account.notas}
                 disabled
                 multiline
                 maxRows={4}
