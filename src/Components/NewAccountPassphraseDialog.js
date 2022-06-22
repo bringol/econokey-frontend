@@ -27,6 +27,9 @@ function NewAccountPassphraseDialog(props) {
         disableAplicar: true,
     });
 
+    function entrop(longitud) {
+        return (longitud * 12.925)
+      }
 
     function sumar() {
         setValues({
@@ -98,7 +101,7 @@ function NewAccountPassphraseDialog(props) {
                     setValues({
                         ...values,
                         password: response.data.passphrase,
-                        entropia: `${values.num} bits de Entropia`,
+                        entropia: `${entrop(values.num).toFixed(2)} bits de Entropia`,
                         showPassword: true,
                         rolling: false,
                         disableAplicar: false,
