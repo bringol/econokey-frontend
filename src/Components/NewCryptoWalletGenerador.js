@@ -4,7 +4,7 @@ import NewAccountPasswordDialog from './NewAccountPasswordDialog';
 import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda, generateCryptoWallet } from '../Controllers/WebService.controller';
 import Share from '@mui/icons-material/Share';
-import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText } from '@mui/material';
+import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText, InputBase } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -147,7 +147,17 @@ function ShareDialog(props) {
                     }}>
                         <QRCodeSVG value={direccion} />
                     </Box>
-                    <Typography>{direccion}</Typography>
+                    <InputBase
+                            inputProps={{
+                                style: { textAlign: "center", fontSize: 18 }
+                            }}
+                            fullWidth
+                            id="contraseña"
+                            disabled
+                            multiline
+                            maxRows={8}
+                            value={direccion}
+                        />
                 </Box>
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'center' }}>
@@ -179,7 +189,9 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
         notas: account.notas ? account.notas : '',
         direccion: account.direccion ? account.direccion : '',
         llavePrivada: account.llavePrivada ? account.llavePrivada : '',
+        passPhrase: account.passPhrase ? account.passPhrase : '',
         showLlavePrivada: false,
+        showPassphrase: false,
         tituloError: false,
         descripcionError: false,
         monedaError: false,
@@ -201,6 +213,17 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
     };
 
     const handleMouseDownLlavePrivada = (event) => {
+        event.preventDefault();
+    };
+
+    const handleClickShowPassphrase = () => {
+        setValues({
+            ...values,
+            showPassphrase: !values.showPassphrase,
+        });
+    };
+
+    const handleMouseDownPassphrase = (event) => {
         event.preventDefault();
     };
 
@@ -262,14 +285,15 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 rolling: true,
             });
 
-            let response = await generateCryptoWallet();
+            let response = await generateCryptoWallet(values.titulo, values.moneda);
 
             if (response.code === 200) {
                 setTimeout(() => {
                     setValues({
                         ...values,
-                        direccion: response.data,
-                        llavePrivada: response.data,
+                        direccion: response.data.public_key,
+                        llavePrivada: response.data.private_key,
+                        passPhrase: response.data.passphrase,
                         showCrptoWallet: true,
                         rolling: false,
                         disableGuardar: false,
@@ -293,7 +317,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
             monedaHelper: values.moneda === '' ? 'Debe seleccionar una moneda' : '',
         });
 
-        if (values.moneda)
+        if (values.moneda && values.titulo)
             generarCryptoWallet();
     };
 
@@ -306,6 +330,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 type: 'wallet-gen',
                 direccion: values.direccion,
                 llavePrivada: values.llavePrivada,
+                passPhrase: values.passPhrase,
                 moneda: values.moneda,
                 notas: values.notas,
             }
@@ -326,6 +351,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 type: 'wallet-gen',
                 direccion: values.direccion,
                 llavePrivada: values.llavePrivada,
+                passPhrase: values.passPhrase,
                 moneda: values.moneda,
                 notas: values.notas,
             }
@@ -511,9 +537,9 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                         onChange={handleMoneda}
                         value={values.moneda}
                     >
-                        <FormControlLabel value="bitcoin" disabled={values.isEditing} control={<Radio />} label="Bitcoin" />
-                        <FormControlLabel value="ethereum" disabled={values.isEditing} control={<Radio />} label="Ethereum" />
-                        <FormControlLabel value="cardamo" disabled control={<Radio />} label="Cardamo" />
+                        <FormControlLabel value="BTC" disabled={values.isEditing} control={<Radio />} label="Bitcoin" />
+                        <FormControlLabel value="ETH" disabled={values.isEditing} control={<Radio />} label="Ethereum" />
+                        <FormControlLabel value="ADA" disabled control={<Radio />} label="Cardamo" />
                     </RadioGroup>
                     <FormHelperText>{values.monedaHelper}</FormHelperText>
                 </FormControl>
@@ -580,10 +606,34 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                                 </InputAdornment>,
                             }}
                         />
+                        <TextField
+                            id={'4'}
+                            label="Passphrase"
+                            fullWidth
+                            disabled
+                            type={values.showPassphrase ? 'text' : 'password'}
+                            value={values.passPhrase}
+                            sx={{
+                                background: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                mb: 1,
+                                mt: 1,
+                            }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassphrase}
+                                        onMouseDown={handleMouseDownPassphrase}
+                                        edge="end"
+                                    >
+                                        {values.showPassphrase ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>,
+                            }}
+                        />
                     </>)
                     : null}
-
-
                 <Box
                     sx={{
                         textAlign: 'center',

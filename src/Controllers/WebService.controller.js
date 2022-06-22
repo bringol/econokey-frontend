@@ -77,7 +77,7 @@ export const loginVault = async function (vault) {
     };
 }
 
-export const generator = async function (delimitador, longitud, capitalizacion) {
+export const generatePassphrase = async function (delimitador, longitud, capitalizacion) {
 
     let capitalize;
     switch (capitalizacion) {
@@ -140,13 +140,20 @@ export const generator = async function (delimitador, longitud, capitalizacion) 
     }
 }
 
-export const generateCryptoWallet = async function () {
+export const generatePassword = async function (lower, upper, digit, symbol, longitud) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + token);
 
     var raw = JSON.stringify({
-        "generator_type": "wallet_btc"
+        "generator_type": "password",
+        "parameters": {
+            "lower": lower,
+            "upper": upper,
+            "digit": digit,
+            "symbol": symbol,
+            "lenght": longitud
+        }
     });
 
     var requestOptions = {
@@ -160,6 +167,46 @@ export const generateCryptoWallet = async function () {
 
     let code = response.status;
     let data = await response.text();
+    switch (code) {
+        case 200:
+            {
+                /*localStorage.setItem("x", data.loginUser.token);
+                let user = data.loginUser.user;
+                localStorage.setItem("nombre", user.name);
+                localStorage.setItem("email", user.email);*/
+
+                return ({ code: code, mensaje: "OK", data: data });
+            }
+        default:
+            return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+
+    }
+}
+
+export const generateCryptoWallet = async function (walletName, cryptoCurrency) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var raw = JSON.stringify({
+        "generator_type": "wallet",
+        "parameters": {
+            "wallet_name": walletName,
+            "cryptocurrency": cryptoCurrency
+        }
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        mode: 'cors',
+        headers: myHeaders,
+        body: raw,
+    };
+
+    let response = await fetch(urlGenerator, requestOptions);
+
+    let code = response.status;
+    let data = await response.json();
     switch (code) {
         case 200:
             {

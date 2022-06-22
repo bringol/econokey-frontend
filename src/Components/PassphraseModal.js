@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import { NavLink } from 'react-router-dom';
 import AppContext from '../AppContext';
 import { InputBase } from '@mui/material';
-import { generator } from '../Controllers/WebService.controller';
+import { generatePassphrase, generator } from '../Controllers/WebService.controller';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,7 +61,7 @@ const PassphraseModal = (props) => {
   const handleSubmit = event => {
     event.preventDefault();
     async function componentDidMount() {
-      let response = await generator();
+      let response = await generatePassphrase();
 
       if (response.code === 200) {
         console.log(response.data.passphrase);

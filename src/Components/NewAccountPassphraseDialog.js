@@ -4,15 +4,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import { styled, Box, FormControlLabel, FormGroup, Grid, InputBase, Switch, Typography, Alert, IconButton, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, InputBase, Typography, Alert, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { FaDiceD20 } from 'react-icons/fa'
 import Indicador from "./PasswordStrMeter"
-import PassphraseModal from "./PassphraseModal"
 import '../css/die.css'
-import { generator } from '../Controllers/WebService.controller';
-import { CollectionsBookmarkOutlined } from '@mui/icons-material';
+import { generatePassphrase } from '../Controllers/WebService.controller';
 
 function NewAccountPassphraseDialog(props) {
     const { onClose, open, ...other } = props;
@@ -35,6 +33,8 @@ function NewAccountPassphraseDialog(props) {
             ...values,
             num: values.num + 1,
             missingAmount: false,
+            showPassword: false,
+            disableAplicar: true,
         });
     }
 
@@ -43,8 +43,8 @@ function NewAccountPassphraseDialog(props) {
             ...values,
             num: values.num > 0 ? values.num - 1 : 0,
             missingAmount: values.num - 1 <= 0 ? true : false,
-            showPassword: values.num - 1 <= 0 ? false : true,
-            disableAplicar: values.num - 1 <= 0 ? true : false,
+            showPassword: false,
+            disableAplicar: true,
         });
 
     }
@@ -91,7 +91,7 @@ function NewAccountPassphraseDialog(props) {
                 rolling: true,
             });
 
-            let response = await generator(delimitador, longitud, capitalizacion);
+            let response = await generatePassphrase(delimitador, longitud, capitalizacion);
 
             if (response.code === 200) {
                 setTimeout(() => {

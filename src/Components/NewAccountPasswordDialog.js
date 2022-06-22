@@ -4,12 +4,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import { styled, Box, FormControlLabel, FormGroup, Grid, InputBase, Switch, Typography, Alert, IconButton, TextField } from '@mui/material';
+import { Box, FormControlLabel, FormGroup, InputBase, Switch, Typography, Alert } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { FaDiceD20 } from 'react-icons/fa'
 import Indicador from "./PasswordStrMeter"
 import '../css/die.css'
+import { generatePassword } from '../Controllers/WebService.controller';
 
 function NewAccountPasswordDialog(props) {
     const { onClose, open, ...other } = props;
@@ -22,7 +23,6 @@ function NewAccountPasswordDialog(props) {
         flagMinuscula: true,
         flagNumero: false,
         flagSimbolo: false,
-        flagASCII: false,
         showPassword: false,
         rolling: false,
         missingType: false,
@@ -37,8 +37,7 @@ function NewAccountPasswordDialog(props) {
             missingType: !event.target.checked &&
                 !values.flagMinuscula &&
                 !values.flagNumero &&
-                !values.flagSimbolo &&
-                !values.flagASCII,
+                !values.flagSimbolo,
             showPassword: false,
             disableAplicar: true,
         });
@@ -51,8 +50,7 @@ function NewAccountPasswordDialog(props) {
             missingType: !event.target.checked &&
                 !values.flagMayuscula &&
                 !values.flagNumero &&
-                !values.flagSimbolo &&
-                !values.flagASCII,
+                !values.flagSimbolo,
             showPassword: false,
             disableAplicar: true,
         });
@@ -65,8 +63,7 @@ function NewAccountPasswordDialog(props) {
             missingType: !event.target.checked &&
                 !values.flagMinuscula &&
                 !values.flagMayuscula &&
-                !values.flagSimbolo &&
-                !values.flagASCII,
+                !values.flagSimbolo,
             showPassword: false,
             disableAplicar: true,
         });
@@ -79,21 +76,6 @@ function NewAccountPasswordDialog(props) {
             missingType: !event.target.checked &&
                 !values.flagMinuscula &&
                 !values.flagNumero &&
-                !values.flagMayuscula &&
-                !values.flagASCII,
-            showPassword: false,
-            disableAplicar: true,
-        });
-    }
-
-    const handleASCII = (event) => {
-        setValues({
-            ...values,
-            flagASCII: event.target.checked,
-            missingType: !event.target.checked &&
-                !values.flagMinuscula &&
-                !values.flagNumero &&
-                !values.flagSimbolo &&
                 !values.flagMayuscula,
             showPassword: false,
             disableAplicar: true,
@@ -105,6 +87,8 @@ function NewAccountPasswordDialog(props) {
             ...values,
             num: values.num + 1,
             missingAmount: false,
+            showPassword: false,
+            disableAplicar: true,
         });
     }
 
@@ -113,27 +97,10 @@ function NewAccountPasswordDialog(props) {
             ...values,
             num: values.num > 0 ? values.num - 1 : 0,
             missingAmount: values.num - 1 <= 0 ? true : false,
-            showPassword: values.num - 1 <= 0 ? false : true,
-            disableAplicar: values.num - 1 <= 0 ? true : false,
+            showPassword: false,
+            disableAplicar: true,
         });
 
-    }
-
-    const random = (min = 0, max = 1) => {
-        return Math.floor(Math.random() * (max + 1 - min) + min)
-    }
-
-    const randomLower = () => {
-        return String.fromCharCode(random(97, 122))
-    }
-
-    const randomUpper = () => {
-        return String.fromCharCode(random(65, 90))
-    }
-
-    const randomSymbol = () => {
-        const symbols = "~*$%@#^&!?*'-=/,.{}()[]<>"
-        return symbols[random(0, symbols.length - 1)]
     }
 
     const handleGenerarContraseña = () => {
@@ -160,61 +127,51 @@ function NewAccountPasswordDialog(props) {
             });
             return
         }
-        var ps=0,min=26,may=26,num=10,sim=25
-        if (values.flagMinuscula)            
-            ps+=min
-          if (values.flagMayuscula) 
-            ps+=may
-             if (values.flagSimbolo )
-                ps+=sim
-             if (values.flagNumero)           
-                    ps+=num
-        
-                
-        //console.log("total combinaciones",ps)
 
-        let password = ''
-        for (let i = 0; i < values.num; i++) {
-            let choice = random(0, 3)
-            if (values.flagMinuscula && choice === 0) {
-                password += randomLower()
-               // ps=ps+26
-            } else if (values.flagMayuscula && choice === 1) {
-                password += randomUpper()
-               // ps=ps+26
-            } else if (values.flagSimbolo && choice === 2) {
-                password += randomSymbol()
-               // ps=ps+25
-            } else if (values.flagNumero && choice === 3) {
-                password += random(0, 9)
-               // ps=ps+10
-            } else {
-                i--
-               // ps=ps
-            }
-        }
-        
-        function entrop(longitud, sumatoriaSimbolos)
-        {           
-            return(Math.log2(Math.pow(sumatoriaSimbolos,longitud)))
-        }
-        //console.log(entrop(values.num,ps))
-
-        setValues({
-            ...values,
-            rolling: true,
-        });
-
-        setTimeout(() => {
+        async function generarPassword(lower, upper, digit, symbol, longitud) {
             setValues({
                 ...values,
-                password: password,
-                entropia: `${entrop(values.num,ps).toFixed(2)} bits de Entropia`,
-                showPassword: true,
-                rolling: false,
-                disableAplicar: false,
+                rolling: true,
             });
-        }, 1000)
+
+            let response = await generatePassword(lower, upper, digit, symbol, longitud);
+            if (response.code === 200) {
+
+                var ps = 0, min = 26, may = 26, num = 10, sim = 25
+                if (values.flagMinuscula)
+                    ps += min
+                if (values.flagMayuscula)
+                    ps += may
+                if (values.flagSimbolo)
+                    ps += sim
+                if (values.flagNumero)
+                    ps += num
+
+                function entrop(longitud, sumatoriaSimbolos) {
+                    return (Math.log2(Math.pow(sumatoriaSimbolos, longitud)))
+                }
+
+                setValues({
+                    ...values,
+                    rolling: true,
+                });
+
+                setTimeout(() => {
+                    setValues({
+                        ...values,
+                        password: response.data,
+                        entropia: `${entrop(values.num, ps).toFixed(2)} bits de Entropia`,
+                        showPassword: true,
+                        rolling: false,
+                        disableAplicar: false,
+                    });
+                }, 1000)
+            }
+            else {
+                console.log(response);
+            }
+        }
+        generarPassword(values.flagMinuscula, values.flagMayuscula, values.flagNumero, values.flagSimbolo, values.num);
     };
 
     const handleCancelar = () => {
