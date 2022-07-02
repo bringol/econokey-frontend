@@ -12,6 +12,8 @@ import Menu from '@mui/material/Menu';
 import AppContext from '../AppContext';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HelpDialog from './HelpDialog';
+import { Button } from '@mui/material';
+import { FaBook } from 'react-icons/fa';
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -81,8 +83,20 @@ const handleHelpClose = (newValue) => {
               alignSelf: 'center'
             }}>
               Bóveda - BoyerNicolas
-
             </Typography>
+            <IconButton 
+              aria-label="glosario"
+              onClick={() => setOpen(true)}
+              sx={{color:"#0F1833"}}
+              >
+              <FaBook/>
+            </IconButton>
+            <HelpDialog
+                id={"help-menu"}
+                keepMounted
+                open={open}
+                onClose={() => setOpen(false)}
+            />
             {
               filterButton && (
                 <>
@@ -119,20 +133,6 @@ const handleHelpClose = (newValue) => {
                 </>
               )
             }
-            <IconButton
-                      aria-label="Help"
-                      aria-haspopup="true"
-                      aria-controls="help-menu"
-                      onClick={() => setOpen(true)}
-                  >
-              <HelpOutlineIcon />
-            </IconButton>
-            <HelpDialog
-                id={"help-menu"}
-                keepMounted
-                open={open}
-                onClose={() => setOpen(false)}
-            />
           </Toolbar>
         </AppBar>
       </ElevationScroll>
