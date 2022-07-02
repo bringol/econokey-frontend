@@ -341,6 +341,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 passPhrase: values.passPhrase,
                 moneda: values.moneda,
                 notas: values.notas,
+                icon: 'econokey',
             }
 
             let response = await addElementoBoveda(cuentaNueva);
@@ -362,6 +363,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                 passPhrase: values.passPhrase,
                 moneda: values.moneda,
                 notas: values.notas,
+                icon: 'econokey',
             }
 
             let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);

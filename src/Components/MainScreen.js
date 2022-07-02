@@ -19,25 +19,25 @@ const actions = [
 
 const MainScreen = ({ navigate }) => {
 
-    const { setTopbar, setFilterButton, accounts, setAccountsList, filter} = useContext(AppContext)
+    const { setTopbar, setFilterButton, accounts, setAccountsList, filter } = useContext(AppContext)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    
+
     useEffect(() => {
         setTopbar(true);
         setFilterButton(true);
-        if (accounts == undefined || accounts.length == 0)
-        {
-            getAllElementosBoveda().then(response => {
-                if(response.code === 200)
-                    setAccountsList(response.data);
-                else
-                    console.log(response.mensajeDetalle);
-            });
-        }
-       
-    }, []);
+
+        getAllElementosBoveda().then(response => {
+            console.log('buscando')
+            console.log(response)
+            if (response.code === 200)
+                setAccountsList(response.data);
+            else
+                console.log(response.mensajeDetalle);
+        });
+
+    }, [setAccountsList, accounts, setFilterButton, setTopbar]);
 
     const handleOnClick = (target) => {
         navigate(target);
@@ -54,13 +54,13 @@ const MainScreen = ({ navigate }) => {
                 {accounts !== undefined && accounts.length > 0 ? (
                     accounts.map((account, index) => {
                         //debugger;
-                        return filter == 'none'?
-                        (
-                            <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                        ): account.type == filter &&
-                        (
-                            <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                        );
+                        return filter === 'none' ?
+                            (
+                                <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
+                            ) : account.type === filter &&
+                            (
+                                <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
+                            );
                     })
                 ) : (
                     <Typography variant="h5" gutterBottom component="div" fontWeight={'500'} textAlign={'center'}>

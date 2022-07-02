@@ -6,6 +6,10 @@ import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../
 
 import { IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -14,6 +18,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 import IconCustom from '../Icons/IconCustom';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
@@ -68,7 +76,7 @@ const NewAccount = ({ navigate }) => {
     const { state } = useLocation();
 
     let account = state ? state : '';
-    console.log(account)
+
     const [values, setValues] = useState({
         id: account.id ? account.id : '',
         titulo: account.titulo ? account.titulo : '',
@@ -197,7 +205,7 @@ const NewAccount = ({ navigate }) => {
                 password: values.password,
                 comentarios: values.comentarios,
                 url: values.url,
-                icon: values.icon,
+                icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
             }
 
             let response = await addElementoBoveda(cuentaNueva);
@@ -218,7 +226,7 @@ const NewAccount = ({ navigate }) => {
                 password: values.password,
                 comentarios: values.comentarios,
                 url: values.url,
-                icon: values.icon,
+                icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
             }
 
             let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
@@ -235,8 +243,6 @@ const NewAccount = ({ navigate }) => {
             usuarioError: values.userName === '',
             passwordError: values.password === '',
         });
-
-        console.log(values.icon)
 
         if (values.titulo && values.userName && values.password)
             if (!values.isEditing)
@@ -282,6 +288,25 @@ const NewAccount = ({ navigate }) => {
         });
     }
 
+    const handleClickCopyPassword = () => {
+        navigator.clipboard.writeText(values.password)
+        setValues({
+            ...values,
+            open: true,
+        });
+    }
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setValues({
+            ...values,
+            open: false,
+        });
+    };
+
     return (
         <>
             <Box
@@ -324,7 +349,7 @@ const NewAccount = ({ navigate }) => {
                         error={values.tituloError}
                         required
                         id={'0'}
-                        label="Titulo"                        
+                        label="Titulo"
                         onChange={(event) => handleTitulo(event)}
                         value={values.titulo}
                         sx={{
@@ -334,7 +359,7 @@ const NewAccount = ({ navigate }) => {
                             mt: 1,
                         }}
                     />
-                    <IconCustom value={values.icon} onChange={handleChangeIcon}/>
+                    <IconCustom value={values.icon} onChange={handleChangeIcon} />
                 </Box>
                 <TextField
                     id={'1'}
@@ -398,6 +423,13 @@ const NewAccount = ({ navigate }) => {
                                 edge="end"
                             >
                                 {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                            <IconButton
+                                aria-label="copy password"
+                                onClick={handleClickCopyPassword}
+                                edge="end"
+                            >
+                                <ContentCopyIcon />
                             </IconButton>
                         </InputAdornment>,
                     }}
@@ -528,6 +560,11 @@ const NewAccount = ({ navigate }) => {
                 open={values.openConfirmation}
                 onClose={handleCloseConfirmation}
             />
+            <Snackbar open={values.open} autoHideDuration={3000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+                    Contraseña copiada al portapapeles!
+                </Alert>
+            </Snackbar>
         </>
     );
 }

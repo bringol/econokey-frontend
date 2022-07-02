@@ -1,13 +1,22 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const MainScreenCardAccount = ({ account, index }) => {
 
     const [values, setValues] = useState({
         showPassword: false,
+        open: false,
     });
 
     const handleClickShowPassword = () => {
@@ -19,6 +28,25 @@ const MainScreenCardAccount = ({ account, index }) => {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const handleClickCopyPassword = () => {
+        navigator.clipboard.writeText(account.password)
+        setValues({
+            ...values,
+            open: true,
+        });
+    }
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setValues({
+            ...values,
+            open: false,
+        });
     };
 
     return (
@@ -36,7 +64,7 @@ const MainScreenCardAccount = ({ account, index }) => {
                     m: 1,
                     "& .MuiInputBase-input.Mui-disabled": {
                         WebkitTextFillColor: "#2f4f4f",
-                      },
+                    },
                 }}
             />
             <TextField
@@ -53,7 +81,7 @@ const MainScreenCardAccount = ({ account, index }) => {
                     m: 1,
                     "& .MuiInputBase-input.Mui-disabled": {
                         WebkitTextFillColor: "#2f4f4f",
-                      },
+                    },
                 }}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
@@ -64,6 +92,13 @@ const MainScreenCardAccount = ({ account, index }) => {
                             edge="end"
                         >
                             {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                        <IconButton
+                            aria-label="copy password"
+                            onClick={handleClickCopyPassword}
+                            edge="end"
+                        >
+                            <ContentCopyIcon />
                         </IconButton>
                     </InputAdornment>,
                 }}
@@ -83,7 +118,7 @@ const MainScreenCardAccount = ({ account, index }) => {
                     m: 1,
                     "& .MuiInputBase-input.Mui-disabled": {
                         WebkitTextFillColor: "#2f4f4f",
-                      },
+                    },
                 }}
             />
             <TextField
@@ -99,9 +134,14 @@ const MainScreenCardAccount = ({ account, index }) => {
                     m: 1,
                     "& .MuiInputBase-input.Mui-disabled": {
                         WebkitTextFillColor: "#2f4f4f",
-                      },
+                    },
                 }}
             />
+            <Snackbar open={values.open} autoHideDuration={3000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+                    Contraseña copiada al portapapeles!
+                </Alert>
+            </Snackbar>
         </>
     );
 }

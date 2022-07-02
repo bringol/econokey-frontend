@@ -55,6 +55,9 @@ const IconCustom = (props) => {
                         onChange={handleChange}
                         input={<BootstrapInput />}
                     >
+                        <MenuItem value={'default'}>
+                            Ninguno
+                        </MenuItem>
                         <MenuItem value={'discord'} >
                             <ListItemIcon >
                                 <Icon icon={ICONS.DISCORD} />
@@ -65,6 +68,56 @@ const IconCustom = (props) => {
                                 <Icon icon={ICONS.GITHUB} />
                             </ListItemIcon>
                         </MenuItem>
+                        <MenuItem value={'gmail'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.GMAIL} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'instagram'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.INSTAGRAM} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'linkedin'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.LINKEDIN} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'outlook'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.OUTLOOK} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'sporify'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.SPOTIFY} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'steam'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.STEAM} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'twitch'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.TWITCH} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'twitter'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.TWITTER} />
+                            </ListItemIcon>
+                        </MenuItem>     
+                        <MenuItem value={'binance'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.BINANCE} />
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem value={'bitcoin'}>
+                            <ListItemIcon>
+                                <Icon icon={ICONS.BITCOIN} />
+                            </ListItemIcon>
+                        </MenuItem>                      
                     </Select>
                 </FormControl>
             </Box>

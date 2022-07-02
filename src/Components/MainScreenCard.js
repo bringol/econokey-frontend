@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import { styled, Box, Card, CardHeader, CardContent, Collapse, Avatar, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ArticleIcon from '@mui/icons-material/Article';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-//import LanguageIcon from '@mui/icons-material/Language';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-import logoMain from '../img/logoMain.png';
 import Icon from '../Icons/Icon.js';
 import MainScreenCardNote from './MainScreenCardNote';
 import MainScreenCardAccount from './MainScreenCardAccount';
 import MainScreenCardWallet from './MainScreenCardWallet';
+import { getIcon } from '../Icons/Constants.js'
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -74,24 +70,7 @@ const MainScreenCard = ({ account, index, navigate }) => {
                             <Avatar sx={{
                                 background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)), #FBFDF7'
                             }} aria-label="recipe">
-                                <Icon icon={account.icon} />
-                                
-                                {/*(account.type === 'note') ? (
-                                    <ArticleIcon sx={{
-                                        color: 'black'
-                                    }} />
-                                ) : (account.type === 'wallet') ? (
-                                    <AccountBalanceWalletIcon sx={{
-                                        color: 'black'
-                                    }} />
-                                ) : (account.type === 'pass') ? (
-                                    <AccountBoxIcon sx={{
-                                        color: 'black'
-                                    }} />
-                                ) : (account.type === 'wallet-gen') ? (
-                                    <Avatar sx={{ m: 1, width: 50, height: 50}} src={logoMain} alt='logoMain' />
-                                ) : null*/
-                                }
+                                <Icon icon={getIcon(account.icon)} />
                             </Avatar>
                         </Box>
                     }

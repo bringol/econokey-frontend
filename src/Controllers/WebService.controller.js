@@ -1,8 +1,10 @@
 
 let accounts = [
-    { id: 1, titulo: 'Gmail', icon: 'discord' , descripcion: 'Cuenta Gmail Principal', type: 'pass', userName: 'email@gmail.com', password: 'contraseña123', comentarios: 'gmail principal', url: 'https://mail.google.com/mail' },
-    { id: 2, titulo: 'Binance', descripcion: 'Cuenta Exchange', type: 'pass', userName: 'email@gmail.com', password: 'strongpass2', comentarios: 'gmail principal', url: 'https://accounts.binance.com/en/login' },
-    { id: 3, titulo: 'Nota', descripcion: '', type: 'note', comentarios: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }
+    { id: 1, titulo: 'Gmail', icon: 'gmail' , descripcion: 'Cuenta Gmail Principal', type: 'pass', userName: 'email@gmail.com', password: 'contraseña123', comentarios: 'gmail principal', url: 'https://mail.google.com/mail' },
+    { id: 2, titulo: 'Instagram', icon: 'instagram' , descripcion: 'Instagram del emprendimiento', type: 'pass', userName: 'insta@gmail.com', password: 'ajshbdkjn!"#ASD1324', comentarios: '', url: 'https://instagram.com' },
+    { id: 3, titulo: 'Hotmail', icon: 'outlook' , descripcion: 'Cuenta Hotmail Principal', type: 'pass', userName: 'email@live.com', password: 'contraseña123', comentarios: 'gmail principal', url: 'https://mail.google.com/mail' },
+    { id: 4, titulo: 'Binance', icon: 'binance', descripcion: 'Cuenta Exchange', type: 'pass', userName: 'email@gmail.com', password: 'strongpass2', comentarios: 'gmail principal', url: 'https://accounts.binance.com/en/login' },
+    { id: 5, titulo: 'Nota', icon: 'default-note', descripcion: '', type: 'note', comentarios: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }
 ];
 
 const urlBaseWebServices = 'http://localhost:5000';

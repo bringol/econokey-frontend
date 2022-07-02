@@ -163,6 +163,7 @@ const NewCryptoWallet = ({ navigate }) => {
                 userName: values.userName,
                 password: values.password,
                 comentarios: values.comentarios,
+                icon: 'default-wallet',
             }
 
             let response = await addElementoBoveda(cuentaNueva);
@@ -182,6 +183,7 @@ const NewCryptoWallet = ({ navigate }) => {
                 userName: values.userName,
                 password: values.password,
                 comentarios: values.comentarios,
+                icon: 'default-wallet',
             }
 
             let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
