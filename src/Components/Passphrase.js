@@ -296,7 +296,14 @@ function restar() {
                     size="big"
                     disabled //solo lectura
                     //onSubmit={handleChange()}
-
+                    sx={{
+                    background: 'rgba(6, 109, 55, 0.05)',
+                    borderRadius: '6px',
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
+                }}
                     defaultValue={`${entrop(num).toFixed(2)} bits de Entropia`}
                     //defaultValue={values.mockup == true ? 2:0}               
                     //onChange={e => setPassword(e.target.value)}

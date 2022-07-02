@@ -308,6 +308,14 @@ function restar() {
                       fullWidth
                       style = {{justifyContent:'center',width: '35%'}} 
                       defaultValue=".52<>]1I:LO`QnOd;5" //Longitud 18
+                      sx={{
+                        background: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        m: 1,
+                        "& .MuiInputBase-input.Mui-disabled": {
+                            WebkitTextFillColor: "#2f4f4f",
+                          },
+                    }}
                       />
                       </Box>
                       {/* <Indicador password={password} /> */}
@@ -329,6 +337,14 @@ function restar() {
                     color="secondary"
                     disabled //solo lectura
                     defaultValue="100 Bits de Entropía"
+                    sx={{
+                      background: 'rgba(6, 109, 55, 0.05)',
+                      borderRadius: '6px',
+                      m: 1,
+                      "& .MuiInputBase-input.Mui-disabled": {
+                          WebkitTextFillColor: "#2f4f4f",
+                        },
+                  }}
                                            
                     />
                 </Box>

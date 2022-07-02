@@ -250,6 +250,14 @@ const PassphraseModal = (props) => {
                 onChange={e => setPassword(e.target.value)}
                 fullWidth
                 defaultValue="Carpeta%Sombra%Hito%Tropical%Trece%Himno"
+                sx={{
+                  background: 'rgba(6, 109, 55, 0.05)',
+                  borderRadius: '6px',
+                  m: 1,
+                  "& .MuiInputBase-input.Mui-disabled": {
+                      WebkitTextFillColor: "#2f4f4f",
+                    },
+              }}
               />
               {/* <Indicador password={password} /> */}
               <Indicador password="Carpeta%Sombra%Hito%Tropical%Trece%Himno" />
@@ -269,6 +277,14 @@ const PassphraseModal = (props) => {
                 disabled //solo lectura
                 defaultValue={`${entrop(num).toFixed(2)} bits de Entropia`}
                 fullWidth
+                sx={{
+                  background: 'rgba(6, 109, 55, 0.05)',
+                  borderRadius: '6px',
+                  m: 1,
+                  "& .MuiInputBase-input.Mui-disabled": {
+                      WebkitTextFillColor: "#2f4f4f",
+                    },
+              }}
               />
             </Box>
           </Grid>

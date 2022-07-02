@@ -34,9 +34,12 @@ const MainScreenCardWallet = ({ account, index }) => {
                 minRows={1}
                 maxRows={2}
                 sx={{
-                    backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                    background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
             
@@ -51,7 +54,10 @@ const MainScreenCardWallet = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
@@ -77,7 +83,10 @@ const MainScreenCardWallet = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
         </>

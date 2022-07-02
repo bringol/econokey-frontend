@@ -157,6 +157,14 @@ function ShareDialog(props) {
                             multiline
                             maxRows={8}
                             value={direccion}
+                            sx={{
+                                background: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                m: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
+                            }}
                         />
                 </Box>
             </DialogContent>
@@ -578,6 +586,9 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                                 borderRadius: '6px',
                                 mb: 1,
                                 mt: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
                             }}
                         />
                         <TextField
@@ -592,6 +603,9 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                                 borderRadius: '6px',
                                 mb: 1,
                                 mt: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
                             }}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">
@@ -618,6 +632,9 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                                 borderRadius: '6px',
                                 mb: 1,
                                 mt: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
                             }}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">

@@ -31,9 +31,12 @@ const MainScreenCardAccount = ({ account, index }) => {
                 value={account.userName}
                 disabled
                 sx={{
-                    backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                    background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
             <TextField
@@ -47,7 +50,10 @@ const MainScreenCardAccount = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
@@ -74,7 +80,10 @@ const MainScreenCardAccount = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
             <TextField
@@ -87,7 +96,10 @@ const MainScreenCardAccount = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
         </>

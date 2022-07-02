@@ -318,6 +318,14 @@ function NewAccountPasswordDialog(props) {
                             multiline
                             maxRows={8}
                             value={values.password}
+                            sx={{
+                                background: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                m: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
+                            }}
                         />
                         <Indicador password={values.password} />
                         <InputBase
@@ -330,6 +338,14 @@ function NewAccountPasswordDialog(props) {
                             multiline
                             maxRows={8}
                             value={values.entropia}
+                            sx={{
+                                background: 'rgba(6, 109, 55, 0.05)',
+                                borderRadius: '6px',
+                                m: 1,
+                                "& .MuiInputBase-input.Mui-disabled": {
+                                    WebkitTextFillColor: "#2f4f4f",
+                                  },
+                            }}
                         />
                     </Box>
                 ) : null}

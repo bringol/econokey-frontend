@@ -1,9 +1,20 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { rgbToHex, TextField } from '@mui/material';
+import { makeStyles } from '@mui/styles'; 
+
+
+// const useStyles = makeStyles(theme => ({
+//     disabledInput: {
+//       color: theme.palette.text.primary,
+//     },
+//   }));
+  
+  
 
 const MainScreenCardNote = ({ account, index }) => {
 
-    return (
+    //const classes = useStyles();
+    return (        
         <>
             <TextField
                 required
@@ -19,7 +30,10 @@ const MainScreenCardNote = ({ account, index }) => {
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
                     borderRadius: '6px',
-                    m: 1
+                    m: 1,
+                    "& .MuiInputBase-input.Mui-disabled": {
+                        WebkitTextFillColor: "#2f4f4f",
+                      },
                 }}
             />
         </>
