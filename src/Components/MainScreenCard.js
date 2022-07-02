@@ -8,7 +8,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import logoMain from '../img/logoMain.png';
-
+import Icon from '../Icons/Icon.js';
 import MainScreenCardNote from './MainScreenCardNote';
 import MainScreenCardAccount from './MainScreenCardAccount';
 import MainScreenCardWallet from './MainScreenCardWallet';
@@ -74,7 +74,9 @@ const MainScreenCard = ({ account, index, navigate }) => {
                             <Avatar sx={{
                                 background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)), #FBFDF7'
                             }} aria-label="recipe">
-                                {(account.type === 'note') ? (
+                                <Icon icon={account.icon} />
+                                
+                                {/*(account.type === 'note') ? (
                                     <ArticleIcon sx={{
                                         color: 'black'
                                     }} />
@@ -88,7 +90,7 @@ const MainScreenCard = ({ account, index, navigate }) => {
                                     }} />
                                 ) : (account.type === 'wallet-gen') ? (
                                     <Avatar sx={{ m: 1, width: 50, height: 50}} src={logoMain} alt='logoMain' />
-                                ) : null
+                                ) : null*/
                                 }
                             </Avatar>
                         </Box>

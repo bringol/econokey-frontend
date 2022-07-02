@@ -13,6 +13,7 @@ import NewNote from './Components/NewNote';
 import NewCryptoWallet from './Components/NewCryptoWallet';
 import NewCryptoWalletSelect from './Components/NewCryptoWalletSelect';
 import NewCryptoWalletGenerador from './Components/NewCryptoWalletGenerador';
+import IconCustom from './Icons/IconCustom';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/new-password" element={<ContraseñaCombinada navigate={navigate} />} />
           <Route path="/login" element={<Login navigate={navigate} />} />
           <Route path="/register" element={<Register navigate={navigate} />} />
+          <Route path="/iconcustom" element={<IconCustom />} />
         </Routes>
       </Container>
     );

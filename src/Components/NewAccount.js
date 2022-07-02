@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
+import IconCustom from '../Icons/IconCustom';
 
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
@@ -67,7 +68,7 @@ const NewAccount = ({ navigate }) => {
     const { state } = useLocation();
 
     let account = state ? state : '';
-
+    console.log(account)
     const [values, setValues] = useState({
         id: account.id ? account.id : '',
         titulo: account.titulo ? account.titulo : '',
@@ -76,13 +77,11 @@ const NewAccount = ({ navigate }) => {
         password: account.password ? account.password : '',
         comentarios: account.comentarios ? account.comentarios : '',
         url: account.url ? account.url : '',
+        icon: account.icon ? account.icon : '',
         showPassword: false,
         tituloError: false,
-        descripcionError: false,
         usuarioError: false,
         passwordError: false,
-        comentariosError: false,
-        urlError: false,
         openPassphrase: false,
         openPassword: false,
         disable: true,
@@ -124,17 +123,17 @@ const NewAccount = ({ navigate }) => {
 
     const handleClickClasica = (event) => {
         event.preventDefault();
-        setValues({ 
-            ...values, 
-            openPassword: true 
+        setValues({
+            ...values,
+            openPassword: true
         })
     }
 
     const handleClickPassphrase = (event) => {
         event.preventDefault();
-        setValues({ 
-            ...values, 
-            openPassphrase: true 
+        setValues({
+            ...values,
+            openPassphrase: true
         })
     }
 
@@ -158,7 +157,6 @@ const NewAccount = ({ navigate }) => {
         setValues({
             ...values,
             comentarios: event.target.value,
-            comentariosError: event.target.value === '',
         });
     }
 
@@ -166,7 +164,6 @@ const NewAccount = ({ navigate }) => {
         setValues({
             ...values,
             url: event.target.value,
-            urlError: event.target.value === '',
         });
     }
 
@@ -182,7 +179,6 @@ const NewAccount = ({ navigate }) => {
         setValues({
             ...values,
             descripcion: event.target.value,
-            descripcionError: event.target.value === '',
         });
     }
 
@@ -201,6 +197,7 @@ const NewAccount = ({ navigate }) => {
                 password: values.password,
                 comentarios: values.comentarios,
                 url: values.url,
+                icon: values.icon,
             }
 
             let response = await addElementoBoveda(cuentaNueva);
@@ -221,6 +218,7 @@ const NewAccount = ({ navigate }) => {
                 password: values.password,
                 comentarios: values.comentarios,
                 url: values.url,
+                icon: values.icon,
             }
 
             let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
@@ -234,14 +232,13 @@ const NewAccount = ({ navigate }) => {
         setValues({
             ...values,
             tituloError: values.titulo === '',
-            descripcionError: values.descripcion === '',
             usuarioError: values.userName === '',
             passwordError: values.password === '',
-            comentariosError: values.comentarios === '',
-            urlError: values.url === '',
         });
 
-        if (values.titulo && values.descripcion && values.userName && values.password && values.comentarios && values.url)
+        console.log(values.icon)
+
+        if (values.titulo && values.userName && values.password)
             if (!values.isEditing)
                 crearCuenta();
             else
@@ -278,6 +275,13 @@ const NewAccount = ({ navigate }) => {
         });
     }
 
+    const handleChangeIcon = (newIcon) => {
+        setValues({
+            ...values,
+            icon: newIcon,
+        });
+    }
+
     return (
         <>
             <Box
@@ -308,24 +312,31 @@ const NewAccount = ({ navigate }) => {
                         'EDITAR CUENTA'
                     ) : 'NUEVA CUENTA'}
                 </Typography>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                }}>
+                    <TextField
+                        error={values.tituloError}
+                        required
+                        id={'0'}
+                        label="Titulo"                        
+                        onChange={(event) => handleTitulo(event)}
+                        value={values.titulo}
+                        sx={{
+                            backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                            borderRadius: '6px',
+                            mb: 1,
+                            mt: 1,
+                        }}
+                    />
+                    <IconCustom value={values.icon} onChange={handleChangeIcon}/>
+                </Box>
                 <TextField
-                    error={values.tituloError}
-                    required
-                    id={'0'}
-                    label="Titulo"
-                    fullWidth
-                    onChange={(event) => handleTitulo(event)}
-                    value={values.titulo}
-                    sx={{
-                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                />
-                <TextField
-                    error={values.descripcionError}
-                    required
                     id={'1'}
                     label="Descripcion"
                     fullWidth
@@ -430,8 +441,6 @@ const NewAccount = ({ navigate }) => {
                     </Box>
                     : ''}
                 <TextField
-                    error={values.comentariosError}
-                    required
                     id={'4'}
                     label="Comentarios"
                     fullWidth
@@ -448,8 +457,6 @@ const NewAccount = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.urlError}
-                    required
                     id={'5'}
                     label="URL"
                     fullWidth
