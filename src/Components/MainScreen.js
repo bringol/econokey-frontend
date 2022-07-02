@@ -53,7 +53,7 @@ const MainScreen = ({ navigate }) => {
             }}>
                 {accounts !== undefined && accounts.length > 0 ? (
                     accounts.map((account, index) => {
-                        debugger;
+                        //debugger;
                         return filter == 'none'?
                         (
                             <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
