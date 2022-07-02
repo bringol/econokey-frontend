@@ -42,7 +42,7 @@ ElevationScroll.propTypes = {
 
 export default function MainScreenNav(props) {
 
-  const {topbar, filterButton} = React.useContext(AppContext)
+  const {topbar, filterButton, setFilter} = React.useContext(AppContext)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -60,7 +60,8 @@ const handleHelpClose = (newValue) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    setFilter (e.target.id);
     setAnchorEl(null);
   };
 
@@ -126,9 +127,11 @@ const handleHelpClose = (newValue) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                     >
-                    <MenuItem onClick={handleClose}>Notas</MenuItem>
-                    <MenuItem onClick={handleClose}>Crypto Wallets</MenuItem>
-                    <MenuItem onClick={handleClose}>Cuentas</MenuItem>
+                    <MenuItem id="none" onClick={handleClose}>Reestablecer</MenuItem>
+                    <MenuItem id="note" onClick={handleClose}>Notas</MenuItem>
+                    <MenuItem id="pass" onClick={handleClose}>Contraseña</MenuItem>
+                    <MenuItem id='wallet-gen'onClick={handleClose}>EconoWallets</MenuItem>
+                    <MenuItem id='wallet'onClick={handleClose}>Wallet</MenuItem>
                   </Menu>
                 </>
               )

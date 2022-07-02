@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import { useEffect, useState, useContext } from 'react';
 import AppContext from '../AppContext';
 import MainScreenCard from './MainScreenCard';
 import { getAllElementosBoveda } from '../Controllers/WebService.controller';
@@ -20,30 +19,29 @@ const actions = [
 
 const MainScreen = ({ navigate }) => {
 
-    const { setTopbar, setFilterButton } = React.useContext(AppContext)
-    const [accounts, setAccountsList] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
+    const { setTopbar, setFilterButton, accounts, setAccountsList, filter} = useContext(AppContext)
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
-    React.useEffect(() => {
+    useEffect(() => {
         setTopbar(true);
         setFilterButton(true);
-        async function componentDidMount() {
-            let response = await getAllElementosBoveda();
-
-            if(response.code === 200)
-                setAccountsList(response.data);
-            else
-                console.log(response.mensajeDetalle);
+        if (accounts == undefined || accounts.length == 0)
+        {
+            getAllElementosBoveda().then(response => {
+                if(response.code === 200)
+                    setAccountsList(response.data);
+                else
+                    console.log(response.mensajeDetalle);
+            });
         }
-        componentDidMount();
+       
     }, []);
 
     const handleOnClick = (target) => {
         navigate(target);
     };
-
     return (
         <>
             <Box sx={{
@@ -53,11 +51,16 @@ const MainScreen = ({ navigate }) => {
                 display: 'block',
                 p: 1,
             }}>
-                {(accounts !== undefined) && (accounts.length > 0) ? (
+                {accounts !== undefined && accounts.length > 0 ? (
                     accounts.map((account, index) => {
-                        return (
+                        debugger;
+                        return filter == 'none'?
+                        (
                             <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                        )
+                        ): account.type == filter &&
+                        (
+                            <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
+                        );
                     })
                 ) : (
                     <Typography variant="h5" gutterBottom component="div" fontWeight={'500'} textAlign={'center'}>
