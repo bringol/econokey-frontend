@@ -1,363 +1,352 @@
-import React, { useState, useEffect } from 'react';
-import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
-import {Avatar,Button,CssBaseline,TextField,Input ,Typography, Container, Box,Grid} from '@mui/material';
-import { makeStyles } from '@mui/styles'; 
-import CasinoIcon from '@mui/icons-material/Casino';
-import Dropdown from './Dropdown';
-import Contador from './Contador';
+import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Dialog from '@mui/material/Dialog';
+import { Box, InputBase, Typography, Alert, TextField, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { FaDiceD20 } from 'react-icons/fa'
 import Indicador from "./PasswordStrMeter"
-import {FaDiceD20,FaPlusCircle,FaMinusCircle} from 'react-icons/fa'
-import {BsTrash} from "react-icons/bs"
-import {ImFloppyDisk} from "react-icons/im"
-//sacados del componente Dropdown
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { NavLink } from 'react-router-dom';
-import AppContext from '../AppContext';
+import '../css/die.css'
+import { generatePassphrase } from '../Controllers/WebService.controller';
+import Slide from '@mui/material/Slide';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: "8px",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: "100px",
-  },
-  avatar: {
-    margin: "1px",
-    backgroundColor: "#E7F2E8",
-  },
-  form: {
-    //width: '100%', 
-    // marginTop: "1px",
-    textAlign: 'center',
-    //display: 'flex',
-    //flexDirection: 'column',
-    backgroundColor: "#E7F2E8",
-    //justifyContent: 'center',
-    borderRadius: '16px', borderColor: 'black',display: 'flex', justifyContent: 'center'
-  },
-  botón: {
-    // marginTop: "8px",
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
-    // marginBottom: "100px",
-    // backgroundColor: "#834e6d",
-    size:"50px",
-  },
-  centrado: {
-    margin: '20px auto',
-    display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'justify',
-    color: 'red'
-  },
+function SlideTransition(props) {
+  return <Slide {...props} direction="up" />;
+}
 
+const AlertCopy = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: 'black',
+  background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
+  '&:hover': {
+    background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
+  },
 }));
 
-const Passphrase = (props) => {
+const Passphrase = ({ navigate }) => {
+  const [values, setValues] = useState({
+    openCopyAlert: false,
+    password: '',
+    entropia: '',
+    capitalizacion: '',
+    delimitador: '',
+    num: 15,
+    showPassword: false,
+    rolling: false,
+    missingAmount: false,
+    disableAplicar: true,
+  });
 
-  const { setTopbar, setFilterButton } = React.useContext(AppContext);
-  const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
+  function entrop(longitud) {
+    return (longitud * 12.925)
+  }
 
-  useEffect(() => {
-    setTopbar(true);
-    setFilterButton(false);
-  }, []);
+  function sumar() {
+    setValues({
+      ...values,
+      num: values.num + 1,
+      missingAmount: false,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
 
-  //Carpeta%Sombra%Hito%Tropical%Trece%Himno
-  const handlePasswordToCopy = (event) => {
-    setPasswordToCopy(event.target.value);
-}
-  const classes = useStyles();
-  
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log(num);
-    //console.log(JSON.stringify(num))
-    //console.log(values)
-    console.log(JSON.stringify(values))
-    //console.log(values.delimitador)
-
+  function restar() {
+    setValues({
+      ...values,
+      num: values.num > 0 ? values.num - 1 : 0,
+      missingAmount: values.num - 1 <= 0 ? true : false,
+      showPassword: false,
+      disableAplicar: true,
+    });
 
   }
 
-  const copyToClipboard = (e) => {
-    this.textArea.select();
-    document.execCommand('copy');
-    // This is just personal preference.
-    // I prefer to not show the whole text area selected.
-    e.target.focus();
-    this.setState({ copySuccess: 'Copied!' });
-  };
-  
-
-  const [num, setNum] = useState(0);
-
-
-  const [ password, setPassword ] = useState('');
-  
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const [disable, setDisable] = React.useState(true);
-
-  const [values, setValues]=React.useState({
-    delimitador:"%",
-    capitalizacion:"minúscula",
-    palabras: num,
-    contraseña:"",
-    //entropia:"0 Bits de Entropía",
-    //mockup:false,
-
-  })
-
-  function entrop(longitud)
-{
-	return(longitud*12.925)
-}
-
-  
-  function sumar(){
-    setNum(num+1)
-    
+  const handleCapitalizacion = (event) => {
+    setValues({
+      ...values,
+      capitalizacion: event.target.value,
+      showPassword: false,
+      disableAplicar: true,
+    });
   }
 
-function restar() {
-      if( num > 0)
-      setNum(oldCount => oldCount - 1)
-      
+  const handleDelimitador = (event) => {
+    setValues({
+      ...values,
+      delimitador: event.target.value,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
+
+  const handleGenerarContraseña = () => {
+    if (values.num === 0) {
+      setValues({
+        ...values,
+        missingAmount: true,
+        showPassword: false,
+      });
+      return
+    } else if (values.num === 0) {
+      setValues({
+        ...values,
+        missingAmount: true,
+        showPassword: false,
+      });
+      return
     }
 
-  
-    return (
-      <Grid container className={classes.form} style={{borderStyle:"solid"}}
-        // sx={{ borderRadius: '16px', borderColor: 'black',display: 'flex', justifyContent: 'center' }}
-         >
-           
-          
-          <form  autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Grid item xs={12} >
-                <Box 
-                //style={{borderStyle:"solid"}}
-                
-                sx={{
-                  mt: 2,
-                  alignItems: 'flex-start',
-                  paddingRight:5,   
-                  paddingLeft:5,                 
-                  marginBottom: "50px",               
-                }}
-                >
-                    
-                    <Typography variant="h5" gutterBottom component="div">
-                    Generar Passphrase
-                    </Typography>
-                    
-                        <TextField  inputProps={{maxLength: 1,  style: {textAlign: 'center',fontSize: 20.0, height: 5.0}}}
-                          
-                          name="delimitador"
-                          label="Delimitador"                    
-                          color="secondary"
-                          size="normal"
-                          style = {{justifyContent:'center',width: '40%'}} 
-                          //autoWidth                 
-                          //onChange={e => setDelim(e.target.value)}
-                          onChange={handleChange("delimitador")}
-                          
+    async function generarPassphrase(delimitador, longitud, capitalizacion) {
 
-                          />
-                    
-                      <br/>
-                      <FormControl sx={{mt:2,mb:0, minWidth: 130 }}>
-                        <InputLabel id="dropdown">Capitalización</InputLabel>
-                        <Select
-                          labelId="dropdown"
-                          id="dropdown-autowidth"                          
-                          //onChange={handleChange} no usar
-                          //value={cap}
-                          //onChange={e => setCap(e.target.value)}
-                          onChange={handleChange("capitalizacion")}
-                          value={values.capitalizacion}
-                          label="Capitalización"
-                        >
-                          <MenuItem value="minúscula">
-                            <em>minúscula</em>
-                          </MenuItem>
-                          <MenuItem value={"Título"}>Título</MenuItem>
-                          <MenuItem value={"MAYÚSCULA"}>MAYÚSCULA</MenuItem>
-                          
-                        </Select>
-                      </FormControl>
-                    
-                </Box>
-            </Grid>            
+      setValues({
+        ...values,
+        rolling: true,
+      });
 
-            
+      let response = await generatePassphrase(delimitador, longitud, capitalizacion);
 
-            <Grid item xs={12} >                      
-                <Box 
-                sx={{
-                  mt: 0,
-                  paddingRight:5,   
-                  paddingLeft:5,
-                                  
-                                 
-                }}
-                >
-                
-                <Typography variant="h6" gutterBottom component="div">
-                    Cantidad de palabras
-                </Typography>
-                  
-                  <Typography sx={{ fontSize: 60 }}>
-                    {num}
-                  </Typography>
-                     {/*Botón de restar palabra*/}              
-                    <Button
-                     onClick={restar}
-                     sx={{ fontSize: 30,color:"#0F1833" }}                     
-                     >
-                       <FaMinusCircle/>                    
-                     </Button>
-                    {/*Botón de sumar palabra*/}  
-                    <Button
-                     onClick={sumar}
-                     sx={{ fontSize: 30,color:"#0F1833" }}
-                     >
-                       <FaPlusCircle/>
-                    </Button>
-                
-                
-                </Box>
-              </Grid>
+      if (response.code === 200) {
+        setTimeout(() => {
+          setValues({
+            ...values,
+            password: response.data.passphrase,
+            entropia: `${entrop(values.num).toFixed(2)} bits de Entropia`,
+            showPassword: true,
+            rolling: false,
+            disableAplicar: false,
+          });
+        }, 1000)
+      }
+      else {
+        console.log(response.mensajeDetalle);
+      }
+    }
 
-                {/* DADO */}
-              <Grid item xs={12} >              
-                  <Typography sx={{ fontSize: 25,mt:4}}>
-                    Generar
-                  </Typography>
-                  <Button 
-                  type="submit"
-                  //onSubmit={handleChange("palabras".getNum)}
-                  //onSubmit={setValues({ ...values, palabras: palabras.getNum})}
-                  //onSubmit={setPalabra}
+    generarPassphrase(values.delimitador, values.num, values.capitalizacion);
+  };
 
-                  //Cuando suceda el submit, guarda el valor de num (cant de palabras) en el Palabras del form
-                  //EDIT: Link donde explica el problema de usar onClick={} en lugar de onClick={() =>  https://stackoverflow.com/questions/59304283/error-too-many-re-renders-react-limits-the-number-of-renders-to-prevent-an-in
-                  //onSubmit={(handleChange(values.palabras=num)  && handleChange(values.contraseña="carpeta%sombra%hito%tropical%trece%caballo") && handleChange(values.entropia=77.5)) }
-                  onSubmit={ (handleChange(values.palabras=num) ) }
-                  onClick={() =>setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
-                  sx={{ fontSize: 100,color:"#0F1833"}}
-                  >
-                     <FaDiceD20 />
-                  </Button>
-                  <Box mt={5}></Box>
-                </Grid>
-            {!disable && (
-                <Grid item xs={12} >
-                  <Box mt={3} m={3}>            
-                      <TextField  
-                      id="contraseña"
-                      label="Contraseña"
-                      variant="standard"
-                      disabled
-                      //type="password"
-                      //ver metodos mostrar y esconder contraseña
-                      color="secondary"
-                      size="big"
-                      multiline
-                      maxRows={8}
-                      onChange={e => setPassword(e.target.value)}
-                      fullWidth
-                      //testing
-                      //defaultValue={values.contraseña}
-                      defaultValue="Carpeta%Sombra%Hito%Tropical%Trece%Himno"
-                      />
-                      {/* <Indicador password={password} /> */}
-                      <Indicador password="Carpeta%Sombra%Hito%Tropical%Trece%Himno" />
+  const handleCancelar = () => {
+    navigate('./')
+  };
 
-                  </Box>
-                </Grid>
-            )}
-            {!disable && (
-            <Grid item xs={12} >
-                <Box mt={3} m={3}>
-            
-                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 25.0}}}
-                    id="entropía"
-                    //label="Entropía"
-                    variant="standard"
-                    color="secondary"
-                    size="big"
-                    disabled //solo lectura
-                    //onSubmit={handleChange()}
-                    sx={{
-                    background: 'rgba(6, 109, 55, 0.05)',
-                    borderRadius: '6px',
-                    m: 1,
-                    "& .MuiInputBase-input.Mui-disabled": {
-                        WebkitTextFillColor: "#2f4f4f",
-                      },
-                }}
-                    defaultValue={`${entrop(num).toFixed(2)} bits de Entropia`}
-                    //defaultValue={values.mockup == true ? 2:0}               
-                    //onChange={e => setPassword(e.target.value)}
-                    fullWidth                          
-                    />
-                </Box>
-                
-            </Grid>
-            )}
-          
-            <Grid container>
+  const handleCopiar = () => {
+    navigator.clipboard.writeText(values.password)
+    setValues({
+      ...values,
+      openCopyAlert: true,
+    });
+  };
 
-              <Grid item xs={6}>
-                  <Box
-                    mt={3}
-                    // sx={{width: 100}}
-                    >
-                      <NavLink to="/" style={{ textDecoration: 'none'}}>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:2.5}}
-                          
-                          >
-                          Cancelar <BsTrash/>
-                        </Button>
-                      </NavLink>
-                      
-                  </Box>
-              </Grid>
-              
-                  <Grid item xs={6}>
-                    <Box  
-                    mt={3}
-                    // sx={{width: 100}}
-                    >
-                      <NavLink to="/" style={{ textDecoration: 'none'}}>
-                        <Button
-                                type="submit"                                
-                                variant="contained"
-                                sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
-                                disabled={disable}
-                                onClick={()=>(props.flagPassword(!disable))}
-                            >
-                        Copiar <ImFloppyDisk />
-                        </Button>
-                      </NavLink>
-                    </Box>
-                    <Box mt={3}></Box>
-                  </Grid>
-              </Grid>
-          </form>
-        </Grid>
-    )  
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setValues({
+      ...values,
+      openCopyAlert: false,
+    });
+  };
+
+  return (
+    <Dialog
+      //sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
+      fullScreen
+      scroll='paper'
+      open={true}
+    >
+      <DialogTitle textAlign={'center'} sx={{
+        background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
+      }}>Generador de Passphrase</DialogTitle>
+      <DialogContent dividers>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+        }}
+        >
+          <Typography variant="h6" gutterBottom component="div">
+            Cantidad de palabras
+          </Typography>
+          <Typography sx={{ fontSize: 50 }}>
+            {values.num}
+          </Typography>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          mb: 1
+        }}>
+          <Button
+            onClick={restar}
+            sx={{ fontSize: 30, color: "#0F1833" }}
+          >
+            <RemoveCircleIcon />
+          </Button>
+          <Button
+            onClick={sumar}
+            sx={{ fontSize: 30, color: "#0F1833" }}
+          >
+            <AddCircleIcon />
+          </Button>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          m: 1
+        }}>
+          <TextField
+            id={'delimitador'}
+            label="Delimitador"
+            onChange={(event) => handleDelimitador(event)}
+            value={values.delimitador}
+            sx={{
+              borderRadius: '6px',
+              mb: 1,
+              mt: 1,
+              mr: 1,
+              width: 1 / 1.8,
+            }}
+            inputProps={{
+              maxLength: 1,
+              style: {
+                textAlign: 'center',
+              }
+            }}
+          />
+          <FormControl fullWidth>
+            <InputLabel id="selectCapitalizacionLabel">Capitalizacion</InputLabel>
+            <Select
+              labelId="selectCapitalizacionLabel"
+              id="selectCapitalizacion"
+              value={values.capitalizacion}
+              label="Capitalizacion"
+              onChange={handleCapitalizacion}
+            >
+              <MenuItem value={'MAYÚSCULA'}>MAYÚSCULA</MenuItem>
+              <MenuItem value={'minúscula'}>minúscula</MenuItem>
+              <MenuItem value={'Título'}>Título</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          m: 1
+        }}>
+          <Typography variant="h5" gutterBottom component="div">
+            Generar
+          </Typography>
+          <Button
+            onClick={handleGenerarContraseña} //muestra la contraseña, la entropía y desbloquea el boton utilizar
+            sx={{ fontSize: 90, color: "#0F1833" }}
+          >
+            <FaDiceD20 className={`${values.rolling && 'Die-shaking'}`} />
+          </Button>
+        </Box>
+        {(values.missingAmount) ? (
+          <Alert
+            sx={{ mb: 2 }}
+            severity="error"
+          >
+            Longitud debe ser mayor a 0
+          </Alert>
+        ) : null}
+        {(values.showPassword) ? (
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 1,
+            textAlign: 'center',
+          }}>
+            <InputBase
+              inputProps={{
+                style: { textAlign: "center", fontSize: 24 }
+              }}
+              fullWidth
+              id="contraseña"
+              disabled
+              multiline
+              maxRows={8}
+              value={values.password}
+              sx={{
+                background: 'rgba(6, 109, 55, 0.05)',
+                borderRadius: '6px',
+                m: 1,
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#2f4f4f",
+                },
+              }}
+            />
+            <Indicador password={values.password} />
+            <InputBase
+              inputProps={{
+                style: { textAlign: "center" }
+              }}
+              id="contraseña"
+              label="Contraseña"
+              disabled
+              multiline
+              maxRows={8}
+              value={values.entropia}
+              sx={{
+                background: 'rgba(6, 109, 55, 0.05)',
+                borderRadius: '6px',
+                m: 1,
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#2f4f4f",
+                },
+              }}
+            />
+          </Box>
+        ) : null}
+      </DialogContent>
+      <DialogActions sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Button autoFocus onClick={handleCancelar} variant="outlined">
+          <Typography sx={{ p: 1 }}>CERRAR</Typography> <CancelIcon />
+        </Button>
+        <ColorButton onClick={handleCopiar} disabled={values.disableAplicar} variant="contained">
+          <Typography sx={{ p: 1 }}>COPIAR</Typography> <ContentCopyIcon />
+        </ColorButton>
+      </DialogActions>
+      <Snackbar disableWindowBlurListener={true} open={values.openCopyAlert} autoHideDuration={1500} onClose={handleCloseAlert} TransitionComponent={SlideTransition}>
+        <AlertCopy onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+          Contraseña copiada al portapapeles!
+        </AlertCopy>
+      </Snackbar>
+    </Dialog>
+
+  );
 }
 
-export default Passphrase
+export default Passphrase;

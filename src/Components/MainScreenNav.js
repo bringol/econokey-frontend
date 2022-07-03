@@ -10,9 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AppContext from '../AppContext';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HelpDialog from './HelpDialog';
-import { Button } from '@mui/material';
 import { FaBook } from 'react-icons/fa';
 
 function ElevationScroll(props) {
@@ -42,26 +40,18 @@ ElevationScroll.propTypes = {
 
 export default function MainScreenNav(props) {
 
-  const {topbar, filterButton, setFilter} = React.useContext(AppContext)
+  const { topbar, filterButton, setFilter } = React.useContext(AppContext)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [open, setOpen] = React.useState(false);
-
-  const handleClickHelpItem = () => {
-    setOpen(true);
-};
-
-const handleHelpClose = (newValue) => {
-    setOpen(false);
-};
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = (e) => {
-    setFilter (e.target.id);
+    setFilter(e.target.id);
     setAnchorEl(null);
   };
 
@@ -85,31 +75,31 @@ const handleHelpClose = (newValue) => {
             }}>
               Bóveda - BoyerNicolas
             </Typography>
-            <IconButton 
+            <IconButton
               aria-label="glosario"
               onClick={() => setOpen(true)}
-              sx={{color:"#0F1833"}}
-              >
-              <FaBook/>
+              sx={{ color: "#0F1833" }}
+            >
+              <FaBook />
             </IconButton>
             <HelpDialog
-                id={"help-menu"}
-                keepMounted
-                open={open}
-                onClose={() => setOpen(false)}
+              id={"help-menu"}
+              keepMounted
+              open={open}
+              onClose={() => setOpen(false)}
             />
             {
               filterButton && (
                 <>
-                  <IconButton sx={{ 
+                  <IconButton sx={{
                     color: '#1A1C19'
-                    }} 
-                    size="large" 
+                  }}
+                    size="large"
                     aria-label="search"
                     aria-controls='menu-appbar'
                     aria-haspopup='true'
                     onClick={handleMenu}
-                    >
+                  >
                     <FilterListIcon />
                   </IconButton>
                   <Menu
@@ -126,12 +116,12 @@ const handleHelpClose = (newValue) => {
                     }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
-                    >
+                  >
                     <MenuItem id="none" onClick={handleClose}>Reestablecer</MenuItem>
                     <MenuItem id="note" onClick={handleClose}>Notas</MenuItem>
                     <MenuItem id="pass" onClick={handleClose}>Contraseña</MenuItem>
-                    <MenuItem id='wallet-gen'onClick={handleClose}>EconoWallets</MenuItem>
-                    <MenuItem id='wallet'onClick={handleClose}>Wallet</MenuItem>
+                    <MenuItem id='wallet-gen' onClick={handleClose}>EconoWallets</MenuItem>
+                    <MenuItem id='wallet' onClick={handleClose}>Wallet</MenuItem>
                   </Menu>
                 </>
               )

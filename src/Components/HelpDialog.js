@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import DialogTitle from '@mui/material/DialogTitle';
+import React from 'react';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import DialogContentText from '@mui/material/DialogContentText';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ListItemText from '@mui/material/ListItemText';
@@ -28,12 +24,11 @@ const glosario = [
     {titulo: 'Llave Privada', descripcion: 'Funciona como una firma digital con se verifica quién es el propietario de las criptomonedas. Es muy importante que siempre recordar la llave privada. Sin ella no se acceder a las criptomonedas almacenadas.'},
     {titulo: 'Llave Pública', descripcion: 'Una Llave privada y una Llave pública están matemáticamente relacionadas. Esta clave puede ser conocida por los demás sin suponer un riesgo, no da acceso a las criptomonedas, pero es indispensable para recibirlas de alguien.'},
     // {titulo: '', descripcion: ''},
-    // {titulo: '', descripcion: ''},
 ];
 
 
 function HelpDialog(props) {
-    const {onClose, value: valueProp, open, ...other } = props;     
+    const {onClose, open } = props;     
     return (
         <Dialog
             fullScreen

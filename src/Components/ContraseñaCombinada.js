@@ -1,404 +1,410 @@
-import React, { useState, useEffect } from 'react';
-import {Avatar,Button,CssBaseline,TextField,Input ,Typography, Container, Box,Grid} from '@mui/material';
-import { makeStyles } from '@mui/styles'; 
+import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Dialog from '@mui/material/Dialog';
+import { Box, FormControlLabel, FormGroup, InputBase, Switch, Typography, Alert } from '@mui/material';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { FaDiceD20 } from 'react-icons/fa'
 import Indicador from "./PasswordStrMeter"
-import {FaDiceD20,FaPlusCircle,FaMinusCircle} from 'react-icons/fa'
-import {BsTrash} from "react-icons/bs"
-import {ImFloppyDisk} from "react-icons/im"
-import { NavLink } from 'react-router-dom';
-import AppContext from '../AppContext';
+import '../css/die.css'
+import { generatePassword } from '../Controllers/WebService.controller';
+import Slide from '@mui/material/Slide';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import styled from 'styled-components';
 
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch'
+function SlideTransition(props) {
+  return <Slide {...props} direction="up" />;
+}
 
+const AlertCopy = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: "8px",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: "100px",
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: 'black',
+  background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
+  '&:hover': {
+    background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
   },
-  avatar: {
-    margin: "1px",
-    backgroundColor: "#E7F2E8",
-  },
-  form: {
-    //width: '100%', 
-    // marginTop: "1px",
-    textAlign: 'center',
-    //display: 'flex',
-    //flexDirection: 'column',
-    backgroundColor: "#E7F2E8",
-    //justifyContent: 'center',
-    borderRadius: '16px', borderColor: 'black',display: 'flex', justifyContent: 'center'
-  },
-  botón: {
-    // marginTop: "8px",
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
-    // marginBottom: "100px",
-    // backgroundColor: "#834e6d",
-    size:"50px",
-  },
-  centrado: {
-    margin: '20px auto',
-    display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'justify',
-    color: 'red'
-  },
-
 }));
 
-const ContraseñaCombinada = (navigate) => {
+const ContraseñaCombinada = ({ navigate }) => {
+  const [values, setValues] = useState({
+    openCopyAlert: false,
+    password: '',
+    entropia: '',
+    num: 15,
+    flagMayuscula: true,
+    flagMinuscula: true,
+    flagNumero: false,
+    flagSimbolo: false,
+    showPassword: false,
+    rolling: false,
+    missingType: false,
+    missingAmount: false,
+    disableAplicar: true,
+  });
 
-  const { setTopbar, setFilterButton } = React.useContext(AppContext);
-  const [passwordToCopy, setPasswordToCopy] = useState('Carpeta%Sombra%Hito%Tropical%Trece%Himno');
-
-  useEffect(() => {
-    setTopbar(true);
-    setFilterButton(false);
-  }, []);
-
-  //Carpeta%Sombra%Hito%Tropical%Trece%Himno
-  const handlePasswordToCopy = (event) => {
-    setPasswordToCopy(event.target.value);
-}
-  const classes = useStyles();
-  
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log(num);
-    console.log(JSON.stringify(values))
-    // console.log("Incluir Mayuscula?",flagMayuscula);
-    // console.log("Incluir Minuscula?",flagMinuscula);
-    // console.log("Incluir Numeros?",flagNumero);
-    // console.log("Incluir Simbolos?",flagSimbolo);
-    // console.log("Incluir ASCII?",flagASCII);
-  }
-
-  const copyToClipboard = (e) => {
-    this.textArea.select();
-    document.execCommand('copy');
-    // This is just personal preference.
-    // I prefer to not show the whole text area selected.
-    e.target.focus();
-    this.setState({ copySuccess: 'Copied!' });
-  };
-  
-  const [num, setNum] = useState(0);
-
- 
-  const [ password, setPassword ] = useState('');
-  
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const [disable, setDisable] = React.useState(true);
-
-//No me cabe duda que debe haber una manera mas elegante
-
-  const [flagMayuscula, setflagMayuscula] = React.useState(false);
   const handleMayuscula = (event) => {
-    setflagMayuscula(event.target.checked);
-  };
-
-  const [flagMinuscula, setflagMinuscula] = React.useState(false);
-  const handleMinuscula = (event) => {
-    setflagMinuscula(event.target.checked);
-  };
-
-  const [flagNumero, setflagNumero] = React.useState(false);
-  const handleNumero = (event) => {
-    setflagNumero(event.target.checked);
-  };
-
-  const [flagSimbolo, setflagSimbolo] = React.useState(false);
-  const handleSimbolo = (event) => {
-    setflagSimbolo(event.target.checked);
-  };
-
-  const [flagASCII, setflagASCII] = React.useState(false);
-  const handleASCII = (event) => {
-    setflagASCII(event.target.checked);
-  };
-  
-
-
-
-const [values, setValues]=React.useState({
-    mayusculas:false,
-    minusculas:false,
-    numeros:false,
-    simbolos:false,
-    asciiExtendido:false,
-    longitud: num,
-    contraseña:"",
-    entropia:"",
-
-  })
-
-
-  
-  function sumar(){
-    setNum(num+1)
-   
+    setValues({
+      ...values,
+      flagMayuscula: event.target.checked,
+      missingType: !event.target.checked &&
+        !values.flagMinuscula &&
+        !values.flagNumero &&
+        !values.flagSimbolo,
+      showPassword: false,
+      disableAplicar: true,
+    });
   }
 
-function restar() {
-      if( num > 0)
-      setNum(oldCount => oldCount - 1)
+  const handleMinuscula = (event) => {
+    setValues({
+      ...values,
+      flagMinuscula: event.target.checked,
+      missingType: !event.target.checked &&
+        !values.flagMayuscula &&
+        !values.flagNumero &&
+        !values.flagSimbolo,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
 
+  const handleNumero = (event) => {
+    setValues({
+      ...values,
+      flagNumero: event.target.checked,
+      missingType: !event.target.checked &&
+        !values.flagMinuscula &&
+        !values.flagMayuscula &&
+        !values.flagSimbolo,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
+
+  const handleSimbolo = (event) => {
+    setValues({
+      ...values,
+      flagSimbolo: event.target.checked,
+      missingType: !event.target.checked &&
+        !values.flagMinuscula &&
+        !values.flagNumero &&
+        !values.flagMayuscula,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
+
+  function sumar() {
+    setValues({
+      ...values,
+      num: values.num + 1,
+      missingAmount: false,
+      showPassword: false,
+      disableAplicar: true,
+    });
+  }
+
+  function restar() {
+    setValues({
+      ...values,
+      num: values.num > 0 ? values.num - 1 : 0,
+      missingAmount: values.num - 1 <= 0 ? true : false,
+      showPassword: false,
+      disableAplicar: true,
+    });
+
+  }
+
+  const handleGenerarContraseña = () => {
+    if (!values.flagMinuscula && !values.flagMayuscula && !values.flagSimbolo && !values.flagNumero && values.num === 0) {
+      setValues({
+        ...values,
+        missingType: true,
+        missingAmount: true,
+        showPassword: false,
+      });
+      return
+    } else if (values.num === 0) {
+      setValues({
+        ...values,
+        missingAmount: true,
+        showPassword: false,
+      });
+      return
+    } else if (!values.flagMinuscula && !values.flagMayuscula && !values.flagSimbolo && !values.flagNumero) {
+      setValues({
+        ...values,
+        missingType: true,
+        showPassword: false,
+      });
+      return
     }
 
-  
-    return (
-      <Grid container className={classes.form} style={{borderStyle:"solid"}}>
-           
-          
-          <form  autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Grid item xs={12} >
-                <Box 
-                //style={{borderStyle:"solid"}}
-                
-                sx={{
-                  mt: 2,
-                  alignItems: 'flex-start',
-                  paddingRight:5,   
-                  paddingLeft:5,                 
-                  marginBottom: "50px",               
-                }}
-                >
-                    
-                    <Typography variant="h5" gutterBottom component="div">
-                    Generar Contraseña
-                    </Typography>
-                </Box>
+    async function generarPassword(lower, upper, digit, symbol, longitud) {
+      setValues({
+        ...values,
+        rolling: true,
+      });
 
-                <Grid container>
-                    
-                    <FormGroup
-                        sx={{
-                        mt: -5,              
-                        marginBottom: "10px",                  
-                        paddingX:75,                                    
-                        }}>
-                        <FormControlLabel sx={{paddingY:1}}
-                            control={<Switch />}
-                            label="Mayúsculas [A-Z]"
-                            checked={flagMayuscula}
-                            onChange={handleMayuscula}                            
-                            //labelPlacement="top"
-                        />
-                        <FormControlLabel sx={{paddingY:1}}
-                            control={<Switch  />}
-                            label="Minúsculas [a-z]"
-                            checked={flagMinuscula}
-                            onChange={handleMinuscula}
-                        />
-                        <FormControlLabel sx={{paddingY:1}}
-                            control={<Switch  />}
-                            label="Números [0-9]"
-                            checked={flagNumero}
-                            onChange={handleNumero}
+      let response = await generatePassword(lower, upper, digit, symbol, longitud);
+      if (response.code === 200) {
 
-                        />
-                        <FormControlLabel sx={{paddingY:1}}
-                            control={<Switch  />}
-                            label="Símbolos Especiales /*+{..."
-                            checked={flagSimbolo}
-                            onChange={handleSimbolo}
-                        />
+        var ps = 0, min = 26, may = 26, num = 10, sim = 25
+        if (values.flagMinuscula)
+          ps += min
+        if (values.flagMayuscula)
+          ps += may
+        if (values.flagSimbolo)
+          ps += sim
+        if (values.flagNumero)
+          ps += num
 
-                        <FormControlLabel sx={{paddingY:1}}
-                            control={<Switch  />}
-                            label="ASCII Extendido €Ž¶..."
-                            checked={flagASCII}
-                            onChange={handleASCII}
-                            
-                        />
-                       
-                    </FormGroup>
-                    
-                    </Grid>     
-                
-            </Grid>            
+        function entrop(longitud, sumatoriaSimbolos) {
+          return (Math.log2(Math.pow(sumatoriaSimbolos, longitud)))
+        }
 
-            
+        setValues({
+          ...values,
+          rolling: true,
+        });
 
-            <Grid item xs={12} >                      
-                <Box 
-                sx={{
-                  mt: 0,
-                  paddingRight:5,   
-                  paddingLeft:5,                                 
-                                 
-                }}
-                >
-                
-                <Typography variant="h6" gutterBottom component="div">
-                    Longitud
-                </Typography>
-                  
-                  <Typography sx={{ fontSize: 60 }}>
-                    {num}
-                  </Typography>
-                     {/*Botón de restar palabra*/}              
-                    <Button
-                     onClick={restar}
-                     sx={{ fontSize: 30,color:"#0F1833" }}                     
-                     >
-                       <FaMinusCircle/>                    
-                     </Button>
-                    {/*Botón de sumar palabra*/}  
-                    <Button
-                     onClick={sumar}
-                     sx={{ fontSize: 30,color:"#0F1833" }}
-                     >
-                       <FaPlusCircle/>
-                    </Button>
-                
-                
-                </Box>
-              </Grid>
+        setTimeout(() => {
+          setValues({
+            ...values,
+            password: response.data,
+            entropia: `${entrop(values.num, ps).toFixed(2)} bits de Entropia`,
+            showPassword: true,
+            rolling: false,
+            disableAplicar: false,
+          });
+        }, 1000)
+      }
+      else {
+        console.log(response);
+      }
+    }
+    generarPassword(values.flagMinuscula, values.flagMayuscula, values.flagNumero, values.flagSimbolo, values.num);
+  };
 
-                {/* DAAAADDOOOO */}
-              <Grid item xs={12} >              
-                  <Typography sx={{ fontSize: 25,mt:4}}>
-                    Generar
-                  </Typography>
-                  <Button 
-                  type="submit"
-                  onSubmit={
-                    handleChange(values.longitud=num) &&
-                    handleChange(values.mayusculas=flagMayuscula) && 
-                    handleChange(values.minusculas=flagMinuscula) &&
-                    handleChange(values.numeros=flagNumero) &&
-                    handleChange(values.simbolos=flagSimbolo) &&
-                    handleChange(values.asciiExtendido=flagASCII) &&
-                    handleChange(values.contraseña=".52<>]1I:LO`QnOd;5")               
-                  }
-                  onClick={() =>setDisable(!disable)} //muestra la contraseña, la entropía y desbloquea el boton utilizar
-                  sx={{ fontSize: 80,color:"#0F1833"}}
-                  >
-                     <FaDiceD20 />
-                  </Button>
-                  <Box mt={5}></Box>
-                </Grid>
-            {!disable && (
-               <Grid container spacing={1} justify="center">
-                <Grid item xs={12} >
-                <Box mt={1} mx={26}>      
-                      <TextField  inputProps={{style: {textAlign: 'center',fontSize: 20.0}}} 
-                      id="contraseña"
-                      label="Contraseña"
-                      variant="standard"
-                      disabled                      
-                      color="secondary"
-                      size="normal"
-                      multiline
-                      maxRows={8}
-                      onChange={e => setPassword(e.target.value)}
-                      fullWidth
-                      style = {{justifyContent:'center',width: '35%'}} 
-                      defaultValue=".52<>]1I:LO`QnOd;5" //Longitud 18
-                      sx={{
-                        background: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        m: 1,
-                        "& .MuiInputBase-input.Mui-disabled": {
-                            WebkitTextFillColor: "#2f4f4f",
-                          },
-                    }}
-                      />
-                      </Box>
-                      {/* <Indicador password={password} /> */}
-                      <Box mt={1} ml={63}  mr={63}>  
-                      <Indicador password=".52<>]1I:LO`QnOd;5" />
+  const handleCancelar = () => {
+    navigate('./')
+  };
 
-                  </Box>
-                </Grid>
-              </Grid>
-            )}
-            {!disable && (
-            
-                <Box m={1} >
-            
-                    <TextField inputProps={{style: {textAlign: 'center',fontSize: 25.0}}}
-                    id="entropía"
-                    //label="Entropía"
-                    variant="standard"
-                    color="secondary"
-                    disabled //solo lectura
-                    defaultValue="100 Bits de Entropía"
-                    sx={{
-                      background: 'rgba(6, 109, 55, 0.05)',
-                      borderRadius: '6px',
-                      m: 1,
-                      "& .MuiInputBase-input.Mui-disabled": {
-                          WebkitTextFillColor: "#2f4f4f",
-                        },
-                  }}
-                                           
-                    />
-                </Box>
-                
-            
-            )}
-          
-            <Grid container spacing={1} justify="center">
+  const handleCopiar = () => {
+    navigator.clipboard.writeText(values.password)
+    setValues({
+      ...values,
+      openCopyAlert: true,
+    });
+  };
 
-              <Grid item xs={6}>
-                  <Box
-                    mt={3}
-                    ml={60}
-                    //sx={{width: 50}}                  
-                    >
-                      <NavLink to="/" style={{ textDecoration: 'none'}}>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          sx={{color:"#EB5757", backgroundColor: "#E7F2E8" ,borderRadius: '16px', paddingX:2.5}}                          
-                          >
-                          Cancelar <BsTrash/>
-                        </Button>
-                      </NavLink>                      
-                  </Box>
-                </Grid>
-              
-                <Grid item xs={6}>
-                  <Box  
-                  mt={3}
-                  mr={60}
-                  //sx={{width: 50}}
-                  >
-                    <NavLink
-                     to="/"
-                     state={values.contraseña}
-                     style={{ textDecoration: 'none'}}
-                     >
-                      <Button
-                              type="submit"
-                              variant="contained"
-                              sx={{color:"#0F1833", backgroundColor: "#D3E8D3",borderRadius: '16px', paddingX:4}}
-                              disabled={disable}
-                          >
-                      Copiar <ImFloppyDisk />
-                      </Button>
-                    </NavLink>
-                  </Box>
-                  <Box mt={3}></Box>
-                </Grid>
-              </Grid>
-          </form>
-      </Grid>
-    )  
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setValues({
+      ...values,
+      openCopyAlert: false,
+    });
+  };
+
+  return (
+    <Dialog
+      //sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
+      fullScreen
+      scroll='paper'
+      open={true}
+    >
+      <DialogTitle textAlign={'center'} sx={{
+        background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
+      }}>Generador de Contraseñas</DialogTitle>
+      <DialogContent dividers>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+        }}
+        >
+          <Typography variant="h6" gutterBottom component="div">
+            Longitud
+          </Typography>
+          <Typography sx={{ fontSize: 50 }}>
+            {values.num}
+          </Typography>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          mb: 1
+        }}>
+          <Button
+            onClick={restar}
+            sx={{ fontSize: 30, color: "#0F1833" }}
+          >
+            <RemoveCircleIcon />
+          </Button>
+          <Button
+            onClick={sumar}
+            sx={{ fontSize: 30, color: "#0F1833" }}
+          >
+            <AddCircleIcon />
+          </Button>
+        </Box>
+        <FormGroup
+          sx={{
+            mb: 1
+          }}>
+          <FormControlLabel sx={{ paddingY: 0 }}
+            control={<Switch />}
+            label="MAYÚSCULAS [A-Z]"
+            checked={values.flagMayuscula}
+            onChange={handleMayuscula}
+          />
+          <FormControlLabel sx={{ paddingY: 0 }}
+            control={<Switch />}
+            label="minúsculas [a-z]"
+            checked={values.flagMinuscula}
+            onChange={handleMinuscula}
+          />
+          <FormControlLabel sx={{ paddingY: 0 }}
+            control={<Switch />}
+            label="Números [0-9]"
+            checked={values.flagNumero}
+            onChange={handleNumero}
+          />
+          <FormControlLabel sx={{ paddingY: 0 }}
+            control={<Switch />}
+            label="Símbolos Especiales"
+            checked={values.flagSimbolo}
+            onChange={handleSimbolo}
+          />
+          {/* <FormControlLabel sx={{ paddingY: 0 }}
+                        disabled
+                        control={<Switch />}
+                        label="ASCII Extendido"
+                        checked={values.flagASCII}
+                        onChange={handleASCII}
+                    /> */}
+        </FormGroup>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          m: 1
+        }}>
+          <Typography variant="h5" gutterBottom component="div">
+            Generar
+          </Typography>
+          <Button
+            onClick={handleGenerarContraseña} //muestra la contraseña, la entropía y desbloquea el boton utilizar
+            sx={{ fontSize: 90, color: "#0F1833" }}
+          >
+            <FaDiceD20 className={`${values.rolling && 'Die-shaking'}`} />
+          </Button>
+        </Box>
+        {(values.missingType) ? (
+          <Alert
+            sx={{ mb: 2 }}
+            severity="error"
+          >
+            Debe seleccionar al menos un tipo
+          </Alert>
+        ) : null}
+        {(values.missingAmount) ? (
+          <Alert
+            sx={{ mb: 2 }}
+            severity="error"
+          >
+            Longitud debe ser mayor a 0
+          </Alert>
+        ) : null}
+        {(values.showPassword) ? (
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 1,
+            textAlign: 'center',
+          }}>
+            <InputBase
+              inputProps={{
+                style: { textAlign: "center", fontSize: 24 }
+              }}
+              fullWidth
+              id="contraseña"
+              disabled
+              multiline
+              maxRows={8}
+              value={values.password}
+              sx={{
+                background: 'rgba(6, 109, 55, 0.05)',
+                borderRadius: '6px',
+                m: 1,
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#2f4f4f",
+                },
+              }}
+            />
+            <Indicador password={values.password} />
+            <InputBase
+              inputProps={{
+                style: { textAlign: "center" }
+              }}
+              id="contraseña"
+              label="Contraseña"
+              disabled
+              multiline
+              maxRows={8}
+              value={values.entropia}
+              sx={{
+                background: 'rgba(6, 109, 55, 0.05)',
+                borderRadius: '6px',
+                m: 1,
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#2f4f4f",
+                },
+              }}
+            />
+          </Box>
+        ) : null}
+      </DialogContent>
+      <DialogActions sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Button autoFocus onClick={handleCancelar} variant="outlined">
+          <Typography sx={{ p: 1 }}>CERRAR</Typography> <CancelIcon />
+        </Button>
+        <ColorButton onClick={handleCopiar} disabled={values.disableAplicar} variant="contained">
+          <Typography sx={{ p: 1 }}>COPIAR</Typography> <ContentCopyIcon />
+        </ColorButton>
+      </DialogActions>
+      <Snackbar disableWindowBlurListener={true} open={values.openCopyAlert} autoHideDuration={1500} onClose={handleCloseAlert} TransitionComponent={SlideTransition}>
+        <AlertCopy onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+          Contraseña copiada al portapapeles!
+        </AlertCopy>
+      </Snackbar>
+    </Dialog>
+  );
 }
 
-export default ContraseñaCombinada
+export default ContraseñaCombinada;

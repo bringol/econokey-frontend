@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import NewAccountPasswordDialog from './NewAccountPasswordDialog';
-import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
-import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
-
-import { IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
-import CancelIcon from '@mui/icons-material/Cancel';
+import React from 'react';
+import { Box, Typography, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
 
 import logoBtcWallet from '../img/btcwallet.jpg';
 //pantalla generar o agregar
 const NewCryptoWalletSelect = ({ navigate }) => {
-
-    const [values, setValues] = useState({
-    });
 
     const handleAgregar = () => {
         navigate('../wallet')

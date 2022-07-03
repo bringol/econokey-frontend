@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import NewAccountPasswordDialog from './NewAccountPasswordDialog';
-import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda, generateCryptoWallet } from '../Controllers/WebService.controller';
 import Share from '@mui/icons-material/Share';
-import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText, InputBase } from '@mui/material';
+import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText, InputBase } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import DeleteIcon from '@mui/icons-material/Delete';

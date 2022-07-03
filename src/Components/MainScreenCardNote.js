@@ -1,19 +1,8 @@
 import React from 'react';
-import { rgbToHex, TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles'; 
-
-
-// const useStyles = makeStyles(theme => ({
-//     disabledInput: {
-//       color: theme.palette.text.primary,
-//     },
-//   }));
-  
+import { TextField } from '@mui/material'; 
   
 
 const MainScreenCardNote = ({ account, index }) => {
-
-    //const classes = useStyles();
     return (        
         <>
             <TextField
