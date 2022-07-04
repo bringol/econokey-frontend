@@ -19,7 +19,7 @@ const actions = [
 
 const MainScreen = ({ navigate }) => {
 
-    const { setTopbar, setFilterButton, accounts, setAccountsList, filter } = useContext(AppContext)
+    const { setTopbar, filterButton, setFilterButton, accounts, setAccountsList, filter } = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -37,7 +37,7 @@ const MainScreen = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         });
 
-    }, [setAccountsList, accounts, setFilterButton, setTopbar]);
+    }, [setAccountsList, accounts, filterButton, setFilterButton, setTopbar]);
 
     const handleOnClick = (target) => {
         navigate(target);
@@ -53,14 +53,10 @@ const MainScreen = ({ navigate }) => {
             }}>
                 {accounts !== undefined && accounts.length > 0 ? (
                     accounts.map((account, index) => {
-                        //debugger;
-                        return filter === 'none' ?
-                            (
-                                <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                            ) : account.type === filter &&
-                            (
-                                <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                            );
+                        return (filter === 'none' || account.type.includes(filter)) &&
+                        (
+                            <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
+                        )
                     })
                 ) : (
                     <Typography variant="h5" gutterBottom component="div" fontWeight={'500'} textAlign={'center'}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
 
@@ -7,9 +7,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useLocation } from 'react-router-dom';
+import AppContext from '../AppContext';
 
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
+
+    const {setFilterButton} = useContext(AppContext);
+
+    useEffect(()=>{
+        setFilterButton(false);
+    })
 
     const handleCancel = () => {
         onClose(false);
