@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Typography, Card, CardActionArea, CardMedia, CardContent, Button } from '@mui/material';
 
 import logoBtcWallet from '../img/btcwallet.jpg';
+import AppContext from '../AppContext';
 //pantalla generar o agregar
 const NewCryptoWalletSelect = ({ navigate }) => {
+
+    const {setFilterButton} = useContext(AppContext);
+
+    useEffect(()=>{
+        setFilterButton(false);
+    })
 
     const handleAgregar = () => {
         navigate('../wallet')

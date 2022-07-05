@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import { Box, FormControlLabel, FormGroup, InputBase, Switch, Typography, Alert } from '@mui/material';
+import { Box, FormControlLabel, FormGroup, InputBase, Switch, Typography, Alert, Toolbar, IconButton, AppBar } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { FaDiceD20 } from 'react-icons/fa'
+import { FaBook, FaDiceD20 } from 'react-icons/fa'
 import Indicador from "./PasswordStrMeter"
 import '../css/die.css'
 import { generatePassword } from '../Controllers/WebService.controller';
@@ -17,6 +16,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import styled from 'styled-components';
+import HelpDialog from './HelpDialog';
 
 function SlideTransition(props) {
   return <Slide {...props} direction="up" />;
@@ -50,6 +50,8 @@ const ContraseñaCombinada = ({ navigate }) => {
     missingAmount: false,
     disableAplicar: true,
   });
+
+  const [open, setOpen] = React.useState(false);
 
   const handleMayuscula = (event) => {
     setValues({
@@ -225,9 +227,37 @@ const ContraseñaCombinada = ({ navigate }) => {
       scroll='paper'
       open={true}
     >
-      <DialogTitle textAlign={'center'} sx={{
-        background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)),#FBFDF7',
-      }}>Generador de Contraseñas</DialogTitle>
+      <AppBar sx={{
+          position: 'sticky',
+          background: 'linear-gradient(0deg, rgba(6, 109, 55, 0.05), rgba(6, 109, 55, 0.05)), #FBFDF7',
+          boxShadow: '0px 0.5px 2px rgba(0, 0, 0, 0.25)',
+          color: '#1A1C19'
+        }}>
+          <Toolbar>
+              <Typography variant="h5" component="div" noWrap sx={{
+              fontSize: 16,
+              fontWeight: '500',
+              fontStyle: 'normal',
+              flexGrow: 1,
+              alignSelf: 'center'
+              }}>
+              Generador de Contraseñas
+              </Typography>
+              <IconButton
+                aria-label="glosario"
+                onClick={() => setOpen(true)}
+                sx={{ color: "#0F1833" }}
+              >
+                <FaBook />
+              </IconButton>
+              <HelpDialog
+                id={"help-menu"}
+                keepMounted
+                open={open}
+                onClose={() => setOpen(false)}
+              />
+          </Toolbar>
+        </AppBar>
       <DialogContent dividers>
         <Box sx={{
           display: 'flex',
