@@ -45,7 +45,7 @@ const IconCustom = (props) => {
                     textAlign: 'center',
                 }}
             >
-                <FormControl sx={{ m: 1, width: 110 }} >
+                <FormControl sx={{ m: 1, width: 100 }} >
                     <InputLabel id="iconSelectLabel">Icono</InputLabel>
                     <Select
                         labelId="iconSelectLabel"
@@ -56,7 +56,9 @@ const IconCustom = (props) => {
                         input={<BootstrapInput />}
                     >
                         <MenuItem value={'default'}>
-                            Ninguno
+                            <ListItemIcon >
+                                <Icon icon={ICONS.DEFAULTACCOUNT} />
+                            </ListItemIcon>
                         </MenuItem>
                         <MenuItem value={'discord'} >
                             <ListItemIcon >

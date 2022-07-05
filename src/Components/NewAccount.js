@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import NewAccountPasswordDialog from './NewAccountPasswordDialog';
 import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
@@ -17,6 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 import IconCustom from '../Icons/IconCustom';
+import AppContext from '../AppContext';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -24,6 +25,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 function ConfirmationDialogRaw(props) {
     const { onClose, open, ...other } = props;
+
+    const {setFilterButton} = useContext(AppContext);
+
+    useEffect(()=>{
+        setFilterButton(false);
+    })
 
     const handleCancel = () => {
         onClose(false);

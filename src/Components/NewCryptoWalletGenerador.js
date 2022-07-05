@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda, generateCryptoWallet } from '../Controllers/WebService.controller';
 import Share from '@mui/icons-material/Share';
 import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText, InputBase } from '@mui/material';
@@ -12,9 +12,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { FaDiceD20 } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
+import AppContext from '../AppContext';
 
 function ConfirmationDialogDelete(props) {
     const { onClose, open, ...other } = props;
+
+    const {setFilterButton} = useContext(AppContext);
+
+    useEffect(()=>{
+        setFilterButton(false);
+    })
 
     const handleCancel = () => {
         onClose(false);

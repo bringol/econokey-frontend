@@ -119,9 +119,8 @@ export default function MainScreenNav(props) {
                   >
                     <MenuItem id="none" onClick={handleClose}>Reestablecer</MenuItem>
                     <MenuItem id="note" onClick={handleClose}>Notas</MenuItem>
-                    <MenuItem id="pass" onClick={handleClose}>Contraseña</MenuItem>
-                    <MenuItem id='wallet-gen' onClick={handleClose}>EconoWallets</MenuItem>
-                    <MenuItem id='wallet' onClick={handleClose}>Wallet</MenuItem>
+                    <MenuItem id="pass" onClick={handleClose}>Contraseñas</MenuItem>
+                    <MenuItem id='wallet' onClick={handleClose}>CryptoWallets</MenuItem>
                   </Menu>
                 </>
               )
