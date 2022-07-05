@@ -1,17 +1,22 @@
-
-let accounts = [
-    { id: 1, titulo: 'Gmail', icon: 'gmail' , descripcion: 'Cuenta Gmail Principal', type: 'pass', userName: 'email@gmail.com', password: 'contraseña123', comentarios: 'gmail principal', url: 'https://mail.google.com/mail' },
-    { id: 2, titulo: 'Instagram', icon: 'instagram' , descripcion: 'Instagram del emprendimiento', type: 'pass', userName: 'insta@gmail.com', password: 'ajshbdkjn!"#ASD1324', comentarios: '', url: 'https://instagram.com' },
-    { id: 3, titulo: 'Hotmail', icon: 'outlook' , descripcion: 'Cuenta Hotmail Principal', type: 'pass', userName: 'email@live.com', password: 'contraseña123', comentarios: 'gmail principal', url: 'https://mail.google.com/mail' },
-    { id: 4, titulo: 'Binance', icon: 'binance', descripcion: 'Cuenta Exchange', type: 'pass', userName: 'email@gmail.com', password: 'strongpass2', comentarios: 'gmail principal', url: 'https://accounts.binance.com/en/login' },
-    { id: 5, titulo: 'Nota', icon: 'default-note', descripcion: '', type: 'note', comentarios: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }
-];
-
 const urlBaseWebServices = 'http://localhost:5000';
+
 const urlCreateVault = urlBaseWebServices + '/vault';
+const urlGetVault = urlBaseWebServices + '/vault';
 const urlLoginVault = urlBaseWebServices + '/login';
 const urlGenerator = urlBaseWebServices + '/generate';
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1NTQ3Njg5MywianRpIjoiYjc2MTA5NWQtZmJkNi00ZmE3LTgzN2UtZmY3ZWZjYzEwYTQ5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjU1NDc2ODkzLCJleHAiOjE2NTU1NjMyOTN9.zgXYFzqQGSe1SVoICabrAdTPckk64MxLA7GML_JdRPc';
+
+const getUrlElements = function (type, method) {
+    switch (method) {
+        case "GET":
+            return urlBaseWebServices + '/vault/' + type + 's/';
+        case "DELETE":
+        case "PUT":
+        case "POST":
+            return urlBaseWebServices + '/vault/' + type + 's/' + type;
+        default:
+            break;
+    }
+}
 
 export const createVault = async function (vault) {
     try {
@@ -71,7 +76,7 @@ export const loginVault = async function (vault) {
             case 200:
                 return ({ code: code, mensaje: "OK", data: data });
             default:
-                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: data });
         }
     }
     catch (error) {
@@ -104,7 +109,7 @@ export const generatePassphrase = async function (delimitador, longitud, capital
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + token);
+    //myHeaders.append("Authorization", "Bearer " + token);
 
     var raw = JSON.stringify({
         "generator_type": "passphrase",
@@ -145,7 +150,7 @@ export const generatePassphrase = async function (delimitador, longitud, capital
 export const generatePassword = async function (lower, upper, digit, symbol, longitud) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + token);
+    //myHeaders.append("Authorization", "Bearer " + token);
 
     var raw = JSON.stringify({
         "generator_type": "password",
@@ -188,7 +193,7 @@ export const generatePassword = async function (lower, upper, digit, symbol, lon
 export const generateCryptoWallet = async function (walletName, cryptoCurrency) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + token);
+    //myHeaders.append("Authorization", "Bearer " + token);
 
     var raw = JSON.stringify({
         "generator_type": "wallet",
@@ -226,28 +231,137 @@ export const generateCryptoWallet = async function (walletName, cryptoCurrency) 
 }
 
 ///METODO PARA OBTENER TODOS LOS ELEMENTOS DE LA BOVEDA
-export const getAllElementosBoveda = async function () {
-    let data = accounts;
-    return ({ code: 200, mensaje: "OK", mensajeDetalle: "", data });
+export const getAllElementosBoveda = async function (userToken) {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + userToken);
+
+        var requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        let response = await fetch(urlGetVault, requestOptions);
+        let code = response.status;
+        let data = await response.json();
+        switch (code) {
+            case 200:
+                const notes = [...data.notes].map(v => ({ ...v, type: 'note', icon: 'default-note' }));
+                const passwords = [...data.passwords].map(v => ({ ...v, type: 'pass' }));
+                const wallets = [...data.wallets].map(v => ({ ...v, type: 'wallet' }));
+                let accounts = [...notes, ...passwords, ...wallets]
+                return ({ code: code, mensaje: "OK", data: accounts, vaultId: data.vault_id, vaultName: data.vault_name });
+            default:
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
+    }
+    catch (error) {
+        console.log("error", error);
+    };
 }
 
 ///METODO PARA AGREGAR ELEMENTO A LA BOVEDA
-export const addElementoBoveda = async function (elemento) {
-    accounts.push(elemento);
-    let data = elemento;
-    return ({ code: 200, mensaje: "OK", mensajeDetalle: "", data });
+export const addElementoBoveda = async function (elemento, userToken) {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + userToken);
+
+        var raw = JSON.stringify({
+            element_type: elemento.element_type,
+            element: elemento.element
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        let response = await fetch(getUrlElements(elemento.element_type, 'POST'), requestOptions);
+        let code = response.status;
+        let data = await response.json();
+        switch (code) {
+            case 200:
+                return ({ code: code, mensaje: "OK", data: data });
+            default:
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
+    }
+    catch (error) {
+        console.log("error", error);
+    };
 }
 
 ///METODO PARA BORRAR ELEMENTO DE LA BOVEDA
-export const deleteElementoBoveda = async function (id) {
-    accounts = accounts.filter(account => account.id !== id);
-    let data;
-    return ({ code: 200, mensaje: "OK", mensajeDetalle: "", data });
+export const deleteElementoBoveda = async function (element_id, element_type, userToken) {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + userToken);
+
+        var raw = JSON.stringify({
+            element_id: element_id
+        });
+
+        var requestOptions = {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        let response = await fetch(getUrlElements(element_type, 'DELETE'), requestOptions);
+        let code = response.status;
+        let data = await response.json();
+        switch (code) {
+            case 200:
+                return ({ code: code, mensaje: "OK", data: data });
+            default:
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
+    }
+    catch (error) {
+        console.log("error", error);
+    };
 }
 
 ///METODO PARA EDITAR ELEMENTO DE LA BOVEDA
-export const editElementoBoveda = async function (id, elemento) {
-    accounts = accounts.map(account => (account.id === id ? elemento : account));
-    let data;
-    return ({ code: 200, mensaje: "OK", mensajeDetalle: "", data });
+export const editElementoBoveda = async function (element_id, elemento, userToken) {
+    try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + userToken);
+
+        var raw = JSON.stringify({
+            element_id: element_id,
+            element: elemento.element
+        });
+
+        var requestOptions = {
+            method: 'PUT',
+            mode: 'cors',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        let response = await fetch(getUrlElements(elemento.element_type, 'POST'), requestOptions);
+        let code = response.status;
+        let data = await response.json();
+        switch (code) {
+            case 200:
+                return ({ code: code, mensaje: "OK", data: data });
+            default:
+                return ({ code: code, mensaje: "Ha ocurrido un error", data: null });
+        }
+    }
+    catch (error) {
+        console.log("error", error);
+    };
 }

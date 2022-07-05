@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import NewAccountPasswordDialog from './NewAccountPasswordDialog';
 import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
@@ -78,17 +77,17 @@ const NewAccount = ({ navigate }) => {
     let account = state ? state : '';
 
     const [values, setValues] = useState({
-        id: account.id ? account.id : '',
-        titulo: account.titulo ? account.titulo : '',
-        descripcion: account.descripcion ? account.descripcion : '',
-        userName: account.userName ? account.userName : '',
+        element_id: account.element_id ? account.element_id : '',
+        password_name: account.password_name ? account.password_name : '',
+        description: account.description ? account.description : '',
+        username: account.username ? account.username : '',
         password: account.password ? account.password : '',
-        comentarios: account.comentarios ? account.comentarios : '',
+        notes: account.notes ? account.notes : '',
         url: account.url ? account.url : '',
         icon: account.icon ? account.icon : '',
         showPassword: false,
-        tituloError: false,
-        usuarioError: false,
+        password_nameError: false,
+        usernameError: false,
         passwordError: false,
         openPassphrase: false,
         openPassword: false,
@@ -145,11 +144,11 @@ const NewAccount = ({ navigate }) => {
         })
     }
 
-    const handleUserName = (event) => {
+    const handleUsername = (event) => {
         setValues({
             ...values,
-            userName: event.target.value,
-            usuarioError: event.target.value === '',
+            username: event.target.value,
+            usernameError: event.target.value === '',
         });
     }
 
@@ -161,10 +160,10 @@ const NewAccount = ({ navigate }) => {
         });
     }
 
-    const handleComentarios = (event) => {
+    const handleNotes = (event) => {
         setValues({
             ...values,
-            comentarios: event.target.value,
+            notes: event.target.value,
         });
     }
 
@@ -175,18 +174,18 @@ const NewAccount = ({ navigate }) => {
         });
     }
 
-    const handleTitulo = (event) => {
+    const handlePasswordName = (event) => {
         setValues({
             ...values,
-            titulo: event.target.value,
-            tituloError: event.target.value === '',
+            password_name: event.target.value,
+            password_nameError: event.target.value === '',
         });
     }
 
-    const handleDescripcion = (event) => {
+    const handleDescription = (event) => {
         setValues({
             ...values,
-            descripcion: event.target.value,
+            description: event.target.value,
         });
     }
 
@@ -195,20 +194,20 @@ const NewAccount = ({ navigate }) => {
     }
 
     const handleGuardar = () => {
-        async function crearCuenta() {
-            const cuentaNueva = {
-                id: uuidv4(),
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'pass',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
-                url: values.url,
-                icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
+        async function addPassword() {
+            const newPassword = {
+                element_type: "password",
+                element: {
+                    password_name: values.password_name,
+                    username: values.username,
+                    password: values.password,
+                    url: values.url,
+                    description: values.description,
+                    icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
+                }
             }
 
-            let response = await addElementoBoveda(cuentaNueva);
+            let response = await addElementoBoveda(newPassword, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -216,20 +215,21 @@ const NewAccount = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         }
 
-        async function editarCuenta() {
-            const cuentaNueva = {
-                id: values.id,
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'pass',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
-                url: values.url,
-                icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
+        async function editPassword() {
+            const newPassword = {
+                element_id: values.element_id,
+                element_type: "password",
+                element: {
+                    password_name: values.password_name,
+                    username: values.username,
+                    password: values.password,
+                    url: values.url,
+                    description: values.description,
+                    icon: values.icon === '' || values.icon === 'default' ? 'default-account' : values.icon,
+                }
             }
 
-            let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
+            let response = await editElementoBoveda(newPassword.element_id, newPassword, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -239,29 +239,29 @@ const NewAccount = ({ navigate }) => {
 
         setValues({
             ...values,
-            tituloError: values.titulo === '',
-            usuarioError: values.userName === '',
+            password_nameError: values.password_name === '',
+            usernameError: values.userame === '',
             passwordError: values.password === '',
         });
 
-        if (values.titulo && values.userName && values.password)
+        if (values.password_name && values.username && values.password)
             if (!values.isEditing)
-                crearCuenta();
+                addPassword();
             else
-                editarCuenta();
+                editPassword();
     }
 
     const Borrar = () => {
-        async function borrarCuenta(id) {
+        async function deletePassword(element_id) {
 
-            let response = await deleteElementoBoveda(id);
+            let response = await deleteElementoBoveda(element_id, "password", localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
             else
                 console.log(response.mensajeDetalle);
         }
-        borrarCuenta(values.id)
+        deletePassword(values.element_id)
     }
 
     const handleCloseConfirmation = (confirmDialog) => {
@@ -346,12 +346,12 @@ const NewAccount = ({ navigate }) => {
                     alignContent: 'center',
                 }}>
                     <TextField
-                        error={values.tituloError}
+                        error={values.password_nameError}
                         required
                         id={'0'}
                         label="Titulo"
-                        onChange={(event) => handleTitulo(event)}
-                        value={values.titulo}
+                        onChange={(event) => handlePasswordName(event)}
+                        value={values.password_name}
                         sx={{
                             backgroundColor: 'rgba(6, 109, 55, 0.05)',
                             borderRadius: '6px',
@@ -365,11 +365,11 @@ const NewAccount = ({ navigate }) => {
                     id={'1'}
                     label="Descripcion"
                     fullWidth
-                    onChange={(event) => handleDescripcion(event)}
+                    onChange={(event) => handleDescription(event)}
                     multiline
                     minRows={2}
                     maxRows={2}
-                    value={values.descripcion}
+                    value={values.description}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -378,13 +378,13 @@ const NewAccount = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.usuarioError}
+                    error={values.usernameError}
                     required
                     id={'2'}
                     label="Usuario"
                     fullWidth
-                    onChange={(event) => handleUserName(event)}
-                    value={values.userName}
+                    onChange={(event) => handleUsername(event)}
+                    value={values.username}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -476,8 +476,8 @@ const NewAccount = ({ navigate }) => {
                     id={'4'}
                     label="Comentarios"
                     fullWidth
-                    onChange={(event) => handleComentarios(event)}
-                    value={values.comentarios}
+                    onChange={(event) => handleNotes(event)}
+                    value={values.notes}
                     multiline
                     minRows={2}
                     maxRows={4}

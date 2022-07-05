@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
 
 import { TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
@@ -61,13 +60,12 @@ const NewNote = ({ navigate }) => {
     const { state } = useLocation();
     let account = state ? state : '';
     const [values, setValues] = useState({
-        id: account.id ? account.id : '',
-        titulo: account.titulo ? account.titulo : '',
-        descripcion: account.descripcion ? account.descripcion : '',
-        comentarios: account.comentarios ? account.comentarios : '',
-        tituloError: false,
-        descripcionError: false,
-        comentariosError: false,
+        element_id: account.element_id ? account.element_id : '',
+        note_name: account.note_name ? account.note_name : '',
+        description: account.description ? account.description : '',
+        text: account.text ? account.text : '',
+        note_nameError: false,
+        textError: false,
         isEditing: state ? true : false,
         openConfirmation: false,
     });
@@ -75,24 +73,23 @@ const NewNote = ({ navigate }) => {
     const handleComentarios = (event) => {
         setValues({
             ...values,
-            comentarios: event.target.value,
-            comentariosError: event.target.value === '',
+            text: event.target.value,
+            textError: event.target.value === '',
         });
     }
 
     const handleTitulo = (event) => {
         setValues({
             ...values,
-            titulo: event.target.value,
-            tituloError: event.target.value === '',
+            note_name: event.target.value,
+            note_nameError: event.target.value === '',
         });
     }
 
     const handleDescripcion = (event) => {
         setValues({
             ...values,
-            descripcion: event.target.value,
-            descripcionError: event.target.value === '',
+            description: event.target.value,
         });
     }
 
@@ -102,15 +99,17 @@ const NewNote = ({ navigate }) => {
 
     const handleGuardar = () => {
         async function crearNota() {
-            const notaNueva = {
-                id: uuidv4(),
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'note',
-                comentarios: values.comentarios,
+            const newNote = {
+                element_type: "note",
+                element: {
+                    note_name: values.note_name,
+                    text: values.text,                    
+                    icon: 'default-note',
+                    description: values.description,
+                }
             }
 
-            let response = await addElementoBoveda(notaNueva);
+            let response = await addElementoBoveda(newNote, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -119,15 +118,18 @@ const NewNote = ({ navigate }) => {
         }
 
         async function editarNota() {
-            const cuentaNueva = {
-                id: values.id,
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'note',
-                comentarios: values.comentarios,
+            const editNote = {
+                element_id: values.element_id,
+                element_type: "note",
+                element: {
+                    note_name: values.note_name,
+                    text: values.text,
+                    icon: 'default-note',
+                    description: values.description,
+                }
             }    
 
-            let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
+            let response = await editElementoBoveda(editNote.element_id, editNote, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -137,12 +139,11 @@ const NewNote = ({ navigate }) => {
 
         setValues({
             ...values,
-            tituloError: values.titulo === '',
-            descripcionError: values.descripcion === '',
-            comentariosError: values.comentarios === '',
+            note_nameError: values.note_name === '',
+            textError: values.text === '',
         });
 
-        if (values.titulo && values.descripcion && values.comentarios)
+        if (values.note_name && values.text)
             if (!values.isEditing)
                 crearNota();
             else
@@ -151,16 +152,16 @@ const NewNote = ({ navigate }) => {
     }
 
     const Borrar = () => {
-        async function borrarCuenta(id) {
+        async function borrarCuenta(element_id) {
 
-            let response = await deleteElementoBoveda(id);
+            let response = await deleteElementoBoveda(element_id, "note", localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
             else
                 console.log(response.mensajeDetalle);
         }
-        borrarCuenta(values.id)
+        borrarCuenta(values.element_id)
     }
 
     const handleCloseConfirmation = (confirmDialog) => {
@@ -211,13 +212,13 @@ const NewNote = ({ navigate }) => {
                     ) : 'NUEVA NOTA'}
                 </Typography>
                 <TextField
-                    error={values.tituloError}
+                    error={values.note_nameError}
                     required
                     id={'0'}
                     label="Titulo"
                     fullWidth
                     onChange={(event) => handleTitulo(event)}
-                    value={values.titulo}
+                    value={values.note_name}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -226,8 +227,6 @@ const NewNote = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.descripcionError}
-                    required
                     id={'1'}
                     label="Descripcion"
                     fullWidth
@@ -235,7 +234,7 @@ const NewNote = ({ navigate }) => {
                     multiline
                     minRows={2}
                     maxRows={2}
-                    value={values.descripcion}
+                    value={values.description}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -244,13 +243,13 @@ const NewNote = ({ navigate }) => {
                     }}
                 />
                 <TextField
-                    error={values.comentariosError}
+                    error={values.textError}
                     required
-                    id={'4'}
+                    id={'2'}
                     label="Comentarios"
                     fullWidth
                     onChange={(event) => handleComentarios(event)}
-                    value={values.comentarios}
+                    value={values.text}
                     multiline
                     minRows={2}
                     maxRows={4}

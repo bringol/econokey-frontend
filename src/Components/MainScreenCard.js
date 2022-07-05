@@ -37,9 +37,9 @@ const MainScreenCard = ({ account, index, navigate }) => {
             navigate('../new-note', { state: account });
         } else if (account.type === 'pass') {
             navigate('../new-account', { state: account });
-        } else if (account.type === 'wallet'){
+        } else if (account.type === 'wallet' && account.icon !== 'econokey'){
             navigate('../wallet', { state: account });
-        } else if (account.type === 'wallet-gen'){
+        } else if (account.type === 'wallet' && account.icon === 'econokey'){
             navigate('../wallet-gen', { state: account });
         }
     };
@@ -85,8 +85,8 @@ const MainScreenCard = ({ account, index, navigate }) => {
                         </IconButton>
 
                     }
-                    title={account.titulo}
-                    subheader={account.descripcion}
+                    title={(account.type === 'note') ? (account.note_name) : (account.type === 'pass') ? (account.password_name) : (account.type === 'wallet') ? (account.wallet_name) : (account.type === 'wallet-gen') ? (account.wallet_name) : null}
+                    subheader={account.description}
                 />
                 <Collapse in={values.expanded} timeout="auto" unmountOnExit>
                     <CardContent>
@@ -98,11 +98,11 @@ const MainScreenCard = ({ account, index, navigate }) => {
                             <>
                                 <MainScreenCardAccount account={account} index={index} />
                             </>
-                        ) : (account.type === 'wallet') ? (
+                        ) : (account.type === 'wallet' && account.icon !== 'econokey') ? (
                             <>
                                 <MainScreenCardWallet account={account} index={index} />
                             </>
-                        ) : (account.type === 'wallet-gen') ? (
+                        ) : (account.type === 'wallet' && account.icon === 'econokey') ? (
                             <>
                                 <MainScreenCardWallet account={account} index={index} />
                             </>

@@ -11,7 +11,7 @@ const MainScreenCardNote = ({ account, index }) => {
                 label="Comentarios"
                 fullWidth
                 type='text'
-                value={account.comentarios}
+                value={account.text}
                 disabled
                 multiline
                 minRows={4}

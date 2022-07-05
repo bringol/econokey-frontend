@@ -15,6 +15,12 @@ import logoMain from '../img/logoMain.png';
 import { red } from '@mui/material/colors';
 import { loginVault } from '../Controllers/WebService.controller';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function Copyright(props) {
   return (
@@ -50,6 +56,8 @@ const theme = createTheme({
 export default function Login({ navigate }) {
   const [vaultName, setVaultName] = useState('');
   const [vaultKey, setVaultKey] = useState('');
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [errorVaultKey, setErrorVaultKey] = useState(false);
   const [errorVaultName, setErrorVaultName] = useState(false);
   const [vaultValido, setVaultValido] = useState(false);
@@ -67,7 +75,7 @@ export default function Login({ navigate }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!vaultKey && !vaultName) {
+    /*if (!vaultKey && !vaultName) {
       setErrorVaultKey(true);
       setErrorVaultName(true);
       return;
@@ -77,7 +85,7 @@ export default function Login({ navigate }) {
     } else if (!vaultName) {
       setErrorVaultName(true);
       return;
-    }
+    }*/
 
     async function iniciarVault(name, key) {
       let vault = { name: name, key: key };
@@ -87,7 +95,8 @@ export default function Login({ navigate }) {
         localStorage.setItem("token", response.data.access_token);
       }
       else {
-        console.log(response.mensajeDetalle);
+        setError(response.data);
+        setOpenError(true);
       }
     }
     iniciarVault(vaultName, vaultKey);
@@ -103,6 +112,13 @@ export default function Login({ navigate }) {
       navigate("../")
     }
   }
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    setOpenError(false);
+};
 
   return (
     <>
@@ -173,6 +189,11 @@ export default function Login({ navigate }) {
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
+        <Snackbar open={openError} autoHideDuration={1500} onClose={handleCloseAlert}>
+          <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+            {error}
+          </Alert>
+        </Snackbar>
       </ThemeProvider>
     </>);
 }

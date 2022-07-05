@@ -28,16 +28,18 @@ const MainScreen = ({ navigate }) => {
         setTopbar(true);
         setFilterButton(true);
 
-        getAllElementosBoveda().then(response => {
-            console.log('buscando')
-            console.log(response)
+        getAllElementosBoveda(localStorage.getItem("token")).then(response => {
             if (response.code === 200)
+            {
                 setAccountsList(response.data);
+                localStorage.setItem("vaultName", response.vaultName)
+                localStorage.setItem("vaultId", response.vaulId)
+            }
             else
                 console.log(response.mensajeDetalle);
         });
 
-    }, [setAccountsList, accounts, setFilterButton, setTopbar]);
+    }, []);
 
     const handleOnClick = (target) => {
         navigate(target);

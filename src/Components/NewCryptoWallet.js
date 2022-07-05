@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import NewAccountPasswordDialog from './NewAccountPasswordDialog';
-import NewAccountPassphraseDialog from './NewAccountPassphraseDialog';
 import { addElementoBoveda, deleteElementoBoveda, editElementoBoveda } from '../Controllers/WebService.controller';
-
-import { IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Share from '@mui/icons-material/Share';
+import { Radio, IconButton, InputAdornment, TextField, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormLabel, RadioGroup, FormControlLabel, FormControl, FormHelperText, InputBase } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useLocation } from 'react-router-dom';
-import Share from '@mui/icons-material/Share';
+import { QRCodeSVG } from 'qrcode.react';
 
-//Componente Agregar Cryptowallet
-
-function ConfirmationDialogRaw(props) {
+function ConfirmationDialogDelete(props) {
     const { onClose, open, ...other } = props;
 
     const handleCancel = () => {
@@ -36,7 +32,9 @@ function ConfirmationDialogRaw(props) {
         >
             <DialogTitle textAlign={'center'}>Confirmacion de eliminación</DialogTitle>
             <DialogContent dividers>
-                ¿Esta seguro que desea eliminar este elemento?
+                <Typography sx={{ textAlign: 'center' }}>
+                    ¿Esta seguro que desea eliminar este elemento? Esta accion no se puede deshacer y todo el contenido de su billetera se perdera.
+                </Typography>
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'center' }}>
                 <Button sx={{
@@ -47,12 +45,12 @@ function ConfirmationDialogRaw(props) {
                     endIcon={<CancelIcon fontSize='small' />}
                     onClick={handleCancel}
                 >
-                    CANCELAR
+                    ATRAS
                 </Button>
                 <Button sx={{
                     m: 1,
                 }}
-                    variant='outlined'
+                    variant='contained'
                     color="error"
                     size="small"
                     startIcon={<DeleteIcon fontSize='small' />}
@@ -65,108 +63,264 @@ function ConfirmationDialogRaw(props) {
     );
 }
 
+function ConfirmationDialogCancelar(props) {
+    const { onClose, open, ...other } = props;
+
+    const handleCancel = () => {
+        onClose(false);
+    };
+
+    const handleOk = () => {
+        onClose(true);
+    };
+
+    return (
+        <Dialog
+            sx={{ '& .MuiDialog-paper': { width: '90%', maxHeight: 435 } }}
+            maxWidth="xs"
+            open={open}
+            {...other}
+        >
+            <DialogTitle textAlign={'center'}>Confirmacion de cancelacion</DialogTitle>
+            <DialogContent dividers>
+                <Typography sx={{ textAlign: 'center' }}>
+                    ¿Esta seguro que desea cancelar la operación? Todo su progreso se perderá.
+                </Typography>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='outlined'
+                    size="small"
+                    endIcon={<CancelIcon fontSize='small' />}
+                    onClick={handleCancel}
+                >
+                    ATRAS
+                </Button>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='contained'
+                    color="error"
+                    size="small"
+                    startIcon={<DeleteIcon fontSize='small' />}
+                    onClick={handleOk}
+                >
+                    SI
+                </Button>
+            </DialogActions>
+        </Dialog >
+    );
+}
+
+function ShareDialog(props) {
+    const { direccion, onClose, open, ...other } = props;
+
+    const handleOk = () => {
+        onClose(true);
+    };
+
+    return (
+        <Dialog
+            sx={{ '& .MuiDialog-paper': { width: '90%', maxHeight: 435 } }}
+            maxWidth="xs"
+            open={open}
+            {...other}
+        >
+            <DialogTitle textAlign={'center'}>Compartir billetera</DialogTitle>
+            <DialogContent dividers>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                }}>
+                    <Box sx={{
+                        m: 1
+                    }}>
+                        <QRCodeSVG value={direccion} />
+                    </Box>
+                    <InputBase
+                        inputProps={{
+                            style: { textAlign: "center", fontSize: 18 }
+                        }}
+                        fullWidth
+                        id="contraseña"
+                        disabled
+                        multiline
+                        maxRows={8}
+                        value={direccion}
+                        sx={{
+                            background: 'rgba(6, 109, 55, 0.05)',
+                            borderRadius: '6px',
+                            m: 1,
+                            "& .MuiInputBase-input.Mui-disabled": {
+                                WebkitTextFillColor: "#2f4f4f",
+                            },
+                        }}
+                    />
+                </Box>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: 'center' }}>
+                <Button sx={{
+                    m: 1,
+                }}
+                    variant='outlined'
+                    size="small"
+                    startIcon={<CloseIcon fontSize='small' />}
+                    onClick={handleOk}
+                >
+                    CERRAR
+                </Button>
+            </DialogActions>
+        </Dialog >
+    );
+}
+
 const NewCryptoWallet = ({ navigate }) => {
     const { state } = useLocation();
 
     let account = state ? state : '';
 
     const [values, setValues] = useState({
-        id: account.id ? account.id : '',
-        titulo: account.titulo ? account.titulo : '',
-        descripcion: account.descripcion ? account.descripcion : '',
-        userName: account.userName ? account.userName : '',
-        password: account.password ? account.password : '',
-        comentarios: account.comentarios ? account.comentarios : '',
-        showPassword: false,
-        tituloError: false,
-        usuarioError: false,
-        openPassphrase: false,
-        openPassword: false,
-        disable: true,
+        element_id: account.element_id ? account.element_id : '',
+        wallet_name: account.wallet_name ? account.wallet_name : '',
+        description: account.description ? account.description : '',
+        cryptocurrency: account.cryptocurrency ? account.cryptocurrency : '',
+        notes: account.notes ? account.notes : '',
+        public_key: account.public_key ? account.public_key : '',
+        private_key: account.private_key ? account.private_key : '',
+        passphrase: account.passphrase ? account.passphrase : '',
+        showPrivatKey: false,
+        showPassphrase: false,
+        wallet_nameError: false,
+        public_keyError: false,
+        cryptocurrencyError: false,
+        cryptocurrencyHelper: '',
+        showCrptoWallet: false,
         isEditing: state ? true : false,
-        openConfirmation: false,
+        openDeleteConfirmation: false,
+        openCancelConfirmation: false,
+        openShareConfirmation: false,
+        cancelable: true,
     });
 
-    const handleClose = (newValue) => {
+    const handleClickShowPrivateKey = () => {
         setValues({
             ...values,
-            openPassphrase: false,
-            openPassword: false,
-            disable: true,
-            password: newValue ? newValue : values.password
+            showPrivatKey: !values.showPrivatKey,
         });
     };
 
-    const handleClickShowPassword = () => {
-        setValues({
-            ...values,
-            showPassword: !values.showPassword,
-        });
-    };
-
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPrivateKey = (event) => {
         event.preventDefault();
     };
 
-    const handleUserName = (event) => {
+    const handleClickShowPassphrase = () => {
         setValues({
             ...values,
-            userName: event.target.value,
-            usuarioError: event.target.value === '',
+            showPassphrase: !values.showPassphrase,
+        });
+    };
+
+    const handleMouseDownPassphrase = (event) => {
+        event.preventDefault();
+    };
+
+    const handleNotes = (event) => {
+        setValues({
+            ...values,
+            notes: event.target.value,
+            cancelable: false,
         });
     }
 
-    const handlePassword = (event) => {
+    const handlePublicKey = (event) => {
         setValues({
             ...values,
-            password: event.target.value,
+            public_key: event.target.value,
+            public_keyError: event.target.value === '',
+            cancelable: false,
         });
     }
 
-    const handleComentarios = (event) => {
+    const handlePrivateKey = (event) => {
         setValues({
             ...values,
-            comentarios: event.target.value,
+            private_key: event.target.value,
+            cancelable: false,
         });
     }
 
-    const handleTitulo = (event) => {
+    const handlePassphrase = (event) => {
         setValues({
             ...values,
-            titulo: event.target.value,
-            tituloError: event.target.value === '',
+            passphrase: event.target.value,
+            cancelable: false,
         });
     }
 
-    const handleDescripcion = (event) => {
+    const handleWalletName = (event) => {
         setValues({
             ...values,
-            descripcion: event.target.value,
+            wallet_name: event.target.value,
+            wallet_nameError: event.target.value === '',
+            cancelable: false,
         });
     }
 
-    const handleCancelar = () => {
-        navigate("../")
+    const handleDescription = (event) => {
+        setValues({
+            ...values,
+            description: event.target.value,
+            cancelable: false,
+        });
     }
 
-    const handleCompartir = () => {
-
+    const handleCryptocurrency = (event) => {
+        setValues({
+            ...values,
+            cryptocurrency: event.target.value,
+            cryptocurrencyError: event.target.value === '',
+            cryptocurrencyHelper: event.target.value === '' ? 'Debe seleccionar una moneda' : '',
+            cancelable: false,
+        });
     }
 
-    const handleGuardar = () => {
-        async function crearCuenta() {
-            const cuentaNueva = {
-                id: uuidv4(),
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'wallet',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
-                icon: 'default-wallet',
+    const handleCloseSharedDialog = () => {
+        setValues({
+            ...values,
+            openShareConfirmation: false,
+        });
+    }
+
+    const handleClickCompartir = () => {
+        setValues({
+            ...values,
+            openShareConfirmation: true,
+        });
+    }
+
+    const handleClickGuardar = () => {
+        async function addWallet() {
+            const newWallet = {
+                element_type: "wallet",
+                element: {
+                    wallet_name: values.wallet_name,
+                    cryptocurrency: values.cryptocurrency,
+                    public_key: values.public_key,
+                    private_key: values.private_key,
+                    passphrase: values.passphrase,
+                    //notes: values.notes,
+                    description: values.description,
+                    icon: "default-wallet",
+                }
             }
 
-            let response = await addElementoBoveda(cuentaNueva);
+            let response = await addElementoBoveda(newWallet, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -174,19 +328,23 @@ const NewCryptoWallet = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         }
 
-        async function editarCuenta() {
-            const cuentaNueva = {
-                id: values.id,
-                titulo: values.titulo,
-                descripcion: values.descripcion,
-                type: 'wallet',
-                userName: values.userName,
-                password: values.password,
-                comentarios: values.comentarios,
-                icon: 'default-wallet',
+        async function editWallet() {
+            const newWallet = {
+                element_id: values.element_id,
+                element_type: "wallet",
+                element: {
+                    wallet_name: values.wallet_name,
+                    cryptocurrency: values.cryptocurrency,
+                    public_key: values.public_key,
+                    private_key: values.private_key,
+                    passphrase: values.passphrase,
+                    //notes: values.notes,
+                    description: values.description,
+                    icon: "default-wallet",
+                }
             }
 
-            let response = await editElementoBoveda(cuentaNueva.id, cuentaNueva);
+            let response = await editElementoBoveda(newWallet.element_id, newWallet, localStorage.getItem("token"));
 
             if (response.code === 200)
                 navigate("../")
@@ -196,44 +354,66 @@ const NewCryptoWallet = ({ navigate }) => {
 
         setValues({
             ...values,
-            tituloError: values.titulo === '',
-            usuarioError: values.userName === '',
+            wallet_nameError: values.wallet_name === '',
+            public_keyError: values.public_key === '',
+            cryptocurrencyError: values.cryptocurrency === '',
+            cryptocurrencyHelper: values.cryptocurrency === '' ? 'Debe seleccionar una moneda' : '',
         });
 
-        if (values.titulo && values.userName)
+        if (values.wallet_name && values.cryptocurrency && values.public_key)
             if (!values.isEditing)
-                crearCuenta();
+                addWallet();
             else
-                editarCuenta();
+                editWallet();
     }
 
-    const Borrar = () => {
-        async function borrarCuenta(id) {
+    const handleCloseCancelConfirmation = (confirmDialog) => {
+        if (confirmDialog)
+            navigate('../');
+        else
+            setValues({
+                ...values,
+                openCancelConfirmation: false,
+            });
+    }
 
-            let response = await deleteElementoBoveda(id);
+    const handleClickCancelar = () => {
+        if (!values.cancelable)
+            setValues({
+                ...values,
+                openCancelConfirmation: true,
+            });
+        else
+            navigate('../');
+    }
 
-            if (response.code === 200)
-                navigate("../")
-            else
-                console.log(response.mensajeDetalle);
+    const handleCloseDeleteConfirmation = (confirmDialog) => {
+        const Borrar = () => {
+            async function borrarCuenta(element_id) {
+
+                let response = await deleteElementoBoveda(element_id, "wallet", localStorage.getItem("token"));
+
+                if (response.code === 200)
+                    navigate("../")
+                else
+                    console.log(response.mensajeDetalle);
+            }
+            borrarCuenta(values.element_id)
         }
-        borrarCuenta(values.id)
-    }
 
-    const handleCloseConfirmation = (confirmDialog) => {
         if (confirmDialog)
             Borrar();
         else
             setValues({
                 ...values,
-                openConfirmation: false,
+                openDeleteConfirmation: false,
             });
     }
 
     const handleClickDelete = () => {
         setValues({
             ...values,
-            openConfirmation: true,
+            openDeleteConfirmation: true,
         });
     }
 
@@ -284,19 +464,19 @@ const NewCryptoWallet = ({ navigate }) => {
                             color="secondary"
                             size="small"
                             endIcon={<Share fontSize='small' />}
-                            onClick={handleCompartir}
+                            onClick={handleClickCompartir}
                         >
                             Compartir
                         </Button>) : null}
                 </Box>
                 <TextField
-                    error={values.tituloError}
+                    error={values.wallet_nameError}
                     required
                     id={'0'}
-                    label="Título"
+                    label="Titulo"
                     fullWidth
-                    onChange={(event) => handleTitulo(event)}
-                    value={values.titulo}
+                    onChange={(event) => handleWalletName(event)}
+                    value={values.wallet_name}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -306,13 +486,12 @@ const NewCryptoWallet = ({ navigate }) => {
                 />
                 <TextField
                     id={'1'}
-                    label="Descripción"
+                    label="Descripcion"
                     fullWidth
-                    onChange={(event) => handleDescripcion(event)}
+                    onChange={(event) => handleDescription(event)}
                     multiline
-                    minRows={2}
                     maxRows={2}
-                    value={values.descripcion}
+                    value={values.description}
                     sx={{
                         backgroundColor: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
@@ -320,64 +499,113 @@ const NewCryptoWallet = ({ navigate }) => {
                         mt: 1,
                     }}
                 />
-                <TextField
-                    error={values.usuarioError}
-                    required
-                    id={'2'}
-                    label="Llave Pública"
-                    multiline
-                    minRows={1}
-                    maxRows={2}
-                    fullWidth
-                    onChange={(event) => handleUserName(event)}
-                    value={values.userName}
-                    sx={{
-                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                />
-                <TextField
-                    id={'3'}
-                    label="Llave Privada"
-                    fullWidth
-                    type={values.showPassword ? 'text' : 'password'}
-                    onChange={(event) => handlePassword(event)}
-                    value={values.password}
-                    sx={{
-                        background: 'rgba(6, 109, 55, 0.05)',
-                        borderRadius: '6px',
-                        mb: 1,
-                        mt: 1,
-                    }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>,
-                    }}
-                />                
                 <TextField
                     id={'4'}
-                    label="Comentarios"
+                    label="Notas"
                     fullWidth
-                    onChange={(event) => handleComentarios(event)}
-                    value={values.comentarios}
+                    onChange={(event) => handleNotes(event)}
+                    value={values.notes}
                     multiline
-                    minRows={2}
                     maxRows={4}
                     sx={{
                         background: 'rgba(6, 109, 55, 0.05)',
                         borderRadius: '6px',
                         mb: 1,
                         mt: 1,
+                    }}
+                />
+                <FormControl component="fieldset" error={values.cryptocurrencyError}>
+                    <FormLabel id="moneda">Moneda</FormLabel>
+                    <RadioGroup
+                        row
+                        aria-labelledby="moneda"
+                        name="moneda-group"
+                        onChange={handleCryptocurrency}
+                        value={values.cryptocurrency}
+                    >
+                        <FormControlLabel value="BTC" control={<Radio />} label="Bitcoin" />
+                        <FormControlLabel value="ETH" control={<Radio />} label="Ethereum" />
+                        <FormControlLabel value="ADA" control={<Radio />} label="Cardamo" />
+                    </RadioGroup>
+                    <FormHelperText>{values.cryptocurrencyHelper}</FormHelperText>
+                </FormControl>                
+                <TextField
+                    id={'2'}
+                    label="Llave publica"
+                    multiline
+                    required
+                    error={values.public_keyError}
+                    onChange={(event) => handlePublicKey(event)}
+                    minRows={2}
+                    maxRows={2}
+                    fullWidth                    
+                    value={values.public_key}
+                    sx={{
+                        backgroundColor: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        mb: 1,
+                        mt: 1,
+                        "& .MuiInputBase-input.Mui-disabled": {
+                            WebkitTextFillColor: "#2f4f4f",
+                        },
+                    }}
+                />
+                <TextField
+                    id={'3'}
+                    label="Llave privada"
+                    fullWidth
+                    type={values.showPrivatKey ? 'text' : 'password'}
+                    value={values.private_key}
+                    onChange={(event) => handlePrivateKey(event)}
+                    sx={{
+                        background: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        mb: 1,
+                        mt: 1,
+                        "& .MuiInputBase-input.Mui-disabled": {
+                            WebkitTextFillColor: "#2f4f4f",
+                        },
+                    }}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPrivateKey}
+                                onMouseDown={handleMouseDownPrivateKey}
+                                edge="end"
+                            >
+                                {values.showPrivatKey ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>,
+                    }}
+                />
+                <TextField
+                    id={'5'}
+                    label="Passphrase"
+                    fullWidth
+                    type={values.showPassphrase ? 'text' : 'password'}
+                    onChange={(event) => handlePassphrase(event)}
+                    value={values.passphrase}
+                    sx={{
+                        background: 'rgba(6, 109, 55, 0.05)',
+                        borderRadius: '6px',
+                        mb: 1,
+                        mt: 1,
+                        "& .MuiInputBase-input.Mui-disabled": {
+                            WebkitTextFillColor: "#2f4f4f",
+                        },
+                    }}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassphrase}
+                                onMouseDown={handleMouseDownPassphrase}
+                                edge="end"
+                            >
+                                {values.showPassphrase ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>,
                     }}
                 />
                 <Box
@@ -391,7 +619,7 @@ const NewCryptoWallet = ({ navigate }) => {
                         variant='outlined'
                         size="small"
                         endIcon={<CancelIcon fontSize='small' />}
-                        onClick={handleCancelar}
+                        onClick={handleClickCancelar}
                     >
                         CANCELAR
                     </Button>
@@ -402,7 +630,7 @@ const NewCryptoWallet = ({ navigate }) => {
                         color="success"
                         size="small"
                         endIcon={<SendIcon fontSize='small' />}
-                        onClick={handleGuardar}
+                        onClick={handleClickGuardar}
                     >
                         GUARDAR
                     </Button>
@@ -423,21 +651,24 @@ const NewCryptoWallet = ({ navigate }) => {
                     ) : null}
                 </Box>
             </Box >
-            <NewAccountPasswordDialog
-                keepMounted
-                open={values.openPassword}
-                onClose={handleClose}
-            />
-            <NewAccountPassphraseDialog
-                keepMounted
-                open={values.openPassphrase}
-                onClose={handleClose}
-            />
-            <ConfirmationDialogRaw
+            <ConfirmationDialogDelete
                 id="confirmDialog"
                 keepMounted
-                open={values.openConfirmation}
-                onClose={handleCloseConfirmation}
+                open={values.openDeleteConfirmation}
+                onClose={handleCloseDeleteConfirmation}
+            />
+            <ConfirmationDialogCancelar
+                id="confirmCancelDialog"
+                keepMounted
+                open={values.openCancelConfirmation}
+                onClose={handleCloseCancelConfirmation}
+            />
+            <ShareDialog
+                id="sharedDialog"
+                keepMounted
+                open={values.openShareConfirmation}
+                onClose={handleCloseSharedDialog}
+                direccion={values.public_key}
             />
         </>
     );

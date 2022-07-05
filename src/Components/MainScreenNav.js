@@ -73,7 +73,7 @@ export default function MainScreenNav(props) {
               flexGrow: 1,
               alignSelf: 'center'
             }}>
-              Bóveda - BoyerNicolas
+              {"Bóveda - " + localStorage.getItem("vaultName")}
             </Typography>
             <IconButton
               aria-label="glosario"

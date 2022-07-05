@@ -56,7 +56,7 @@ const MainScreenCardAccount = ({ account, index }) => {
                 label="Usuario"
                 id={"username" + index}
                 fullWidth
-                value={account.userName}
+                value={account.username}
                 disabled
                 sx={{
                     background: 'rgba(6, 109, 55, 0.05)',
@@ -104,11 +104,10 @@ const MainScreenCardAccount = ({ account, index }) => {
                 }}
             />
             <TextField
-                required
                 id={"comentarios" + index}
                 label="Comentarios"
                 fullWidth
-                value={account.comentarios}
+                value={account.notes}
                 disabled
                 multiline
                 maxRows={4}
@@ -122,7 +121,6 @@ const MainScreenCardAccount = ({ account, index }) => {
                 }}
             />
             <TextField
-                required
                 id={"url" + index}
                 label="URL"
                 fullWidth
