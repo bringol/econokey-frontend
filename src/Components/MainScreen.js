@@ -19,7 +19,6 @@ const actions = [
 
 const MainScreen = ({ navigate }) => {
 
-    const { setTopbar, setFilterButton, accounts, setAccountsList, filter } = useContext(AppContext)
     const { setTopbar, filterButton, setFilterButton, accounts, setAccountsList, filter } = useContext(AppContext);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -56,10 +55,6 @@ const MainScreen = ({ navigate }) => {
             }}>
                 {accounts !== undefined && accounts.length > 0 ? (
                     accounts.map((account, index) => {
-                        //debugger;
-                            (
-                                <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
-                            ) : account.type === filter &&
                         return (filter === 'none' || account.type.includes(filter)) &&
                         (
                             <MainScreenCard key={index} account={account} index={index} navigate={navigate} />
