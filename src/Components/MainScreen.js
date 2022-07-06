@@ -8,13 +8,15 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { FaDiceD20 } from "react-icons/fa";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const actions = [
     { icon: <ArticleIcon />, name: 'Nota', target: "../new-note" },
     { icon: <AccountBoxIcon />, name: 'Cuenta', target: "../new-account" },
     { icon: <CurrencyBitcoinIcon />, name: 'CryptoWallet', target: "../new-wallet" },
     { icon: <FaDiceD20 />, name: 'Contraseña', target: "../new-password" },
-    { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase" }
+    { icon: <FaDiceD20 />, name: 'Passphrase', target: "../new-passphrase" },
+    { icon: <ExitToAppIcon />, name: 'Salir', target: "../login" },
 ];
 
 const MainScreen = ({ navigate }) => {
