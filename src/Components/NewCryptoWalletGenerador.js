@@ -337,7 +337,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                     public_key: values.public_key,
                     private_key: values.private_key,
                     passphrase: values.passphrase,
-                    //notes: values.notes,
+                    notes: values.notes,
                     description: values.description,
                     icon: "econokey",
                 }
@@ -361,7 +361,7 @@ const NewCryptoWalletGenerador = ({ navigate }) => {
                     public_key: values.public_key,
                     private_key: values.private_key,
                     passphrase: values.passphrase,
-                    //notes: values.notes,
+                    notes: values.notes,
                     description: values.description,
                     icon: "econokey",
                 }

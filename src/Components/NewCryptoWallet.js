@@ -314,7 +314,7 @@ const NewCryptoWallet = ({ navigate }) => {
                     public_key: values.public_key,
                     private_key: values.private_key,
                     passphrase: values.passphrase,
-                    //notes: values.notes,
+                    notes: values.notes,
                     description: values.description,
                     icon: "default-wallet",
                 }
@@ -338,7 +338,7 @@ const NewCryptoWallet = ({ navigate }) => {
                     public_key: values.public_key,
                     private_key: values.private_key,
                     passphrase: values.passphrase,
-                    //notes: values.notes,
+                    notes: values.notes,
                     description: values.description,
                     icon: "default-wallet",
                 }
