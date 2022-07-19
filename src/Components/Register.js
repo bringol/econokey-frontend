@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,12 +9,12 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import logoMain from '../img/logoMain.png';
 import { createVault } from '../Controllers/WebService.controller';
-
+import AppContext from '../AppContext';
+/*
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -27,7 +27,7 @@ function Copyright(props) {
     </Typography>
   );
 }
-
+*/
 const theme = createTheme({
   palette: {
     primary: {
@@ -110,6 +110,13 @@ export default function Register({ navigate }) {
     }
   }
 
+  const {topbar, setTopbar} = useContext(AppContext);
+
+  useEffect(() => {
+    setTopbar(false);
+
+  }, [topbar, setTopbar]);
+
   return (
     <>
       {redirect()}
@@ -187,7 +194,7 @@ export default function Register({ navigate }) {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
+          {/*<Copyright sx={{ mt: 5 }} />*/}
         </Container>
       </ThemeProvider>
     </>

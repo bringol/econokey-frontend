@@ -41,7 +41,7 @@ const MainScreen = ({ navigate }) => {
                 console.log(response.mensajeDetalle);
         });
 
-    }, []);
+    }, [setAccountsList, filterButton, setFilterButton, setTopbar]);
 
     const handleOnClick = (target) => {
         navigate(target);

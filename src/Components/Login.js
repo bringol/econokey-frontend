@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,20 +8,20 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+//import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logoMain from '../img/logoMain.png';
 import { red } from '@mui/material/colors';
 import { loginVault } from '../Controllers/WebService.controller';
-
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import AppContext from '../AppContext';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
+/*
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,7 +34,7 @@ function Copyright(props) {
     </Typography>
   );
 }
-
+*/
 const theme = createTheme({
   palette: {
     primary: {
@@ -120,6 +120,13 @@ export default function Login({ navigate }) {
     setOpenError(false);
 };
 
+const {topbar, setTopbar} = useContext(AppContext);
+
+useEffect(() => {
+  setTopbar(false);
+
+}, [topbar, setTopbar]);
+
   return (
     <>
       {redirect()}
@@ -187,7 +194,7 @@ export default function Login({ navigate }) {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
+          {/*<Copyright sx={{ mt: 8, mb: 4 }} />*/}
         </Container>
         <Snackbar open={openError} autoHideDuration={1500} onClose={handleCloseAlert}>
           <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
